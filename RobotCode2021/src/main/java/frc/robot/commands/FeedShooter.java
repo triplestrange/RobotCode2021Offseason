@@ -5,45 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.c1;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Shooter;
 
-public class DefaultDrive extends CommandBase {
-  private final SwerveDrive m_drive;
-  private final Joystick m_joystick;
-  private final double m_xSpeed, m_ySpeed, m_rot;
-  private final boolean m_fieldRelative;
-
+public class FeedShooter extends CommandBase {
+  private final Conveyor m_conveyor;
+  private final Shooter m_shooter;
+  private boolean m_atSpeed;
+  private final double m_speed;
   /**
-   * Creates a new DefaultDrive.
-   * 
-   * @param subsystem The drive subsystem this command will run on
-   * @param driver The joystick to be used for calculations in speed and rotation
+   * Creates a new FeedShooter.
    */
-  public DefaultDrive(SwerveDrive subsystem, Joystick driver) {
+  public FeedShooter(Conveyor subsystem1, Shooter subsystem2) {
+    m_conveyor = subsystem1;
+    m_shooter = subsystem2;
+    m_speed = 0.8;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drive = subsystem;
-    m_joystick = driver;
-    m_xSpeed = m_joystick.getRawAxis(0) * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
-    m_ySpeed = -m_joystick.getRawAxis(1) * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
-    m_rot = -m_joystick.getRawAxis(4) * (Math.PI);
-    m_fieldRelative = true;
-    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_atSpeed = m_shooter.atSpeed();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.drive(m_xSpeed, m_ySpeed, m_rot, m_fieldRelative);
+    m_conveyor.feedShooter(m_speed, m_atSpeed);
   }
 
   // Called once the command ends or is interrupted.

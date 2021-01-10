@@ -29,6 +29,7 @@ public class Conveyor extends SubsystemBase {
   public void manualControl(double speed) {
     motor.set(-speed);
   }
+  
   public void feedShooter(double speed, boolean atSpeed) {
     if (atSpeed)
       motor.set(-speed);

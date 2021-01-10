@@ -28,9 +28,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.*;
-import frc.robot.commands.c1.ConveyorAutoIndex;
-import frc.robot.commands.c1.DefaultDrive;
-import frc.robot.commands.c1.RunIntake;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
@@ -92,23 +89,10 @@ public class RobotContainer {
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController));
-        conveyor.setDefaultCommand(new ConveyorAutoIndex(conveyor));
+        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new RunCommand(
-                () -> {
-                        turret.spin(false, 0);                       
-                        
-                        // work on rumble later
-                        // if (vision.hasTargets() == true) {
-                        //         m_driverController.setRumble(RumbleType.kLeftRumble, 0.3);
-                        // } else {
-                        //         m_driverController.setRumble(RumbleType.kLeftRumble, 0);
-                        // }
-                },
-                turret));
-
-        
-
+        turret.setDefaultCommand(new SpinTurret(turret, false, 0));
+       
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
     }
 
@@ -121,35 +105,34 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // A button
-        new JoystickButton(m_operatorController, 1).whenPressed(new InstantCommand(intake::extend, intake))
-                .whenReleased(intake::retract, intake);
+        new JoystickButton(m_operatorController, 1).whenPressed(new ExtendIntake(intake))
+                .whenReleased(new RetractIntake(intake));
         
         // right bumper
-        new JoystickButton(m_operatorController, 6).whileHeld(new InstantCommand(shooter::runShooter, shooter))
-                .whenReleased(shooter::stopShooter, shooter);
+        new JoystickButton(m_operatorController, 6).whileHeld(new RunShooter(shooter))
+                .whenReleased(new StopShooter(shooter));
         
         // left analog center
-        new JoystickButton(m_operatorController, 9).whileHeld(new RunCommand(() -> shooter.runHood(0), shooter));
+        new JoystickButton(m_operatorController, 9).whileHeld(new MoveHood(shooter, -1));
         
         // right analog center
-        new JoystickButton(m_operatorController, 10).whileHeld(new RunCommand(() -> shooter.runHood(1), shooter));
+        new JoystickButton(m_operatorController, 10).whileHeld(new MoveHood(shooter, 1));
         
         // right bumper
-        new JoystickButton(m_operatorController, 6)
-                .whileHeld(new RunCommand(() -> conveyor.feedShooter(0.8, shooter.atSpeed()), conveyor))
-                .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
+        new JoystickButton(m_operatorController, 6).whileHeld(new FeedShooter(conveyor, shooter))
+                .whenReleased(new AutoIndexConveyor(conveyor));
         
         // left bumper
-        new JoystickButton(m_operatorController, 5).whenPressed(new RunCommand(() -> conveyor.manualControl(1), conveyor))
-                .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
+        new JoystickButton(m_operatorController, 5).whenPressed(new ControlConveyor(conveyor))
+                .whenReleased(new AutoIndexConveyor(conveyor));
         
         // B button
-        new JoystickButton(m_operatorController, 2).whileHeld(new RunCommand(() -> turret.spin(true, 0.25)))
-                .whenReleased(new RunCommand(() -> turret.spin(true, 0)));
+        new JoystickButton(m_operatorController, 2).whileHeld(new SpinTurret(turret, true, 0.25))
+                .whenReleased(new SpinTurret(turret, true, 0));
         
         // Y button
-        new JoystickButton(m_operatorController, 3).whileHeld(new RunCommand(() -> turret.spin(true, -0.25)))
-                .whenReleased(new RunCommand(() -> turret.spin(true, 0)));
+        new JoystickButton(m_operatorController, 3).whileHeld(new SpinTurret(turret, true, -0.25))
+                .whenReleased(new SpinTurret(turret, true, 0));
         //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
         //        .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
         // should be start button for camera to find target idk what number is so fix it

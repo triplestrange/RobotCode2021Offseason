@@ -8,19 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Conveyor;
 
-
-public class ClimbCommand extends CommandBase {
-  private final Climb m_climb;
-
+public class ControlConveyor extends CommandBase {
+  private final Conveyor m_conveyor;
+  private final double m_speed;
   /**
-   * Creates a new ClimbCommand.
+   * Creates a new ControlConveyor.
    */
-  public ClimbCommand(Climb climb) {
-    m_climb = climb;
-    addRequirements(climb);
+  public ControlConveyor(Conveyor subsystem) {
+    m_conveyor = subsystem;
+    m_speed = 1;
+    addRequirements(m_conveyor);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +31,7 @@ public class ClimbCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  
+    m_conveyor.manualControl(m_speed);
   }
 
   // Called once the command ends or is interrupted.
