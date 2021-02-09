@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -86,7 +87,7 @@ public class RobotContainer {
 
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
-        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController));
+        // swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController));
         // conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         // intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
         // turret.setDefaultCommand(new SpinTurret(turret, false, 0));
@@ -95,7 +96,7 @@ public class RobotContainer {
 
     //     swerveDrive.setDefaultCommand(
 
-    //                             new RunCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
+    //                             new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
     //                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
     //                                             -m_driverController.getRawAxis(0)
     //                                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
@@ -121,6 +122,8 @@ public class RobotContainer {
         // A button
         butA.whileHeld(new ExtendIntake(intake));
         butA.whenReleased(new RetractIntake(intake));
+
+            
         
         // right bumper
         rBump.whileHeld(new RunShooter(shooter));
@@ -138,7 +141,7 @@ public class RobotContainer {
         rBump.whenReleased(new AutoIndexConveyor(conveyor));
         
         // left bumper
-        lBump.whenPressed(new ControlConveyor(conveyor));
+        lBump.whileHeld(new ControlConveyor(conveyor));
         lBump.whenReleased(new AutoIndexConveyor(conveyor));
         
         // B button
@@ -162,23 +165,25 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // Create config for trajectory
-        TrajectoryConfig config = new TrajectoryConfig(.75,
+        TrajectoryConfig config = new TrajectoryConfig(.25,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(SwerveDriveConstants.kDriveKinematics);
 
         // An example trajectory to follow. All units in meters.
-        Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d((Math.PI) / 2)),
-        List.of(),
+        // new Pose2d(0, 0, new Rotation2d(0)),
+        // List.of(),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(-4, 2.3, new Rotation2d((Math.PI) / 2)), config);
+        // new Pose2d(0, 3, new Rotation2d(0)), config);
+
+        Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new  Rotation2d(0)), List.of(), new Pose2d(0, 4, new Rotation2d(0)), config);
 
 
 
-
-        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(exampleTrajectory,
+        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
                 (1.875), swerveDrive::getPose, // Functional interface to feed supplier
                 SwerveDriveConstants.kDriveKinematics,
 
