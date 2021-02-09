@@ -16,6 +16,7 @@ import frc.robot.subsystems.Shooter;
 public class StopShooter extends InstantCommand {
   public StopShooter(Shooter subsystem) {
     super(subsystem, subsystem::stopShooter);
+    requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

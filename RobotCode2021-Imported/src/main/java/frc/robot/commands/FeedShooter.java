@@ -21,6 +21,8 @@ public class FeedShooter extends CommandGroup {
    * Creates a new FeedShooter.
    */
   public FeedShooter(Conveyor subsystem1, Shooter subsystem2) {
+    requires(subsystem1); 
+    requires(subsystem2);
     m_conveyor = subsystem1;
     m_shooter = subsystem2;
     m_speed = 0.8;

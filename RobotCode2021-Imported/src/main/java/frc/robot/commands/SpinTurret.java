@@ -16,6 +16,7 @@ import frc.robot.subsystems.Turret;
 public class SpinTurret extends InstantCommand {
   public SpinTurret(Turret subsystem, boolean manual, double speed) {
     super(subsystem, () -> {subsystem.spin(manual, speed);});
+    requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

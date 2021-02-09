@@ -17,6 +17,7 @@ public class ExtendIntake extends CommandGroup {
    * Creates a new ExtendIntake.
    */
   public ExtendIntake(Intake subsystem) {
+    requires(subsystem);
     m_intake = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }

@@ -87,20 +87,20 @@ public class RobotContainer {
 
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
-        // swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController));
-        // conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
-        // intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        // turret.setDefaultCommand(new SpinTurret(turret, false, 0));
+        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController));
+        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
+        intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
+        turret.setDefaultCommand(new SpinTurret(turret, false, 0));
        
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
 
-    //     swerveDrive.setDefaultCommand(
+        // swerveDrive.setDefaultCommand(
 
-    //                             new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
-    //                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
-    //                                             -m_driverController.getRawAxis(0)
-    //                                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
-    //                                             -m_driverController.getRawAxis(4) * (2 * Math.PI), true), swerveDrive));
+        //                         new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
+        //                                         * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
+        //                                         -m_driverController.getRawAxis(0)
+        //                                                         * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
+        //                                         -m_driverController.getRawAxis(4) * (2 * Math.PI), true), swerveDrive));
     }
 
     /**

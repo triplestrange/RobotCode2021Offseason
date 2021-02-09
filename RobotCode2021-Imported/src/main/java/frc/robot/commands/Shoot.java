@@ -15,6 +15,7 @@ public class Shoot extends CommandGroup {
    * Creates a new Shoot.
    */
   public Shoot() {
+    // requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

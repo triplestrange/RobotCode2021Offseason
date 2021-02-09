@@ -25,6 +25,7 @@ public class DefaultDrive extends CommandGroup {
    * @param driver The joystick to be used for calculations in speed and rotation
    */
   public DefaultDrive(SwerveDrive subsystem, Joystick driver) {
+    requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = subsystem;
     m_joystick = driver;
@@ -32,7 +33,7 @@ public class DefaultDrive extends CommandGroup {
     m_ySpeed = -m_joystick.getRawAxis(1) * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     m_rot = -m_joystick.getRawAxis(4) * (Math.PI);
     m_fieldRelative = true;
-    requires(subsystem);
+
   }
 
   // Called when the command is initially scheduled.

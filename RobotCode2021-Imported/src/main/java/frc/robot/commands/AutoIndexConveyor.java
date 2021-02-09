@@ -17,6 +17,7 @@ public class AutoIndexConveyor extends InstantCommand {
   public AutoIndexConveyor(Conveyor subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     super(subsystem, subsystem::autoIndex);
+    requires(subsystem);
   }
 
 }

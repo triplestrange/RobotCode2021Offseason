@@ -16,6 +16,7 @@ import frc.robot.subsystems.Shooter;
 public class RunShooter extends InstantCommand {
   public RunShooter(Shooter subsystem) {
     super(subsystem, () -> {subsystem.runShooter();});
+    requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

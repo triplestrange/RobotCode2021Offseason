@@ -17,6 +17,7 @@ public class RetractIntake extends CommandGroup {
    * Creates a new ExtendIntake.
    */
   public RetractIntake(Intake subsystem) {
+    requires(subsystem);
     m_intake = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
   }
