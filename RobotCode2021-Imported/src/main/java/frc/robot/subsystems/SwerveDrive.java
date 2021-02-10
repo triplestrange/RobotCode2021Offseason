@@ -72,7 +72,8 @@ public class SwerveDrive extends Subsystem {
   public Rotation2d getAngle() {
     // Negating the angle because WPILib gyros are CW positive.
     return Rotation2d.fromDegrees((navX.getAngle()+180) * (SwerveDriveConstants.kGyroReversed ? 1.0 : -1.0));
-  }
+  } 
+  
 
   @Override
   public void periodic() {
@@ -95,6 +96,7 @@ public class SwerveDrive extends Subsystem {
         SmartDashboard.putNumber("y", getPose().getTranslation().getY());
         SmartDashboard.putNumber("r", getPose().getRotation().getDegrees());
         SmartDashboard.putNumber("FLdriveEncoder", m_frontLeft.m_driveEncoder.getVelocity());
+        SmartDashboard.putNumber("GYRO ANGLE", navX.getAngle());
   }
 
   /**

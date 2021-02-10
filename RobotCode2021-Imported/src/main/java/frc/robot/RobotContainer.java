@@ -94,13 +94,13 @@ public class RobotContainer {
        
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
 
-        // swerveDrive.setDefaultCommand(
+    //     swerveDrive.setDefaultCommand(
 
-        //                         new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
-        //                                         * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
-        //                                         -m_driverController.getRawAxis(0)
-        //                                                         * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
-        //                                         -m_driverController.getRawAxis(4) * (2 * Math.PI), true), swerveDrive));
+    //                             new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
+    //                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
+    //                                             -m_driverController.getRawAxis(0)
+    //                                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
+    //                                             -m_driverController.getRawAxis(4) * (2 * Math.PI), true), swerveDrive));
     }
 
     /**
@@ -165,7 +165,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // Create config for trajectory
-        TrajectoryConfig config = new TrajectoryConfig(.25,
+        TrajectoryConfig config = new TrajectoryConfig(.5,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(SwerveDriveConstants.kDriveKinematics);
@@ -184,7 +184,7 @@ public class RobotContainer {
 
 
         SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
-                (1.875), swerveDrive::getPose, // Functional interface to feed supplier
+                (0), swerveDrive::getPose, // Functional interface to feed supplier
                 SwerveDriveConstants.kDriveKinematics,
 
                 // Position controllers
