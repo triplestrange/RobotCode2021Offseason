@@ -8,11 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 
-public class DefaultDrive extends CommandGroup {
+public class DefaultDrive extends Command {
   private final SwerveDrive m_drive;
   private final Joystick m_joystick;
   private  double m_xSpeed, m_ySpeed, m_rot;
@@ -46,8 +48,11 @@ public class DefaultDrive extends CommandGroup {
   @Override
   public void execute() {
     // deadzone
+
+    double heading = m_drive.getAngle().getDegrees();
+
     if (Math.abs(m_joystick.getRawAxis(0)) > 0.2 || Math.abs(m_joystick.getRawAxis(1)) > 0.2
-    || Math.abs(m_joystick.getRawAxis(4)) > 0.5)  {
+    || Math.abs(m_joystick.getRawAxis(4)) > 0.2)  {
 
     m_xSpeed = m_joystick.getRawAxis(1) *  0.25 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     m_ySpeed = m_joystick.getRawAxis(0) * 0.25 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
@@ -58,8 +63,16 @@ public class DefaultDrive extends CommandGroup {
       m_rot = 0;
     }
 
-    m_drive.drive(m_xSpeed, m_ySpeed, m_rot, m_fieldRelative);
 
+    double curHead = m_drive.getAngle().getDegrees();
+
+    double difference =  heading - curHead;
+
+    if (m_rot == 0 && difference > 5) {
+      m_drive.drive(m_xSpeed, m_ySpeed, difference, m_fieldRelative);
+    } else {
+      m_drive.drive(m_xSpeed, m_ySpeed, m_rot, m_fieldRelative);
+    }
 
   }
 

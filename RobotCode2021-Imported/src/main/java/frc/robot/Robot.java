@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      Scheduler.getInstance().add(m_autonomousCommand);;
+      Scheduler.getInstance().add(m_autonomousCommand);
     }
     // RobotContainer.swerveDrive.resetEncoders();
   }

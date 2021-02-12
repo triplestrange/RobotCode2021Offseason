@@ -165,7 +165,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // Create config for trajectory
-        TrajectoryConfig config = new TrajectoryConfig(.5,
+        TrajectoryConfig config = new TrajectoryConfig(.5 * AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(SwerveDriveConstants.kDriveKinematics);
@@ -179,12 +179,18 @@ public class RobotContainer {
         // new Pose2d(0, 3, new Rotation2d(0)), config);
 
         Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new  Rotation2d(0)), List.of(), new Pose2d(0, 4, new Rotation2d(0)), config);
+            new Pose2d(0, 0, new  Rotation2d(0)), List.of(
+                new Translation2d(1.9, -1.9), 
+                new Translation2d(1.9, -3.81)
+            ), 
+            //too far and not far enough
+            
+            new Pose2d(-2.15, -5.96, new Rotation2d(0)), config);
 
 
 
         SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
-                (0), swerveDrive::getPose, // Functional interface to feed supplier
+                (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
                 SwerveDriveConstants.kDriveKinematics,
 
                 // Position controllers
