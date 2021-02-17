@@ -118,6 +118,7 @@ public class RobotContainer {
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
+        JoystickButton gyro = new JoystickButton(m_driverController, 7);
 
         // A button
         butA.whileHeld(new ExtendIntake(intake));
@@ -151,6 +152,9 @@ public class RobotContainer {
         // Y button
         butY.whileHeld(new SpinTurret(turret, true, -0.25));
         butY.whenReleased(new SpinTurret(turret, true, 0));
+
+        gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
+
         //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
         //        .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
         // should be start button for camera to find target idk what number is so fix it
@@ -166,7 +170,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // Create config for trajectory
         TrajectoryConfig config = new TrajectoryConfig(.5 * AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared * 0.75)
                         // Add kinematics to ensure max speed is actually obeyed
                         .setKinematics(SwerveDriveConstants.kDriveKinematics);
 
@@ -180,12 +184,16 @@ public class RobotContainer {
 
         Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(0)), List.of(
-                new Translation2d(1.9, -1.9), 
-                new Translation2d(1.9, -3.81)
+                new Translation2d(1.5, -1.9),
+              new Translation2d(1.5, -4.526)
             ), 
             //too far and not far enough
             
-            new Pose2d(-2.15, -5.96, new Rotation2d(0)), config);
+            //new Pose2d(-2.15, -5.96, new Rotation2d(0)), config);
+
+           // new Pose2d(0.9, -6.858, new Rotation2d(-Math.PI / 2)), config);
+
+           new Pose2d(.25, -5.8, new Rotation2d(-Math.PI / 2)), config);
 
 
 

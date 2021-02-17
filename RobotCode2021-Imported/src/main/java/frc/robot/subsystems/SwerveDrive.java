@@ -53,6 +53,7 @@ public class SwerveDrive extends Subsystem {
 
   // The gyro sensor
   private final Gyro navX = new AHRS(SPI.Port.kMXP);
+  boolean gyroReset;
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
@@ -74,6 +75,13 @@ public class SwerveDrive extends Subsystem {
     return Rotation2d.fromDegrees((navX.getAngle()+180) * (SwerveDriveConstants.kGyroReversed ? 1.0 : -1.0));
   } 
   
+  public boolean getGyroReset() {
+    return gyroReset;
+  }
+
+  public void setGyroReset(boolean gyroReset) {
+    this.gyroReset = gyroReset;
+  }
 
   @Override
   public void periodic() {
@@ -170,6 +178,7 @@ public class SwerveDrive extends Subsystem {
    */
   public void zeroHeading() {
     navX.reset();
+    gyroReset = true;
   }
 
   /**
