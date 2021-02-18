@@ -68,7 +68,7 @@ public final class Constants {
     public static final double ksVolts = 1;
     public static final double kvVoltSecondsPerMeter = 0.8;
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
-    public static final double kMaxSpeedMetersPerSecond = 3.2;
+    public static final double kMaxSpeedMetersPerSecond = 4.5693;
   }
 
   public static final class ModuleConstants {
@@ -77,7 +77,9 @@ public final class Constants {
 
     public static final double kDriveEncoderCPR = (8);
     public static final double kSteerEncoderCPR = ((100d/30)*10);
-    public static final double kWheelDiameterMeters = 0.1;
+
+    // adjust for calibration
+    public static final double kWheelDiameterMeters = .12584;
     public static final double kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / (double) kDriveEncoderCPR;
@@ -108,13 +110,14 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 9;
+    public static final double kMaxSpeedMetersPerSecond = 1.5;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 2;
-    public static final double kPYController = 2;
+    //changing here -- try raising gains further
+    public static final double kPXController = .2;
+    public static final double kPYController = .2;
     public static final double kPThetaController = 2;
 
     // Constraint for the motion profilied robot angle controller
