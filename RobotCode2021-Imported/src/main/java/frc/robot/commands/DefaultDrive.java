@@ -62,13 +62,13 @@ public class DefaultDrive extends Command {
     m_rot = 0;
 
     if (Math.abs(m_joystick.getRawAxis(0)) > 0.1) {
-      m_ySpeed = -m_joystick.getRawAxis(0) * 0.5 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+      m_ySpeed = m_joystick.getRawAxis(0) * 0.3 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     }
     if (Math.abs(m_joystick.getRawAxis(1)) > 0.1) {
-      m_xSpeed = -m_joystick.getRawAxis(1) * 0.5 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+      m_xSpeed = m_joystick.getRawAxis(1) * 0.3 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     }
     if (Math.abs(m_joystick.getRawAxis(4)) > 0.2) {
-      m_rot = -m_joystick.getRawAxis(4) * 0.5 * (Math.PI);
+      m_rot = -m_joystick.getRawAxis(4) * 0.3 * (Math.PI);
     }
 
 
@@ -92,13 +92,5 @@ public class DefaultDrive extends Command {
     return false;
   }
 
-  public double offsetJoystick(boolean x) {
-    double hyp = Math.hypot(m_joystick.getRawAxis(1), m_joystick.getRawAxis(0));
-    double ang = Math.asin(m_joystick.getRawAxis(1) / hyp) + Math.toRadians(45);
-    if (x) {
-      return Math.cos(ang) * hyp;
-    } 
-    return Math.sin(ang) * hyp;
-  }
 
 }

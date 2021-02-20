@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -25,18 +26,29 @@ public class Intake extends Subsystem {
         intakeMotor.burnFlash();
     }
 
-    public void extend() {
+    public void extend(Joystick joystick) {
         intakeSolenoid.set(Value.kForward);
-        extended = true;
+        setExtended(true);
+        double speedIn = joystick.getRawAxis(2);
+        double speedOut = joystick.getRawAxis(3);
+
+        if (speedIn > 0.1)
+            intakeMotor.set(speedIn / 3.5);
+        else if (speedOut > 0.1)
+            intakeMotor.set(-speedOut);
+        else
+            intakeMotor.set(0);
     }
 
     public void retract() {
         intakeSolenoid.set(Value.kReverse);
-        extended = false;
+        setExtended(false);
     }
 
-    public void runWheels(final double speedIn, final double speedOut) {
-        if (extended) {
+    public void runWheels(Joystick joystick) {
+        double speedOut = joystick.getRawAxis(2);
+        double speedIn = joystick.getRawAxis(3);
+        if (getExtended()) {
             if (speedIn > 0.1)
                 intakeMotor.set(speedIn / 3.5);
             else if (speedOut > 0.1)
@@ -44,6 +56,14 @@ public class Intake extends Subsystem {
          else
             intakeMotor.set(0);
         }
+    }
+
+    public boolean getExtended() {
+        return extended;
+    }
+
+    public void setExtended(boolean extended) {
+        this.extended = extended;
     }
 
     @Override

@@ -18,7 +18,7 @@ public class RunIntake extends InstantCommand {
   
   public RunIntake(Intake subsystem, Joystick joystick) {
     super(subsystem, 
-      () -> {subsystem.runWheels(joystick.getRawAxis(2), joystick.getRawAxis(3));});
+      () -> {subsystem.runWheels(joystick);});
       requires(subsystem);
   }
 

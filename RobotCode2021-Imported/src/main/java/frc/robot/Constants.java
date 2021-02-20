@@ -115,9 +115,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    //changing here -- try raising gains further
-    public static final double kPXController = .2;
-    public static final double kPYController = .2;
+    // changing here -- try raising gains further
+    public static final double kPXController = 7;
+    public static final double kPYController = 7;
     public static final double kPThetaController = 2;
 
     // Constraint for the motion profilied robot angle controller

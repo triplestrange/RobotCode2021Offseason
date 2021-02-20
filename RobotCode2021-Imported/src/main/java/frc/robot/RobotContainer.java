@@ -119,12 +119,13 @@ public class RobotContainer {
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
         JoystickButton gyro = new JoystickButton(m_driverController, 7);
+        
 
         // A button
-        butA.whileHeld(new ExtendIntake(intake));
+        butA.whileHeld(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
 
-            
+        
         
         // right bumper
         rBump.whileHeld(new RunShooter(shooter));
@@ -184,16 +185,15 @@ public class RobotContainer {
 
         Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                // new Translation2d(0, -1.81)
-              //new Translation2d(1.5, -4.526)
+                new Translation2d(0.3, -1.6),
+                new Translation2d(1.88, -1.6),
+                new Translation2d(1.88, -3.5),
+                new Translation2d(1.88, -6.05),
+                new Translation2d(0, -6.21)
+     
             ), 
-            //too far and not far enough
-            
-            //new Pose2d(-2.15, -5.96, new Rotation2d(0)), config);
 
-           // new Pose2d(0.9, -6.858, new Rotation2d(-Math.PI / 2)), config);
-
-           new Pose2d(0, -3, new Rotation2d(-Math.PI / 2)), config);
+           new Pose2d(0.3, -7.6, new Rotation2d(-Math.PI / 2)), config);
 
 
 

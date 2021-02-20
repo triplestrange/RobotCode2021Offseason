@@ -7,25 +7,29 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.subsystems.Intake;
 
 public class ExtendIntake extends CommandGroup {
   private final Intake m_intake;
+  private final Joystick joystick;
   /**
    * Creates a new ExtendIntake.
    */
-  public ExtendIntake(Intake subsystem) {
+  public ExtendIntake(Intake subsystem, Joystick joystick) {
     requires(subsystem);
     m_intake = subsystem;
+    this.joystick = joystick;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.extend();
+    m_intake.extend(joystick);
+    m_intake.setExtended(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
