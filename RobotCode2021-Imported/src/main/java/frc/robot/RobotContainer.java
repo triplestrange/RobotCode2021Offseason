@@ -87,7 +87,7 @@ public class RobotContainer {
 
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
-        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController));
+        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, false));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
         turret.setDefaultCommand(new SpinTurret(turret, false, 0));
@@ -113,7 +113,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
-        JoystickButton butY = new JoystickButton(m_operatorController, 3);       
+        JoystickButton butY = new JoystickButton(m_operatorController, 3);
+        JoystickButton butXd = new JoystickButton(m_driverController, 3);       
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
@@ -154,6 +155,9 @@ public class RobotContainer {
         butY.whileHeld(new SpinTurret(turret, true, -0.25));
         butY.whenReleased(new SpinTurret(turret, true, 0));
 
+        // driver X button
+        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, true));
+
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
 
         //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
@@ -185,15 +189,22 @@ public class RobotContainer {
 
         Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                new Translation2d(0.3, -1.6),
+                new Translation2d(0.3, -1.6), // take out
                 new Translation2d(1.88, -1.6),
                 new Translation2d(1.88, -3.5),
-                new Translation2d(1.88, -6.05),
-                new Translation2d(0, -6.21)
-     
+                //new Translation2d(1.88, -4),
+                new Translation2d(1.78, -5.5),
+                new Translation2d(1.78, -6.25),
+                new Translation2d(0, -6.21),
+                new Translation2d(0.3, -7.9)
+                //new Translation2d(1.324, -7.9),
+                //new Translation2d(1.724, -7.9),
+                // new Translation2d(1.6, -7.75),
+                // new Translation2d(1.6, -6.55),
+                // new Translation2d(0, -6.3)
             ), 
 
-           new Pose2d(0.3, -7.6, new Rotation2d(-Math.PI / 2)), config);
+           new Pose2d(1.78, -7.75, new Rotation2d(-Math.PI / 2)), config);
 
 
 
