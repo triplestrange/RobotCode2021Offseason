@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.commands.*;
+import frc.robot.commands.autos.Slalom;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
@@ -229,8 +230,9 @@ public class RobotContainer {
 
         
 
-        return swerveControllerCommand1;
+        // return swerveControllerCommand1;
 
+        return (new Slalom(swerveDrive, theta)).getCommand();
     }
 
 }
