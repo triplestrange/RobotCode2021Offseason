@@ -79,7 +79,8 @@ public final class Constants {
     public static final double kSteerEncoderCPR = ((100d/30)*10);
 
     // adjust for calibration
-    public static final double kWheelDiameterMeters = .12584;
+    // 2/25/21 - 0.12584
+    public static final double kWheelDiameterMeters = .12935;
     public static final double kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / (double) kDriveEncoderCPR;
@@ -116,8 +117,8 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
     // changing here -- try raising gains further
-    public static final double kPXController = 7;
-    public static final double kPYController = 7;
+    public static final double kPXController = 10;
+    public static final double kPYController = 10;
     public static final double kPThetaController = 2;
 
     // Constraint for the motion profilied robot angle controller

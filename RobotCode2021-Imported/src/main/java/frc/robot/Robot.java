@@ -75,10 +75,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    SmartDashboard.putNumber("AUTO", Math.hypot(RobotContainer.swerveDrive.getPose().getX(), 
+      RobotContainer.swerveDrive.getPose().getY()));
+    SmartDashboard.putNumberArray("AUTO", new Double[RobotContainer.swerveDrive.getPose().getX(),
+      RobotContainer.swerveDrive.getPose().getY()]);
   }
 
   @Override
   public void teleopInit() {
+    SmartDashboard.putNumber("AUTO", 0);
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
