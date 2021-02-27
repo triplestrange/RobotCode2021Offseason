@@ -114,7 +114,6 @@ public class RobotContainer {
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
-        JoystickButton butpress = new JoystickButton(m_driverController, 8); 
         JoystickButton butXd = new JoystickButton(m_driverController, 8);       
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
@@ -190,42 +189,36 @@ public class RobotContainer {
 
         Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                // keep in
-                new Translation2d(0, -1.2), // take out
-                new Translation2d(1.1, -1.9),
+                
+                //start s-shape
+                new Translation2d(0, -0.8),
+                new Translation2d(1.1, -1.6),
                 new Translation2d(1.88, -1.9),
-             
-             
-                //new Translation2d(1.88, -3.5),
-                //new Translation2d(1.88, -4),
-             // keep in
-                new Translation2d(1.88, -5.5),
+                //end s-shape (1)
+
+                new Translation2d(2.5, -4),
                 new Translation2d(1.88, -6.25),
+                // new Translation2d(1.1, -6.25),
                 new Translation2d(0.3, -6.31),
-                new Translation2d(0.3, -7.9)
-      
-      
-        // previously commented out
-                //new Translation2d(1.324, -7.9),
-                //new Translation2d(1.724, -7.9),
-                // new Translation2d(1.6, -7.75),
-                // new Translation2d(1.6, -6.55),
-                // new Translation2d(0, -6.3)
-                //new Translation2d(1.78, -7.75)
+                new Translation2d(0.3, -8),
+                new Translation2d(1.88, -8),
+                // new Translation2d(2.5, -7.2),
+                new Translation2d(1.88, -6.6),
+                new Translation2d(0.3, -6.25)
             ), 
 
-           new Pose2d(1.88, -7.75, new Rotation2d(-Math.PI / 2)), config);
+           new Pose2d(0.1, -4, new Rotation2d(-Math.PI / 2)), config);
         //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
 
 
 
         SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
-                (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
+                (-0), swerveDrive::getPose, // Functional interface to feed supplier
                 SwerveDriveConstants.kDriveKinematics,
 
                 // Position controllers
-                new PIDController(AutoConstants.kPXController, 0, 0),
-                new PIDController(AutoConstants.kPYController, 0, 0), theta,
+                new PIDController(AutoConstants.kPXController, 1, AutoConstants.kDXController),
+                new PIDController(AutoConstants.kPYController, 1, AutoConstants.kDYController), theta,
 
                 swerveDrive::setModuleStates,
 

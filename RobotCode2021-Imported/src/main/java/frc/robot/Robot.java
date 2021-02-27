@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+  private Double[] coords;
   // private CANCoder hoodEncoder = new CANCoder(0);
   NetworkTableEntry xEntry;
   NetworkTableEntry yEntry;
@@ -62,10 +63,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-Math.PI / 2.)));
-    RobotContainer.theta.reset(-Math.PI / 2.);
+    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-0)));
+    RobotContainer.theta.reset(0.);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    Double[] coords = {RobotContainer.swerveDrive.getPose().getX(),
+      RobotContainer.swerveDrive.getPose().getY()};
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       Scheduler.getInstance().add(m_autonomousCommand);
@@ -74,17 +77,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-    SmartDashboard.putNumber("AUTO", Math.hypot(RobotContainer.swerveDrive.getPose().getX(), 
-      RobotContainer.swerveDrive.getPose().getY()));
-    SmartDashboard.putNumberArray("AUTO", new Double[RobotContainer.swerveDrive.getPose().getX(),
-      RobotContainer.swerveDrive.getPose().getY()]);
+  public void autonomousPeriodic() {    
+    Double[] coords = {RobotContainer.swerveDrive.getPose().getX(),
+      RobotContainer.swerveDrive.getPose().getY()};
+    SmartDashboard.putNumberArray("AUTO COORDS", coords);
   }
 
   @Override
   public void teleopInit() {
-    SmartDashboard.putNumber("AUTO", 0);
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
