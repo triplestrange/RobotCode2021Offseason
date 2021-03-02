@@ -22,11 +22,10 @@ import frc.robot.subsystems.SwerveDrive;
 
 public class Slalom extends Command {
   /** Creates a new Slalom. */
-  private TrajectoryConfig config;
-  private Trajectory newTrajectory;
+  private static TrajectoryConfig config;
+  private static Trajectory trajectory;
   private SwerveDrive swerveDrive;
   private ProfiledPIDController theta;
-  private SwerveControllerCommand slalomCommand;
 
   public Slalom(SwerveDrive swerveDrive, ProfiledPIDController theta) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,47 +42,47 @@ public class Slalom extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    newTrajectory = TrajectoryGenerator.generateTrajectory(
+    
+  }
+
+  public static Trajectory getTrajectory() {
+    // An example trajectory to follow. All units in meters.
+        // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        // new Pose2d(0, 0, new Rotation2d(0)),
+        // List.of(),
+        // End 3 meters straight ahead of where we started, facing forward
+        // new Pose2d(0, 3, new Rotation2d(0)), config);
+
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                // forward + left
-                new Translation2d(0.3, -1.6), // take out
-                new Translation2d(1.88, -1.6),
-                // down to end of field
-                new Translation2d(1.88, -3.5),
-                new Translation2d(1.78, -5.5),
-                new Translation2d(1.78, -6.25),
-                // right edge of field
-                new Translation2d(0, -6.21),
-                // top right edge of field (slightly left)
+                // keep in
+                new Translation2d(0, -1.2), // take out
+                new Translation2d(1.1, -1.9),
+                new Translation2d(1.88, -1.9),
+             
+             
+                //new Translation2d(1.88, -3.5),
+                //new Translation2d(1.88, -4),
+             // keep in
+                new Translation2d(1.88, -5.5),
+                new Translation2d(1.88, -6.25),
+                new Translation2d(0.3, -6.31),
                 new Translation2d(0.3, -7.9)
-
-
+      
+      
+        // previously commented out
                 //new Translation2d(1.324, -7.9),
                 //new Translation2d(1.724, -7.9),
                 // new Translation2d(1.6, -7.75),
                 // new Translation2d(1.6, -6.55),
                 // new Translation2d(0, -6.3)
+                //new Translation2d(1.78, -7.75)
             ), 
 
-           new Pose2d(1.78, -7.75, new Rotation2d(-Math.PI / 2)), config);
-
-
-           // returns for getAutonomousCommand()
-           slalomCommand = new SwerveControllerCommand(newTrajectory,
-            (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
-            SwerveDriveConstants.kDriveKinematics,
-
-            // Position controllers
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0), theta,
-
-            swerveDrive::setModuleStates,
-
-            swerveDrive);
-  }
-
-  public SwerveControllerCommand getCommand() {
-    return slalomCommand;
+           new Pose2d(1.88, -7.75, new Rotation2d(-Math.PI / 2)), config);
+        //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
+    return trajectory;
   }
 
   @Override

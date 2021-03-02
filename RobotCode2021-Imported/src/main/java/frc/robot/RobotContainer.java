@@ -169,6 +169,10 @@ public class RobotContainer {
         
 }
 
+public static String getCoords() {
+    return (swerveDrive.getPose().getX() + " " + swerveDrive.getPose().getY());
+}
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -220,7 +224,7 @@ public class RobotContainer {
 
 
 
-        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
+        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(Slalom.getTrajectory(),
                 (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
                 SwerveDriveConstants.kDriveKinematics,
 
@@ -243,7 +247,7 @@ public class RobotContainer {
 
         // return swerveControllerCommand1;
 
-        return (new Slalom(swerveDrive, theta)).getCommand();
+        return swerveControllerCommand1;
     }
 
 }
