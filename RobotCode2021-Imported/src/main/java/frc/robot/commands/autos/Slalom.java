@@ -85,6 +85,10 @@ public class Slalom extends Command {
     return trajectory;
   }
 
+  public Translation2d toTranslation2d(double x, double y) {
+      return new Translation2d(x *= 3.28084, y *= 3.28084); 
+  }
+
   @Override
   protected boolean isFinished() {
     // TODO Auto-generated method stub
