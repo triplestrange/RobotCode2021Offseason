@@ -115,7 +115,8 @@ public class RobotContainer {
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
-        JoystickButton butXd = new JoystickButton(m_driverController, 3);       
+        JoystickButton butpress = new JoystickButton(m_driverController, 8); 
+        JoystickButton butXd = new JoystickButton(m_driverController, 8);       
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
@@ -190,22 +191,32 @@ public class RobotContainer {
 
         Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                new Translation2d(0.3, -1.6), // take out
-                new Translation2d(1.88, -1.6),
-                new Translation2d(1.88, -3.5),
+                // keep in
+                new Translation2d(0, -1.2), // take out
+                new Translation2d(1.1, -1.9),
+                new Translation2d(1.88, -1.9),
+             
+             
+                //new Translation2d(1.88, -3.5),
                 //new Translation2d(1.88, -4),
-                new Translation2d(1.78, -5.5),
-                new Translation2d(1.78, -6.25),
-                new Translation2d(0, -6.21),
+             // keep in
+                new Translation2d(1.88, -5.5),
+                new Translation2d(1.88, -6.25),
+                new Translation2d(0.3, -6.31),
                 new Translation2d(0.3, -7.9)
+      
+      
+        // previously commented out
                 //new Translation2d(1.324, -7.9),
                 //new Translation2d(1.724, -7.9),
                 // new Translation2d(1.6, -7.75),
                 // new Translation2d(1.6, -6.55),
                 // new Translation2d(0, -6.3)
+                //new Translation2d(1.78, -7.75)
             ), 
 
-           new Pose2d(1.78, -7.75, new Rotation2d(-Math.PI / 2)), config);
+           new Pose2d(1.88, -7.75, new Rotation2d(-Math.PI / 2)), config);
+        //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
 
 
 

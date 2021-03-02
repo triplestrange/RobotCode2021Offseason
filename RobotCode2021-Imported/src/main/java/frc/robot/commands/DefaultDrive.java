@@ -68,23 +68,23 @@ public class DefaultDrive extends Command {
 
     if (!slow) {
     if (Math.abs(m_joystick.getRawAxis(0)) > 0.1) {
-      m_ySpeed = m_joystick.getRawAxis(0) * 0.7 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+      m_ySpeed = m_joystick.getRawAxis(0) * 0.5 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     }
     if (Math.abs(m_joystick.getRawAxis(1)) > 0.1) {
-      m_xSpeed = m_joystick.getRawAxis(1) * 0.7 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+      m_xSpeed = m_joystick.getRawAxis(1) * 0.5 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     }
     if (Math.abs(m_joystick.getRawAxis(4)) > 0.2) {
-      m_rot = m_joystick.getRawAxis(4) * 0.7 * (Math.PI);
+      m_rot = m_joystick.getRawAxis(4) * 0.5 * (Math.PI);
     }
     } else {
       if (Math.abs(m_joystick.getRawAxis(0)) > 0.05) {
-        m_ySpeed = m_joystick.getRawAxis(0) * 0.2 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+        m_ySpeed = m_joystick.getRawAxis(0) * 0.05 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
       }
       if (Math.abs(m_joystick.getRawAxis(1)) > 0.05) {
-        m_xSpeed = m_joystick.getRawAxis(1) * 0.2 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+        m_xSpeed = m_joystick.getRawAxis(1) * 0.05 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
       }
       if (Math.abs(m_joystick.getRawAxis(4)) > 0.05) {
-        m_rot = m_joystick.getRawAxis(4) * 0.2 * (Math.PI);
+        m_rot = m_joystick.getRawAxis(4) * 0.05 * (Math.PI);
       }
     }
 
