@@ -1,14 +1,27 @@
 
 package frc.robot;
 
+<<<<<<< Updated upstream
+=======
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+
+>>>>>>> Stashed changes
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -63,17 +76,59 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+<<<<<<< Updated upstream
     RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-0)));
     RobotContainer.theta.reset(0.);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     Double[] coords = {RobotContainer.swerveDrive.getPose().getX(),
       RobotContainer.swerveDrive.getPose().getY()};
+=======
+    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-Math.PI / 2.)));
+    RobotContainer.theta.reset(-Math.PI / 2.);
+    
+    
+    try {
+      f = new File("/home/lvuser/Output.txt");
+
+      if (!f.exists()) {
+        f.createNewFile();
+      }
+      fw = new FileWriter(f);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+    bw = new BufferedWriter(fw);
+
+    try {
+      bw.write("AUTOS");
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    String  trajectoryJSON = "output/Slalom.wpilib.json";
+        Trajectory trajectory = new Trajectory();
+        try {
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        } catch (IOException ex) {
+            DriverStation.reportError("Unable to open trajectory" + trajectoryJSON, ex.getStackTrace());
+        }
+
+
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand(trajectory);
+
+>>>>>>> Stashed changes
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       Scheduler.getInstance().add(m_autonomousCommand);
     }
+<<<<<<< Updated upstream
     // RobotContainer.swerveDrive.resetEncoders();
+=======
+>>>>>>> Stashed changes
   }
 
   @Override

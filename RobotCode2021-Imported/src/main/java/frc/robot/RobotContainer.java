@@ -7,11 +7,15 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -24,6 +28,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -172,7 +177,7 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+    public Command getAutonomousCommand(Trajectory trajectory) {
         // Create config for trajectory
         TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -210,10 +215,23 @@ public class RobotContainer {
            new Pose2d(0.1, -4, new Rotation2d(-Math.PI / 2)), config);
         //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
 
+        // String  trajectoryJSON = "../paths/Slalom.wpilib.json";
+        // Trajectory trajectory = new Trajectory();
+        // try {
+        //     Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+        //     trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        // } catch (IOException ex) {
+        //     DriverStation.reportError("Unable to open trajectory" + trajectoryJSON, ex.getStackTrace());
+        // }
 
 
+<<<<<<< Updated upstream
         SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
                 (-0), swerveDrive::getPose, // Functional interface to feed supplier
+=======
+        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(trajectory,
+                (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
+>>>>>>> Stashed changes
                 SwerveDriveConstants.kDriveKinematics,
 
                 // Position controllers
