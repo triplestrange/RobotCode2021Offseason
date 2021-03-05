@@ -124,8 +124,8 @@ public class RobotContainer {
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
-        JoystickButton gyro = new JoystickButton(m_driverController, 6);
-        JoystickButton ok = new JoystickButton(m_driverController, 7);
+        JoystickButton gyro = new JoystickButton(m_driverController, 7);
+        // JoystickButton ok = new JoystickButton(m_driverController, 7);
 
         // A button
         butA.whileHeld(new ExtendIntake(intake, m_operatorController));
@@ -217,12 +217,23 @@ public class RobotContainer {
            Trajectory traject = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new  Rotation2d(0)), List.of(
                 //start s-shape
-                new Translation2d(0, -0.8)
-                // new Translation2d(1.1, -1.6),
-                
-            ), 
+                new Translation2d(0, -1.1),
+                new Translation2d(1.1, -1.6),
+                new Translation2d(1.88, -1.9),
 
-           new Pose2d(1.1, -1.6, new Rotation2d(0)), config);
+
+                new Translation2d(1.9, -4),
+                new Translation2d(1.88, -6.5),
+                new Translation2d(0, -6.5),
+                new Translation2d(0, -8.35),
+                new Translation2d(1.3, -8.25),
+                new Translation2d(1.88, -6.5),
+
+                // make t hsi point go a littel bit up (hitting cube)
+                new Translation2d(-0.5, -6.5)
+            ), 
+            
+           new Pose2d(-.5, -4, new Rotation2d(0)), config);
         //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
 
         // String  trajectoryJSON = "../paths/Slalom.wpilib.json";
