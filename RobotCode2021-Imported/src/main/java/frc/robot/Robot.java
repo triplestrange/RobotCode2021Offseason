@@ -1,15 +1,12 @@
 
 package frc.robot;
 
-<<<<<<< Updated upstream
-=======
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
->>>>>>> Stashed changes
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
@@ -45,6 +42,9 @@ public class Robot extends TimedRobot {
   // private CANCoder hoodEncoder = new CANCoder(0);
   NetworkTableEntry xEntry;
   NetworkTableEntry yEntry;
+  private FileWriter fw;
+  private File f;
+  private BufferedWriter bw;
   // CANCoderConfiguration _canCoderConfiguration = new CANCoderConfiguration();
 
   @Override
@@ -76,16 +76,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-<<<<<<< Updated upstream
-    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-0)));
-    RobotContainer.theta.reset(0.);
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    Double[] coords = {RobotContainer.swerveDrive.getPose().getX(),
-      RobotContainer.swerveDrive.getPose().getY()};
-=======
-    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-Math.PI / 2.)));
-    RobotContainer.theta.reset(-Math.PI / 2.);
+    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+    RobotContainer.theta.reset(0);
     
     
     try {
@@ -108,7 +100,7 @@ public class Robot extends TimedRobot {
       e.printStackTrace();
     }
 
-    String  trajectoryJSON = "output/Slalom.wpilib.json";
+    String  trajectoryJSON = "output/straight.wpilib.json";
         Trajectory trajectory = new Trajectory();
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -120,15 +112,10 @@ public class Robot extends TimedRobot {
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand(trajectory);
 
->>>>>>> Stashed changes
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       Scheduler.getInstance().add(m_autonomousCommand);
     }
-<<<<<<< Updated upstream
-    // RobotContainer.swerveDrive.resetEncoders();
-=======
->>>>>>> Stashed changes
   }
 
   @Override

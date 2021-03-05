@@ -119,13 +119,13 @@ public class RobotContainer {
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
-        JoystickButton butXd = new JoystickButton(m_driverController, 8);       
+        JoystickButton butXd = new JoystickButton(m_driverController, 2);       
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
-        JoystickButton gyro = new JoystickButton(m_driverController, 7);
-        
+        JoystickButton gyro = new JoystickButton(m_driverController, 6);
+        JoystickButton ok = new JoystickButton(m_driverController, 7);
 
         // A button
         butA.whileHeld(new ExtendIntake(intake, m_operatorController));
@@ -213,6 +213,16 @@ public class RobotContainer {
             ), 
 
            new Pose2d(0.1, -4, new Rotation2d(-Math.PI / 2)), config);
+
+           Trajectory traject = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new  Rotation2d(0)), List.of(
+                //start s-shape
+                new Translation2d(0, -0.8)
+                // new Translation2d(1.1, -1.6),
+                
+            ), 
+
+           new Pose2d(1.1, -1.6, new Rotation2d(0)), config);
         //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
 
         // String  trajectoryJSON = "../paths/Slalom.wpilib.json";
@@ -225,13 +235,8 @@ public class RobotContainer {
         // }
 
 
-<<<<<<< Updated upstream
-        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(newTrajectory,
-                (-0), swerveDrive::getPose, // Functional interface to feed supplier
-=======
-        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(trajectory,
-                (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
->>>>>>> Stashed changes
+        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject,
+                (0), swerveDrive::getPose, // Functional interface to feed supplier
                 SwerveDriveConstants.kDriveKinematics,
 
                 // Position controllers
