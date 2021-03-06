@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
+import frc.robot.commands.Auto.SlalomPath1;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
@@ -178,96 +179,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand(Trajectory trajectory) {
-        // Create config for trajectory
-        TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(SwerveDriveConstants.kDriveKinematics);
-
-        // An example trajectory to follow. All units in meters.
-        // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        // new Pose2d(0, 0, new Rotation2d(0)),
-        // List.of(),
-        // End 3 meters straight ahead of where we started, facing forward
-        // new Pose2d(0, 3, new Rotation2d(0)), config);
-
-        Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                
-                //start s-shape
-                new Translation2d(0, -0.8),
-                new Translation2d(1.1, -1.6),
-                new Translation2d(1.88, -1.9),
-                //end s-shape (1)
-
-                new Translation2d(2.5, -4),
-                new Translation2d(1.88, -6.25),
-                // new Translation2d(1.1, -6.25),
-                new Translation2d(0.3, -6.31),
-                new Translation2d(0.3, -8),
-                new Translation2d(1.88, -8),
-                // new Translation2d(2.5, -7.2),
-                new Translation2d(1.88, -6.6),
-                new Translation2d(0.3, -6.25)
-            ), 
-
-           new Pose2d(0.1, -4, new Rotation2d(-Math.PI / 2)), config);
-
-           Trajectory traject = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new  Rotation2d(0)), List.of(
-                //start s-shape
-                new Translation2d(0, -1.1),
-                new Translation2d(1.1, -1.6),
-                new Translation2d(1.88, -1.9),
+        SlalomPath1 slalom = new SlalomPath1(swerveDrive, theta);
 
 
-                new Translation2d(1.9, -4),
-                new Translation2d(1.88, -6.5),
-                new Translation2d(0, -6.5),
-                new Translation2d(0, -8.35),
-                new Translation2d(1.3, -8.25),
-                new Translation2d(1.88, -6.5),
-
-                // make t hsi point go a littel bit up (hitting cube)
-                new Translation2d(-0.5, -6.5)
-            ), 
-            
-           new Pose2d(-.5, -4, new Rotation2d(0)), config);
-        //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
-
-        // String  trajectoryJSON = "../paths/Slalom.wpilib.json";
-        // Trajectory trajectory = new Trajectory();
-        // try {
-        //     Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-        //     trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-        // } catch (IOException ex) {
-        //     DriverStation.reportError("Unable to open trajectory" + trajectoryJSON, ex.getStackTrace());
-        // }
-
-
-        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject,
-                (0), swerveDrive::getPose, // Functional interface to feed supplier
-                SwerveDriveConstants.kDriveKinematics,
-
-                // Position controllers
-                new PIDController(AutoConstants.kPXController, 1, AutoConstants.kDXController),
-                new PIDController(AutoConstants.kPYController, 1, AutoConstants.kDYController), theta,
-
-                swerveDrive::setModuleStates,
-
-                swerveDrive
-
-        );
-
-        // Command shootCommand = new Command(() -> shooter.runHood(.5), shooter)
-        //                         .andThen(shooter::runShooter, shooter)
-        //                         .andThen(new RunCommand(() -> conveyor.feedShooter(0.75, shooter.atSpeed()), conveyor))
-        //                         .withTimeout(15).andThen(new InstantCommand(shooter::stopShooter, shooter));
-
-        
-
-        return swerveControllerCommand1;
+        return slalom;
 
     }
 

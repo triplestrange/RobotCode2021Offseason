@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0))); //0.053, .8539
     RobotContainer.theta.reset(0);
     
     
@@ -100,17 +100,17 @@ public class Robot extends TimedRobot {
       e.printStackTrace();
     }
 
-    String  trajectoryJSON = "output/straight.wpilib.json";
-        Trajectory trajectory = new Trajectory();
-        try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-        } catch (IOException ex) {
-            DriverStation.reportError("Unable to open trajectory" + trajectoryJSON, ex.getStackTrace());
-        }
+    // String  trajectoryJSON = "output/Straight123.wpilib.json";
+    //     Trajectory trajectory = new Trajectory();
+    //     try {
+    //         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+    //         trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    //     } catch (IOException ex) {
+    //         DriverStation.reportError("Unable to open trajectory" + trajectoryJSON, ex.getStackTrace());
+    //     }
 
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand(trajectory);
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand(null);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import frc.robot.subsystems.SwerveDrive;
 
 import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 
@@ -89,7 +90,7 @@ public class SwerveControllerCommand extends CommandGroup {
                                ProfiledPIDController thetaController,
 
                                Consumer<SwerveModuleState[]> outputModuleStates,
-                               Subsystem... requirements) {
+                               SwerveDrive requirement) {
                                  
     m_trajectory = requireNonNullParam(trajectory, "trajectory", "SwerveControllerCommand");
     m_targetRotation = targetRotationRadians;
@@ -105,6 +106,7 @@ public class SwerveControllerCommand extends CommandGroup {
 
     m_outputModuleStates = requireNonNullParam(outputModuleStates,
       "frontLeftOutput", "SwerveControllerCommand");
+      requires(requirement);
   }
 
   @Override
