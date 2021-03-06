@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
+import frc.robot.commands.Auto.BouncePath;
 import frc.robot.commands.Auto.SlalomPath1;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -179,10 +180,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand(Trajectory trajectory) {
-        SlalomPath1 slalom = new SlalomPath1(swerveDrive, theta);
+        BouncePath bounce = new BouncePath(swerveDrive, theta);
 
 
-        return slalom;
+        return bounce;
 
     }
 
