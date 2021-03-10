@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
+import frc.robot.commands.Auto.BarrelPath;
 import frc.robot.commands.Auto.BouncePath;
 import frc.robot.commands.Auto.SlalomPath1;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -180,10 +181,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand(Trajectory trajectory) {
-        BouncePath bounce = new BouncePath(swerveDrive, theta);
+        BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
 
 
-        return bounce;
+        return Barrel;
 
     }
 
