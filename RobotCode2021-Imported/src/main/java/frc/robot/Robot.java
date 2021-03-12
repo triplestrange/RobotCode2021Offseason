@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
-
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
@@ -18,6 +17,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.networktables.NetworkTable;
@@ -148,15 +148,15 @@ public class Robot extends TimedRobot {
     }
   }
 
-  @Override
-  public void autonomousPeriodic() {
-    try {
-      bw.write(RobotContainer.getCoords());
-      bw.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+  // @Override
+  // public void autonomousPeriodic() {
+  //   try {
+  //     bw.write(RobotContainer.getCoords());
+  //     bw.close();
+  //   } catch (IOException e) {
+  //     e.printStackTrace();
+  //   }
+  // }
 
   @Override
   public void teleopInit() {
