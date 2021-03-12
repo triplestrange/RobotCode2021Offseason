@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
+
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
@@ -22,7 +23,6 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // import frc.robot.vision.GripPipeline;
 
@@ -42,9 +42,11 @@ public class Robot extends TimedRobot {
   // private CANCoder hoodEncoder = new CANCoder(0);
   NetworkTableEntry xEntry;
   NetworkTableEntry yEntry;
+
   private FileWriter fw;
   private File f;
   private BufferedWriter bw;
+
   // CANCoderConfiguration _canCoderConfiguration = new CANCoderConfiguration();
 
   @Override
@@ -56,8 +58,8 @@ public class Robot extends TimedRobot {
     xEntry = table.getEntry("X");
     yEntry = table.getEntry("Y");
     
-    // hoodEncoder.configAllSettings(_canCoderConfiguration);
-      }
+    
+    }
 
   @Override
   public void robotPeriodic() {
@@ -116,6 +118,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       Scheduler.getInstance().add(m_autonomousCommand);
     }
+
   }
 
   @Override
@@ -123,10 +126,41 @@ public class Robot extends TimedRobot {
     Double[] coords = {RobotContainer.swerveDrive.getPose().getX(),
       RobotContainer.swerveDrive.getPose().getY()};
     SmartDashboard.putNumberArray("AUTO COORDS", coords);
+    
+    try {
+      f = new File("/home/lvuser/Output.txt");
+
+      if (!f.exists()) {
+        f.createNewFile();
+      }
+      fw = new FileWriter(f);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+    bw = new BufferedWriter(fw);
+
+    try {
+      bw.write("AUTOS");
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    try {
+      bw.write(RobotContainer.getCoords());
+      bw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
   public void teleopInit() {
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

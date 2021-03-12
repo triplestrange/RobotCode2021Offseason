@@ -30,9 +30,11 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
+
 import frc.robot.commands.Auto.BarrelPath;
 import frc.robot.commands.Auto.BouncePath;
 import frc.robot.commands.Auto.SlalomPath1;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
@@ -175,6 +177,10 @@ public class RobotContainer {
         
 }
 
+public static String getCoords() {
+    return (swerveDrive.getPose().getX() + " " + swerveDrive.getPose().getY());
+}
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -183,9 +189,7 @@ public class RobotContainer {
     public Command getAutonomousCommand(Trajectory trajectory) {
         BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
 
-
         return Barrel;
-
     }
 
 }
