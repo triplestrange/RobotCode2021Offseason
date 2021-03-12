@@ -27,26 +27,41 @@ public class BarrelPath extends CommandGroup {
   public BarrelPath(SwerveDrive swerveDrive, ProfiledPIDController theta) {
 
       // Create config for trajectory
-      TrajectoryConfig config = new TrajectoryConfig(1,
-              AutoConstants.kMaxAccelerationMetersPerSecondSquared);
-                      // Add kinematics to ensure max speed is actually obeyed
-                      // .setKinematics(SwerveDriveConstants.kDriveKinematics);
-
-      TrajectoryConfig config1 = new TrajectoryConfig(1,
+      TrajectoryConfig config = new TrajectoryConfig(2.1,
               AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                       // Add kinematics to ensure max speed is actually obeyed
                       // .setKinematics(SwerveDriveConstants.kDriveKinematics)
-                      .setStartVelocity(0);
+                      .setEndVelocity(1.5);
 
+//       TrajectoryConfig config1 = new TrajectoryConfig(1,
+//               AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+//                       // Add kinematics to ensure max speed is actually obeyed
+//                       // .setKinematics(SwerveDriveConstants.kDriveKinematics)
+//                       .setStartVelocity(1.5);
+
+                    
     
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0, new  Rotation2d(Math.PI / 2)), List.of(
-          //start s-shape
-          new Translation2d(0, -1)
-          ),
-                           //direction robot moves
-     new Pose2d(0, -3.52, new Rotation2d(Math.PI / 2)), config);
+      new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
+          new Translation2d(0, -3),
+          new Translation2d(-1.63, -3.224939),
+          new Translation2d(-1.663700, -1.846359),
+          new Translation2d(-.180766, -1.846359),
+          new Translation2d(-.180766, -5.230811),
+          new Translation2d(1.439370, -5.430811),
+          new Translation2d(1.439370, -3.995877),
+          new Translation2d(-1.827272, -3.995877),
+          new Translation2d(-1.827272, -6.816515),
+          new Translation2d(0.15, -6.816515)
 
+
+      ), 
+
+                           //direction robot moves
+     new Pose2d(-0.15, 0, new Rotation2d(Math.PI / 2)), config);
+
+
+     
 
   SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject,
           (0), swerveDrive::getPose, // Functional interface to feed supplier
@@ -61,31 +76,21 @@ public class BarrelPath extends CommandGroup {
           swerveDrive
 
   );
+//   SwerveControllerCommand swerveControllerCommand2 = new SwerveControllerCommand(traject1,
+//   (0), swerveDrive::getPose, // Functional interface to feed supplier
+//   SwerveDriveConstants.kDriveKinematics,
 
-  // Command shootCommand = new Command(() -> shooter.runHood(.5), shooter)
-  //                         .andThen(shooter::runShooter, shooter)
-  //                         .andThen(new RunCommand(() -> conveyor.feedShooter(0.75, shooter.atSpeed()), conveyor))
-  //                         .withTimeout(15).andThen(new InstantCommand(shooter::stopShooter, shooter));
+//   // Position controllers
+//   new PIDController(AutoConstants.kPXController, 1, AutoConstants.kDXController),
+//   new PIDController(AutoConstants.kPYController, 1, AutoConstants.kDYController), theta,
+
+//   swerveDrive::setModuleStates,
+
+//   swerveDrive
+
+// );
 
   addSequential(swerveControllerCommand1);
-  // addSequential(swerveControllerCommand2);
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
-
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
-
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
-
-    
+//   addSequential(swerveControllerCommand2);
   }
 }
