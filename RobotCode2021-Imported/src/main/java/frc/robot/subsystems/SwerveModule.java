@@ -71,6 +71,7 @@ public class SwerveModule {
     // This is the the angle through an entire rotation (2 * wpi::math::pi)
     // divided by the encoder resolution.
     m_turningEncoder.setPositionConversionFactor(ModuleConstants.kSteerEncoderDistancePerPulse);
+    m_turningEncoder.setVelocityConversionFactor(ModuleConstants.kSteerEncoderDistancePerPulse/60.);
     m_absoluteEncoder.setPositionConversionFactor(encoderCPR);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
@@ -102,7 +103,7 @@ public class SwerveModule {
    * @return The current state of the module.
    */
   public SwerveModuleState getState() {
-    return new SwerveModuleState(m_driveEncoder.getVelocity(), new Rotation2d(m_turningEncoder.getPosition()));
+    return new SwerveModuleState(m_driveEncoder.getVelocity() + m_turningEncoder.getVelocity()*ModuleConstants.kWheelDiameterMeters/4, new Rotation2d(m_turningEncoder.getPosition()));
   }
 
   /**

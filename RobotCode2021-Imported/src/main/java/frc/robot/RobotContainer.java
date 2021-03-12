@@ -7,11 +7,15 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -24,8 +28,13 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
-import frc.robot.commands.autos.Slalom;
+
+import frc.robot.commands.Auto.BarrelPath;
+import frc.robot.commands.Auto.BouncePath;
+import frc.robot.commands.Auto.SlalomPath1;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
@@ -115,14 +124,13 @@ public class RobotContainer {
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
-        JoystickButton butpress = new JoystickButton(m_driverController, 8); 
-        JoystickButton butXd = new JoystickButton(m_driverController, 8);       
+        JoystickButton butXd = new JoystickButton(m_driverController, 2);       
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
         JoystickButton gyro = new JoystickButton(m_driverController, 7);
-        
+        // JoystickButton ok = new JoystickButton(m_driverController, 7);
 
         // A button
         butA.whileHeld(new ExtendIntake(intake, m_operatorController));
@@ -178,76 +186,10 @@ public static String getCoords() {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
-        // Create config for trajectory
-        TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                        // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(SwerveDriveConstants.kDriveKinematics);
+    public Command getAutonomousCommand(Trajectory trajectory) {
+        BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
 
-        // An example trajectory to follow. All units in meters.
-        // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        // new Pose2d(0, 0, new Rotation2d(0)),
-        // List.of(),
-        // End 3 meters straight ahead of where we started, facing forward
-        // new Pose2d(0, 3, new Rotation2d(0)), config);
-
-        Trajectory newTrajectory = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
-                // keep in
-                new Translation2d(0, -1.2), // take out
-                new Translation2d(1.1, -1.9),
-                new Translation2d(1.88, -1.9),
-             
-             
-                //new Translation2d(1.88, -3.5),
-                //new Translation2d(1.88, -4),
-             // keep in
-                new Translation2d(1.88, -5.5),
-                new Translation2d(1.88, -6.25),
-                new Translation2d(0.3, -6.31),
-                new Translation2d(0.3, -7.9)
-      
-      
-        // previously commented out
-                //new Translation2d(1.324, -7.9),
-                //new Translation2d(1.724, -7.9),
-                // new Translation2d(1.6, -7.75),
-                // new Translation2d(1.6, -6.55),
-                // new Translation2d(0, -6.3)
-                //new Translation2d(1.78, -7.75)
-            ), 
-
-           new Pose2d(1.88, -7.75, new Rotation2d(-Math.PI / 2)), config);
-        //    new Pose2d(0, -7, new Rotation2d(-Math.PI / 2)), config);
-
-
-
-        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(Slalom.getTrajectory(),
-                (-Math.PI / 2), swerveDrive::getPose, // Functional interface to feed supplier
-                SwerveDriveConstants.kDriveKinematics,
-
-                // Position controllers
-                new PIDController(AutoConstants.kPXController, 0, 0),
-                new PIDController(AutoConstants.kPYController, 0, 0), theta,
-
-                swerveDrive::setModuleStates,
-
-                swerveDrive
-
-        );
-
-        // Command shootCommand = new Command(() -> shooter.runHood(.5), shooter)
-        //                         .andThen(shooter::runShooter, shooter)
-        //                         .andThen(new RunCommand(() -> conveyor.feedShooter(0.75, shooter.atSpeed()), conveyor))
-        //                         .withTimeout(15).andThen(new InstantCommand(shooter::stopShooter, shooter));
-
-        
-
-        // return swerveControllerCommand1;
-
-        return swerveControllerCommand1;
+        return Barrel;
     }
 
 }
