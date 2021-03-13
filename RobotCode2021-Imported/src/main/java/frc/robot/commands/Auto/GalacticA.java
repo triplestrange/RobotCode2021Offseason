@@ -27,42 +27,43 @@ import frc.robot.subsystems.*;
 
 public class GalacticA extends CommandGroup {
         /** Add your docs here. */
+
+        private final RobotContainer m_robotContainer;
+        private final Intake m_intake;
+        
         public GalacticA(SwerveDrive swerveDrive, ProfiledPIDController theta) {
+                m_robotContainer = new RobotContainer();
+                m_intake = new Intake();
 
-                final RobotContainer m_robotContainer;
-                final Intake intake;
+                
+         // Create config for trajectory
+        TrajectoryConfig config = new TrajectoryConfig(2.1,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                // Add kinematics to ensure max speed is actually obeyed
+                // .setKinematics(SwerveDriveConstants.kDriveKinematics)
+                .setEndVelocity(1.5);
 
-                // Create config for trajectory
-                TrajectoryConfig config = new TrajectoryConfig(2.1,
-                                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                                                // Add kinematics to ensure max speed is actually obeyed
-                                                // .setKinematics(SwerveDriveConstants.kDriveKinematics)
-                                                .setEndVelocity(1.5);
+        Trajectory trajectory = TrajectoryGenerator
+               .generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), List.of(
 
-                Trajectory trajectory = TrajectoryGenerator
-                                .generateTrajectory(new Pose2d(0, 0, new Rotation2d(-Math.PI / 2)), List.of(
+                ),
+                                   // direction robot moves
+                new Pose2d(0, -3, new Rotation2d(0)), config);
 
-                                ),
-                                                // direction robot moves
-                                                new Pose2d(0, -3, new Rotation2d(Math.PI / 2)), config);
-
-                SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(trajectory, (0),
-                                swerveDrive::getPose, // Functional interface to feed supplier
-                                SwerveDriveConstants.kDriveKinematics,
-
-                                // Position controllers
-                                new PIDController(AutoConstants.kPXController, 1, AutoConstants.kDXController),
-                                new PIDController(AutoConstants.kPYController, 1, AutoConstants.kDYController), theta,
-
-                                swerveDrive::setModuleStates,
-
-                                swerveDrive
-
-                );
+        SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(trajectory, (0),
+                swerveDrive::getPose, // Functional interface to feed supplier
+                SwerveDriveConstants.kDriveKinematics,
+                
+                // Position controllers
+                new PIDController(AutoConstants.kPXController, 1, AutoConstants.kDXController),
+                new PIDController(AutoConstants.kPYController, 1, AutoConstants.kDYController), theta,
+                swerveDrive::setModuleStates,
+                swerveDrive
+        );
+                IntakeCommand intakeCommand = new IntakeCommand(m_intake);
 
                 addSequential(swerveControllerCommand1);
-               
+                // addSequential(intakeCommand);
 
         }
-
 }

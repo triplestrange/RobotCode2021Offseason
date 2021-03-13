@@ -203,10 +203,12 @@ public static String getCoords() {
      */
     
      public Command getAutonomousCommand(Trajectory trajectory) {
-        GalacticA galA = new GalacticA(swerveDrive, theta);
+        // GalacticA galA = new GalacticA(swerveDrive, theta);
+
+        // return galA;
+        BouncePath galA = new BouncePath(swerveDrive, theta);
 
         return galA;
-
     }
 
 }

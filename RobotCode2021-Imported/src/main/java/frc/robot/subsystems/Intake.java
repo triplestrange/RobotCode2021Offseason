@@ -40,6 +40,7 @@ public class Intake extends Subsystem {
             intakeMotor.set(0);
     }
 
+
     public void retract() {
         intakeSolenoid.set(Value.kReverse);
         setExtended(false);
@@ -56,6 +57,17 @@ public class Intake extends Subsystem {
          else
             intakeMotor.set(0);
         }
+    }
+
+    //auto intakes
+    public void runWheelsAuto() {
+        intakeMotor.set(.15);
+    }
+
+    public void extendAuto() {
+        intakeSolenoid.set(Value.kForward);
+        setExtended(true);
+        intakeMotor.set(.15);
     }
 
     public boolean getExtended() {
