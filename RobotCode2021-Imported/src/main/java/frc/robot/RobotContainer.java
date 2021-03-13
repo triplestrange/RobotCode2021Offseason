@@ -87,7 +87,7 @@ public class RobotContainer {
 
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
-        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 0));
+        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
         turret.setDefaultCommand(new SpinTurret(turret, false, 0));
@@ -104,13 +104,16 @@ public class RobotContainer {
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
-        JoystickButton butXd = new JoystickButton(m_driverController, 2);       
+        
+        JoystickButton butXd = new JoystickButton(m_driverController, 3);       
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
         JoystickButton gyro = new JoystickButton(m_driverController, 7);
-        JoystickButton turbo = new JoystickButton(m_driverController, 8);
+
+        // B
+        JoystickButton turbo = new JoystickButton(m_driverController, 2);
         // JoystickButton ok = new JoystickButton(m_driverController, 7);
 
         // A button
@@ -146,17 +149,12 @@ public class RobotContainer {
         butY.whileHeld(new SpinTurret(turret, true, -0.25));
         butY.whenReleased(new SpinTurret(turret, true, 0));
 
-        // driver X button
-        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 1));
-        turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2))
+        // driver X button - slow
+        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
+        turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2));
 
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
 
-        //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
-        //        .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
-        // should be start button for camera to find target idk what number is so fix it
-        // new JoystickButton(m_operatorController, 7).whenHeld(new InstantCommand(turret::visionTurret, turret));
-        
 }
 
 public static String getCoords() {

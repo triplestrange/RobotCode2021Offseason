@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 
@@ -25,7 +26,7 @@ public class DefaultDrive extends Command {
   private PIDController pid = new PIDController(0.05, 0, 0.01);
   private JoystickButton butX;
   private boolean slow;
-  private double mode;
+  private int mode;
   private double multiplier;
 
   /**
@@ -33,8 +34,9 @@ public class DefaultDrive extends Command {
    * 
    * @param subsystem The drive subsystem this command will run on
    * @param driver The joystick to be used for calculations in speed and rotation
+   * @param multiplier The mode of the robot -- multiplied with  x, y, and rot speed
    */
-  public DefaultDrive(SwerveDrive subsystem, Joystick driver, double mode) {
+  public DefaultDrive(SwerveDrive subsystem, Joystick driver, double multiplier) {
     requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = subsystem;
@@ -43,8 +45,9 @@ public class DefaultDrive extends Command {
     m_ySpeed = 0;
     m_rot = 0;
     m_fieldRelative = true;
-    this.slow = slow;
-    this.mode = mode;
+    this.multiplier = multiplier;
+
+    
 
   }
 
@@ -53,6 +56,7 @@ public class DefaultDrive extends Command {
   public void initialize() {
     heading = m_drive.getAngle().getDegrees();
     butX = new JoystickButton(m_joystick, 2);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,15 +64,9 @@ public class DefaultDrive extends Command {
   public void execute() {
     // deadzone
 
-    switch (mode) {
-      case 0:
-        multiplier = 1;
-        break;
-      case 1:
-        multiplier = 0.25;
-      case 3:
-        multiplier = 1.5;
-    }
+
+
+    SmartDashboard.putNumber("MODE", mode);
     if (m_drive.getGyroReset()) {
       heading = m_drive.getAngle().getDegrees();
       m_drive.setGyroReset(false);
@@ -103,7 +101,7 @@ public class DefaultDrive extends Command {
     // fill with correct button
     if (m_joystick.getRawButtonPressed(6)) {
       // to zero all wheels
-      
+      SmartDashboard.putNumber("BUTTON PRESSED", 5);
     }
 
   }

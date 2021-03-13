@@ -46,11 +46,16 @@ public class Vision extends Subsystem {
     // Check if the latest result has any targets.
     _hasTargets = _result.hasTargets();
 
+    if (_hasTargets) {
     // Get a list of currently tracked targets.
     _targets = _result.getTargets();
 
     // Get the current best target.
     _target = _result.getBestTarget();
+    } else {
+      _targets = null;
+      _target = null;
+    }
 
     // Get the pipeline latency.
     // double latencySeconds = getLatencyMillis() / 1000.0; // around 3 ms
@@ -67,28 +72,43 @@ public class Vision extends Subsystem {
   }
 
   public double getYaw() {
+    if (_target != null) {
     double yaw = _target.getYaw();
     return yaw;
+    }
+    return 0.0;
   }
 
   public double getPitch() {
+    if (_target != null) {
     double pitch = _target.getPitch();
     return pitch;
+    }
+    return 0.0;
   }
 
-  public double getArea() {
+  public double getArea() { 
+    if (_target != null) {
     double area = _target.getArea();
     return area;
+    }
+    return 0.0;
   }
 
   public double getSkew() {
+    if (_target != null) {
     double skew = _target.getSkew();
     return skew;
+    }
+    return 0.0;
   }
 
   public Transform2d getPose() {
+    if (_target != null) {
     Transform2d pose = _target.getCameraToTarget();
     return pose;
+    }
+    return new Transform2d();
   }
   /* ****************** */
 
