@@ -33,9 +33,8 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 
-import frc.robot.commands.Auto.BarrelPath;
-import frc.robot.commands.Auto.BouncePath;
-import frc.robot.commands.Auto.SlalomPath1;
+import frc.robot.commands.Auto.*;
+
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -88,7 +87,7 @@ public class RobotContainer {
 
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
-        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, false));
+        swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 0));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
         turret.setDefaultCommand(new SpinTurret(turret, false, 0));
@@ -111,6 +110,7 @@ public class RobotContainer {
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
         JoystickButton gyro = new JoystickButton(m_driverController, 7);
+        JoystickButton turbo = new JoystickButton(m_driverController, 8);
         // JoystickButton ok = new JoystickButton(m_driverController, 7);
 
         // A button
@@ -147,7 +147,8 @@ public class RobotContainer {
         butY.whenReleased(new SpinTurret(turret, true, 0));
 
         // driver X button
-        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, true));
+        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 1));
+        turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2))
 
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
 

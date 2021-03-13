@@ -25,6 +25,8 @@ public class DefaultDrive extends Command {
   private PIDController pid = new PIDController(0.05, 0, 0.01);
   private JoystickButton butX;
   private boolean slow;
+  private double mode;
+  private double multiplier;
 
   /**
    * Creates a new DefaultDrive.
@@ -32,7 +34,7 @@ public class DefaultDrive extends Command {
    * @param subsystem The drive subsystem this command will run on
    * @param driver The joystick to be used for calculations in speed and rotation
    */
-  public DefaultDrive(SwerveDrive subsystem, Joystick driver, boolean slow) {
+  public DefaultDrive(SwerveDrive subsystem, Joystick driver, double mode) {
     requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = subsystem;
@@ -42,6 +44,7 @@ public class DefaultDrive extends Command {
     m_rot = 0;
     m_fieldRelative = true;
     this.slow = slow;
+    this.mode = mode;
 
   }
 
@@ -57,6 +60,15 @@ public class DefaultDrive extends Command {
   public void execute() {
     // deadzone
 
+    switch (mode) {
+      case 0:
+        multiplier = 1;
+        break;
+      case 1:
+        multiplier = 0.25;
+      case 3:
+        multiplier = 1.5;
+    }
     if (m_drive.getGyroReset()) {
       heading = m_drive.getAngle().getDegrees();
       m_drive.setGyroReset(false);
@@ -66,27 +78,16 @@ public class DefaultDrive extends Command {
     m_ySpeed = 0;
     m_rot = 0;
 
-    if (!slow) {
     if (Math.abs(m_joystick.getRawAxis(1)) > 0.1) {
-      m_ySpeed = -m_joystick.getRawAxis(1) * 0.5 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+      m_ySpeed = -m_joystick.getRawAxis(1) * 0.5 * multiplier * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     }
     if (Math.abs(m_joystick.getRawAxis(0)) > 0.1) {
-      m_xSpeed = m_joystick.getRawAxis(0) * 0.5 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
+      m_xSpeed = m_joystick.getRawAxis(0) * 0.5 * multiplier * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     }
     if (Math.abs(m_joystick.getRawAxis(4)) > 0.2) {
-      m_rot = m_joystick.getRawAxis(4) * 0.5 * (Math.PI);
+      m_rot = m_joystick.getRawAxis(4) * 0.5 * multiplier * (Math.PI);
     }
-    } else {
-      if (Math.abs(m_joystick.getRawAxis(1)) > 0.075) {
-        m_ySpeed = m_joystick.getRawAxis(1) * 0.05 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
-      }
-      if (Math.abs(m_joystick.getRawAxis(0)) > 0.075) {
-        m_xSpeed = m_joystick.getRawAxis(0) * 0.05 * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond;
-      }
-      if (Math.abs(m_joystick.getRawAxis(4)) > 0.075) {
-        m_rot = m_joystick.getRawAxis(4) * 0.05 * (Math.PI);
-      }
-    }
+
 
     double curHead = m_drive.getAngle().getDegrees();
 

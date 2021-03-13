@@ -151,5 +151,6 @@ public class SwerveModule {
    */
   public void resetWheel() {
     m_pidController.setReference(0, ControlType.kPosition);
+    
   }
 }
