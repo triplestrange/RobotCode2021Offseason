@@ -149,7 +149,7 @@ public class RobotContainer {
         SmartDashboard.putData("Slalom Path", Slolam);
 
 
-        // A button
+        // A button 
         butA.whileHeld(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
 
@@ -201,10 +201,12 @@ public static String getCoords() {
      *
      * @return the command to run in autonomous
      */
-    // public Command getAutonomousCommand(Trajectory trajectory) {
-        //GalacticA galA = new GalacticA(swerveDrive, theta);
+    
+     public Command getAutonomousCommand(Trajectory trajectory) {
+        GalacticA galA = new GalacticA(swerveDrive, theta);
 
-        //return galA;
-    //}
+        return galA;
+
+    }
 
 }
