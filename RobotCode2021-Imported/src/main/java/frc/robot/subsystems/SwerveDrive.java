@@ -199,6 +199,15 @@ public class SwerveDrive extends Subsystem {
     return navX.getRate() * (SwerveDriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  public void zeroWheels() {
+    
+
+    m_frontLeft.resetWheel();
+    m_rearLeft.resetWheel();
+    m_frontRight.resetWheel();
+    m_rearRight.resetWheel();
+  }
+
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub

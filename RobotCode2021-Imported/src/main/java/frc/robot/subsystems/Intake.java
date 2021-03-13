@@ -16,6 +16,8 @@ public class Intake extends Subsystem {
     private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Intake.motor, MotorType.kBrushless);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, 1);
     private boolean extended = false;
+    private double speedIn;
+    private double speedOut;
 
     public Intake() {
         super();

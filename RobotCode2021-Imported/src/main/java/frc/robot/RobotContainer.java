@@ -101,16 +101,21 @@ public class RobotContainer {
      * calling passing it to a {@link JoystickButton}.
      */
     private void configureButtonBindings() {
+        //starts with 1
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
         
-        JoystickButton butXd = new JoystickButton(m_driverController, 3);       
+        JoystickButton butXd = new JoystickButton(m_driverController, 3);  
+        JoystickButton butAd = new JoystickButton(m_driverController, 1);  
+        JoystickButton butBd = new JoystickButton(m_driverController, 2);
+
+        JoystickButton gyro = new JoystickButton(m_driverController, 8);
+
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
-        JoystickButton gyro = new JoystickButton(m_driverController, 7);
 
         // B
         JoystickButton turbo = new JoystickButton(m_driverController, 2);
@@ -151,6 +156,10 @@ public class RobotContainer {
 
         // driver X button - slow
         butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
+        butAd.whenPressed(new InstantCommand(swerveDrive::zeroWheels));
+
+        butBd.whenPressed(new SideStep(swerveDrive, theta));
+
         turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2));
 
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
