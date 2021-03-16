@@ -117,7 +117,7 @@ public class DefaultDrive extends Command {
 
     // sidestep
     if (m_joystick.getRawButtonPressed(1)) {
-      
+        
     }
 
   }
