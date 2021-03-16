@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -23,10 +22,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -35,6 +36,9 @@ import frc.robot.commands.*;
 
 import frc.robot.commands.Auto.*;
 
+import frc.robot.commands.Auto.BarrelPath;
+import frc.robot.commands.Auto.BouncePath;
+import frc.robot.commands.Auto.SlalomPath1;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -62,7 +66,6 @@ public class RobotContainer {
     private final PhotonCamera camera = new PhotonCamera("TurretCamera");
     private final Vision vision = new Vision(camera);
     private final Turret turret = new Turret(swerveDrive);
-
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
     public static Joystick m_operatorController = new Joystick(1);
@@ -81,7 +84,8 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-       
+
+
         // Configure the button bindings
         configureButtonBindings();
 
@@ -91,6 +95,16 @@ public class RobotContainer {
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
         turret.setDefaultCommand(new SpinTurret(turret, false, 0));
+       
+        // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
+
+    //     swerveDrive.setDefaultCommand(
+
+    //                             new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
+    //                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
+    //                                             -m_driverController.getRawAxis(0)
+    //                                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
+    //                                             -m_driverController.getRawAxis(4) * (2 * Math.PI), true), swerveDrive));
     }
 
     /**
@@ -121,12 +135,29 @@ public class RobotContainer {
         JoystickButton turbo = new JoystickButton(m_driverController, 2);
         // JoystickButton ok = new JoystickButton(m_driverController, 7);
 
-        // A button
+        BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
+    
+        SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putData("Barrel Path", Barrel);
+
+        
+        BouncePath Bounce = new BouncePath(swerveDrive, theta);
+    
+        SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putData("Bounce Path", Bounce);
+
+
+        
+        SlalomPath1 Slolam = new SlalomPath1(swerveDrive, theta);
+    
+        SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putData("Slalom Path", Slolam);
+
+
+        // A button 
         butA.whileHeld(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
 
-        
-        
         // right bumper
         rBump.whileHeld(new RunShooter(shooter));
         rBump.whenReleased(new StopShooter(shooter));
@@ -164,6 +195,11 @@ public class RobotContainer {
 
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
 
+        //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
+        //        .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
+        // should be start button for camera to find target idk what number is so fix it
+        // new JoystickButton(m_operatorController, 7).whenHeld(new InstantCommand(turret::visionTurret, turret));
+        
 }
 
 public static String getCoords() {
@@ -175,10 +211,12 @@ public static String getCoords() {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand(Trajectory trajectory) {
-        BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
+    
+     public Command getAutonomousCommand(Trajectory trajectory) {
+        GalacticA galA = new GalacticA(swerveDrive, theta);
 
-        return Barrel;
+        return galA;
+
     }
 
 }

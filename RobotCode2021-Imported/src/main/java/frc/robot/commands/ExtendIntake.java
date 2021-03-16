@@ -18,6 +18,7 @@ public class ExtendIntake extends CommandGroup {
   /**
    * Creates a new ExtendIntake.
    */
+
   public ExtendIntake(Intake subsystem, Joystick joystick) {
     requires(subsystem);
     m_intake = subsystem;
@@ -25,6 +26,7 @@ public class ExtendIntake extends CommandGroup {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
