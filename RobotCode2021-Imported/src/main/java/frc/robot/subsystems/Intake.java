@@ -29,11 +29,11 @@ public class Intake extends Subsystem {
     public void extend(Joystick joystick) {
         intakeSolenoid.set(Value.kForward);
         setExtended(true);
-        double speedIn = joystick.getRawAxis(2);
-        double speedOut = joystick.getRawAxis(3);
+        double speedIn = joystick.getRawAxis(3);
+        double speedOut = joystick.getRawAxis(2);
 
         if (speedIn > 0.1)
-            intakeMotor.set(speedIn / 3.5);
+            intakeMotor.set(speedIn / 2);
         else if (speedOut > 0.1)
             intakeMotor.set(-speedOut);
         else
@@ -51,7 +51,7 @@ public class Intake extends Subsystem {
         double speedIn = joystick.getRawAxis(3);
         if (getExtended()) {
             if (speedIn > 0.1)
-                intakeMotor.set(speedIn / 3.5);
+                intakeMotor.set(speedIn / 2);
             else if (speedOut > 0.1)
                 intakeMotor.set(-speedOut);
          else
@@ -61,13 +61,13 @@ public class Intake extends Subsystem {
 
     //auto intakes
     public void runWheelsAuto() {
-        intakeMotor.set(.15);
+        intakeMotor.set(.5);
     }
 
     public void extendAuto() {
         intakeSolenoid.set(Value.kForward);
         setExtended(true);
-        intakeMotor.set(.15);
+        intakeMotor.set(.5);
     }
 
     public boolean getExtended() {
