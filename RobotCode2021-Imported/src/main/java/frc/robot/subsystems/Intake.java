@@ -60,6 +60,18 @@ public class Intake extends Subsystem {
         }
     }
 
+    //auto intakes
+    public void 
+    runWheelsAuto() {
+        intakeMotor.set(.5);
+    }
+
+    public void extendAuto() {
+        intakeSolenoid.set(Value.kForward);
+        setExtended(true);
+        intakeMotor.set(.5);
+    }
+
     public boolean getExtended() {
         return extended;
     }

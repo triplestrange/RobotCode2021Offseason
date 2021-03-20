@@ -213,7 +213,7 @@ public static String getCoords() {
      */
     
      public Command getAutonomousCommand(Trajectory trajectory) {
-        GalacticA galA = new GalacticA(swerveDrive, theta);
+        GalacticPathA galA = new GalacticPathA(swerveDrive, intake, theta);
 
         return galA;
 
