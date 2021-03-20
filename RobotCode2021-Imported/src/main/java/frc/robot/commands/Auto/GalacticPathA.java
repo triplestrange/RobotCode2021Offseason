@@ -37,11 +37,11 @@ public class GalacticPathA extends CommandGroup {
     this.intake =  intake;
     // Create config for trajectory
     // top speed: 2.1
-    TrajectoryConfig config = new TrajectoryConfig(1, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+    TrajectoryConfig config = new TrajectoryConfig(.5, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         // .setKinematics(SwerveDriveConstants.kDriveKinematics)
         // set end: 1.5
-        .setEndVelocity(1);
+        .setEndVelocity(.5);
 
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
       
@@ -50,7 +50,7 @@ public class GalacticPathA extends CommandGroup {
 
   ), 
                        //direction robot moves
- new Pose2d(5, 0, new Rotation2d(-Math.PI / 2)), config);
+ new Pose2d(1.01, 0, new Rotation2d(-Math.PI / 2)), config);
 
     SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject, (0), swerveDrive::getPose, 
     // Functional
