@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import javax.sound.sampled.Control;
+
 import org.photonvision.PhotonCamera;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -118,6 +120,7 @@ public class RobotContainer {
         //starts with 1
         JoystickButton butA = new JoystickButton(m_operatorController, 1);
         JoystickButton butB = new JoystickButton(m_operatorController, 2); 
+<<<<<<< Updated upstream
         JoystickButton butY = new JoystickButton(m_operatorController, 3);
         
         JoystickButton butXd = new JoystickButton(m_driverController, 3);  
@@ -130,6 +133,20 @@ public class RobotContainer {
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
+=======
+        JoystickButton butX = new JoystickButton(m_operatorController, 3);
+        JoystickButton butY = new JoystickButton(m_operatorController, 4);
+        JoystickButton lBump = new JoystickButton(m_operatorController, 5);
+        JoystickButton rBump = new JoystickButton(m_operatorController, 6);
+        JoystickButton lWing = new JoystickButton(m_operatorController, 7);
+        JoystickButton rWing = new JoystickButton(m_operatorController, 8);
+        JoystickButton lJoy = new  JoystickButton(m_operatorController, 9);
+        JoystickButton rJoy = new JoystickButton(m_operatorController, 10);
+
+        JoystickButton butXd = new JoystickButton(m_driverController, 3);  
+        JoystickButton gyro = new JoystickButton(m_driverController, 7);
+        //JoystickButton ok = new JoystickButton(m_driverController, 7);
+>>>>>>> Stashed changes
 
         // B
         JoystickButton turbo = new JoystickButton(m_driverController, 2);
@@ -154,36 +171,21 @@ public class RobotContainer {
         SmartDashboard.putData("Slalom Path", Slolam);
 
 
-        // A button 
-        butA.whileHeld(new ExtendIntake(intake, m_operatorController));
-        butA.whenReleased(new RetractIntake(intake));
+        butA.whenPressed(new ExtendIntake(intake, m_operatorController));
+        //butB.whileHeld(new SpinTurret(turret, true, 1));
+        //butX.whileHeld(new SpinTurret(turret, true, -1));
+        butY.whileHeld(new RunShooter(shooter));
+        butY.whenReleased(new StopShooter(shooter));
+        butY.whenPressed(new AutoIndexConveyor(conveyor));
+        lBump.whenPressed(new ControlConveyor(conveyor, 1));
+        lBump.whenReleased(new ControlConveyor(conveyor, 0));
+        rBump.whenPressed(new ControlConveyor(conveyor, -1));
+        rBump.whenReleased(new ControlConveyor(conveyor, 0));
+        
+        lJoy.whileHeld(new MoveHood(shooter, 1));
+        rJoy.whileHeld(new MoveHood(shooter, -1));
 
-        // right bumper
-        rBump.whileHeld(new RunShooter(shooter));
-        rBump.whenReleased(new StopShooter(shooter));
-        
-        // left analog center
-        lAnal.whileHeld(new MoveHood(shooter, -1));
-        
-
-        // right analog center
-        rAnal.whileHeld(new MoveHood(shooter, 1));
-        
-        // right bumper
-        rBump.whileHeld(new FeedShooter(conveyor, shooter));
-        rBump.whenReleased(new AutoIndexConveyor(conveyor));
-        
-        // left bumper
-        lBump.whileHeld(new ControlConveyor(conveyor));
-        lBump.whenReleased(new AutoIndexConveyor(conveyor));
-        
-        // B button
-        butB.whileHeld(new SpinTurret(turret, true, 0.25));
-        butB.whenReleased(new SpinTurret(turret, true, 0));
-        
-        // Y button
-        butY.whileHeld(new SpinTurret(turret, true, -0.25));
-        butY.whenReleased(new SpinTurret(turret, true, 0));
+        // .whileHeld(new MoveHood(shooter, 1));
 
         // driver X button - slow
         butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
@@ -205,6 +207,8 @@ public class RobotContainer {
 public static String getCoords() {
     return (swerveDrive.getPose().getX() + " " + swerveDrive.getPose().getY());
 }
+
+
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.

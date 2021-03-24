@@ -91,6 +91,7 @@ public class Shooter extends Subsystem {
 
 
   public void runHood(double pos) {
+    
     double currentPos = hoodServo.get();
     double hoodDir = 0;
     if (pos == -1) {

@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Scheduler.getInstance().run();
+    RobotContainer.swerveDrive.displayEncoders();
     // SmartDashboard.putNumber("hoodEncoder", hoodEncoder.getPosition());
     // SmartDashboard.putNumber("hoodVoltage", hoodEncoder.getBusVoltage());
   }
@@ -165,12 +167,14 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     RobotContainer.swerveDrive.zeroHeading();
+    // RobotContainer.swerveDrive.resetEncoders();
   }
 
   double x = 0;
   double y = 0;
   @Override
   public void teleopPeriodic() {
+
     xEntry.setDouble(x);
     yEntry.setDouble(y);
 

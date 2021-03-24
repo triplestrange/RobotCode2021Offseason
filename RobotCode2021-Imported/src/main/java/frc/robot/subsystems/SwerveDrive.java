@@ -51,6 +51,9 @@ public class SwerveDrive extends Subsystem {
                        ModuleConstants.kAbsoluteBR,
                        SwerveDriveConstants.backRightSteerEncoderReversed);
 
+  private SwerveModuleState[] swerveModuleStates;
+  private SwerveModuleState[] initStates;
+
   // The gyro sensor
   private final Gyro navX = new AHRS(SPI.Port.kMXP);
   boolean gyroReset;
@@ -136,7 +139,7 @@ public class SwerveDrive extends Subsystem {
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
-    var swerveModuleStates = SwerveDriveConstants.kDriveKinematics.toSwerveModuleStates(
+    swerveModuleStates = SwerveDriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
             xSpeed, ySpeed, rot, getAngle())
             : new ChassisSpeeds(xSpeed, ySpeed, rot)
@@ -178,6 +181,10 @@ public class SwerveDrive extends Subsystem {
    */
   public void zeroHeading() {
     navX.reset();
+<<<<<<< Updated upstream
+=======
+    // resetEncoders();
+>>>>>>> Stashed changes
     gyroReset = true;
   }
 
@@ -199,6 +206,7 @@ public class SwerveDrive extends Subsystem {
     return navX.getRate() * (SwerveDriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+<<<<<<< Updated upstream
   public void zeroWheels() {
     
 
@@ -206,6 +214,21 @@ public class SwerveDrive extends Subsystem {
     m_rearLeft.resetWheel();
     m_frontRight.resetWheel();
     m_rearRight.resetWheel();
+=======
+  public SwerveModuleState[] getModuleState() {
+    return swerveModuleStates;
+  }
+
+  public void setInitState(SwerveModuleState[] cur) {
+    cur = initStates;
+  }
+
+  public void displayEncoders() {
+    SmartDashboard.putNumber("Front Left Steering Encoder", m_frontLeft.m_turningEncoder.getCPR());
+    SmartDashboard.putNumber("Front Right Steering Encoder", m_frontRight.m_turningEncoder.getCPR());
+    SmartDashboard.putNumber("Rear Left Steering Encoder", m_rearLeft.m_turningEncoder.getCPR());
+    SmartDashboard.putNumber("Rear Right Steering Encoder", m_rearRight.m_turningEncoder.getCPR());
+>>>>>>> Stashed changes
   }
 
   @Override
