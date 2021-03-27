@@ -9,14 +9,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Vision;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class SpinTurret extends InstantCommand {
-  public SpinTurret(Turret subsystem, boolean manual, double speed) {
-    super(subsystem, () -> {subsystem.spin(manual, speed);});
+  public SpinTurret(Turret subsystem, Vision subsystem2, int mode, double speed) {
+    super(subsystem, () -> {subsystem.spin(mode, speed);});
     requires(subsystem);
+    requires(subsystem2);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

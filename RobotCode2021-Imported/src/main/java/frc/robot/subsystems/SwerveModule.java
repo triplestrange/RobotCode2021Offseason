@@ -143,7 +143,7 @@ public class SwerveModule {
   public void resetEncoders() {
     m_driveEncoder.setPosition(0);
     // m_turningEncoder.setPosition(Math.PI-m_absoluteEncoder.getPosition());
-    m_turningEncoder.setPosition(0);
+    // m_turningEncoder.setPosition(0);
   }
 
   /**

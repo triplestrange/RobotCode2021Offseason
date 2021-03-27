@@ -165,6 +165,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     RobotContainer.swerveDrive.zeroHeading();
+    // RobotContainer.swerveDrive.resetEncoders();
+
   }
 
   double x = 0;

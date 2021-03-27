@@ -96,7 +96,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new SpinTurret(turret, false, 0));
+        turret.setDefaultCommand(new SpinTurret(turret, vision,1, 0));
        
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
 
@@ -117,16 +117,41 @@ public class RobotContainer {
      * calling passing it to a {@link JoystickButton}.
      */
     private void configureButtonBindings() {
-        JoystickButton butA = new JoystickButton(m_operatorController, 1);
-        JoystickButton butB = new JoystickButton(m_operatorController, 2); 
-        JoystickButton butY = new JoystickButton(m_operatorController, 3);
-        JoystickButton butXd = new JoystickButton(m_driverController, 3);       
-        JoystickButton rBump = new JoystickButton(m_operatorController, 6);
+        // new buttons 3/27/21
+        JoystickButton butA  = new JoystickButton(m_operatorController, 1);
+        JoystickButton butB  = new JoystickButton(m_operatorController, 2); 
+        JoystickButton butX  = new JoystickButton(m_operatorController, 3);
+        JoystickButton butY  = new JoystickButton(m_operatorController, 4);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
+        JoystickButton rBump = new JoystickButton(m_operatorController, 6);
+        JoystickButton lWing = new JoystickButton(m_operatorController, 7);
+        JoystickButton rWing = new JoystickButton(m_operatorController, 8);
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
-        JoystickButton gyro = new JoystickButton(m_driverController, 7);
-        //JoystickButton ok = new JoystickButton(m_driverController, 7);
+        
+        
+        JoystickButton butXd = new JoystickButton(m_driverController, 3);  
+        JoystickButton butAd = new JoystickButton(m_driverController, 1);  
+        JoystickButton butBd = new JoystickButton(m_driverController, 2);
+
+        JoystickButton gyro = new JoystickButton(m_driverController, 8);
+
+        butA.whenPressed(new ExtendIntake(intake, m_operatorController));
+        butA.whenReleased(new RetractIntake(intake));
+        butB.whileHeld(new SpinTurret(turret, vision, 1, 0.25));
+        butX.whileHeld(new SpinTurret(turret, vision, 1, -0.25));
+        butY.whileHeld(new RunShooter(shooter));
+        butY.whenReleased(new StopShooter(shooter));
+        rBump.whileHeld(new ControlConveyor(conveyor, 1));
+        rBump.whenReleased(new ControlConveyor(conveyor, 0));
+        lBump.whileHeld(new ControlConveyor(conveyor, -1));
+        lBump.whenReleased(new ControlConveyor(conveyor, 0));
+        
+        // rWing for vision
+        lAnal.whileHeld(new MoveHood(shooter, 1));
+        rAnal.whileHeld(new MoveHood(shooter, -1));
+        
+        
 
         // B
         JoystickButton turbo = new JoystickButton(m_driverController, 2);
@@ -139,56 +164,25 @@ public class RobotContainer {
         BouncePath Bounce = new BouncePath(swerveDrive, theta);
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData("Bounce Path", Bounce);
-
+        
         SlalomPath1 Slolam = new SlalomPath1(swerveDrive, theta);
-    
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData("Slalom Path", Slolam);
 
-        GalacticPathA galA = new GalacticPathA(swerveDrive, intake, theta);
+        AccuracyChallenge accuracyChallenge1 = new AccuracyChallenge(swerveDrive, intake, theta);
         SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("GalacticA", galA);
+        SmartDashboard.putData("Accuracy Challenge", accuracyChallenge1);
 
-        // A button 
-        butA.whileHeld(new ExtendIntake(intake, m_operatorController));
-        butA.whenReleased(new RetractIntake(intake));
 
-        // right bumper
-        rBump.whileHeld(new RunShooter(shooter));
-        rBump.whenReleased(new StopShooter(shooter));
-        
-        // left analog center
-        lAnal.whileHeld(new MoveHood(shooter, -1));
-        
+        // driver X button - slow
+        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
+        // butAd.whenPressed(new InstantCommand(swerveDrive::zeroWheels));
 
-        // right analog center
-        rAnal.whileHeld(new MoveHood(shooter, 1));
-        
-        // right bumper
-        rBump.whileHeld(new FeedShooter(conveyor, shooter));
-        rBump.whenReleased(new AutoIndexConveyor(conveyor));
-        
-        // left bumper
-        lBump.whileHeld(new ControlConveyor(conveyor));
-        lBump.whenReleased(new AutoIndexConveyor(conveyor));
-        
-        // B button
-        butB.whileHeld(new SpinTurret(turret, true, 0.25));
-        butB.whenReleased(new SpinTurret(turret, true, 0));
-        
-        // Y button
-        butY.whileHeld(new SpinTurret(turret, true, -0.25));
-        butY.whenReleased(new SpinTurret(turret, true, 0));
+        // butBd.whenPressed(new SideStep(swerveDrive, theta));
 
-       // driver X button - slow
-       butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
-       turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2));
-       gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
+        turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2));
 
-        //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
-        //        .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
-        // should be start button for camera to find target idk what number is so fix it
-        // new JoystickButton(m_operatorController, 7).whenHeld(new InstantCommand(turret::visionTurret, turret));
+        gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
         
 }
 

@@ -104,7 +104,7 @@ public class Turret extends Subsystem {
     turretMotor.set(0);
   }
 
-  public void spin(boolean manual, double speed) {
+  public void spin(int mode, double speed) {
     double robotHeading = swerve.getHeading();
 
     double targetPosition = 0;
@@ -115,7 +115,7 @@ public class Turret extends Subsystem {
       targetPosition = 360 - robotHeading;
     } 
 
-    if (manual)
+    if (mode == 1)
       turretMotor.set(speed);
      else
       // turretMotor.set(0);
