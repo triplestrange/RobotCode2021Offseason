@@ -96,7 +96,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new SpinTurret(turret, vision,1, 0));
+        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0));
        
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
 
@@ -137,9 +137,11 @@ public class RobotContainer {
         JoystickButton gyro = new JoystickButton(m_driverController, 8);
 
         butA.whenPressed(new ExtendIntake(intake, m_operatorController));
-        butA.whenReleased(new RetractIntake(intake));
+        // butA.whenReleased(new RetractIntake(intake));
         butB.whileHeld(new SpinTurret(turret, vision, 1, 0.25));
         butX.whileHeld(new SpinTurret(turret, vision, 1, -0.25));
+
+        //shooter and conveyor move together
         butY.whileHeld(new RunShooter(shooter));
         butY.whenReleased(new StopShooter(shooter));
         rBump.whileHeld(new ControlConveyor(conveyor, 1));
@@ -172,6 +174,10 @@ public class RobotContainer {
         AccuracyChallenge accuracyChallenge1 = new AccuracyChallenge(swerveDrive, intake, theta);
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData("Accuracy Challenge", accuracyChallenge1);
+
+        GalacticPathA galA = new GalacticPathA(swerveDrive, intake, theta);
+        SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putData("Galactic Path", galA);
 
 
         // driver X button - slow

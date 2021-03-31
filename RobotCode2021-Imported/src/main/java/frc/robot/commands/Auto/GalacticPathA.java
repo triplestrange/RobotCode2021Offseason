@@ -45,7 +45,7 @@ public class GalacticPathA extends CommandGroup {
 
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
       
-    new Pose2d(0, 0, new  Rotation2d(-Math.PI/2)), List.of(
+    new Pose2d(0, 0, new  Rotation2d(0)), List.of(
      
 
   ), 

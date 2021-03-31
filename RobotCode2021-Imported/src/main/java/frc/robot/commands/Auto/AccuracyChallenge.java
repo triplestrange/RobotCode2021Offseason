@@ -43,19 +43,11 @@ public class AccuracyChallenge extends CommandGroup {
                       // .setKinematics(SwerveDriveConstants.kDriveKinematics)
                       .setEndVelocity(0);
 
-//       TrajectoryConfig config1 = new TrajectoryConfig(1,
-//               AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-//                       // Add kinematics to ensure max speed is actually obeyed
-//                       // .setKinematics(SwerveDriveConstants.kDriveKinematics)
-//                       .setStartVelocity(1.5);
-
-                    
-    
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(), 
 
                            //direction robot moves
-     new Pose2d(1, 0, new Rotation2d(-Math.PI / 2)), config);     
+     new Pose2d(-2, 0, new Rotation2d(-Math.PI / 2)), config);     
 
   SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject,
           (0), swerveDrive::getPose, // Functional interface to feed supplier
@@ -70,27 +62,13 @@ public class AccuracyChallenge extends CommandGroup {
           swerveDrive
 
   );
-//   SwerveControllerCommand swerveControllerCommand2 = new SwerveControllerCommand(traject1,
-//   (0), swerveDrive::getPose, // Functional interface to feed supplier
-//   SwerveDriveConstants.kDriveKinematics,
-
-//   // Position controllers
-//   new PIDController(AutoConstants.kPXController, 1, AutoConstants.kDXController),
-//   new PIDController(AutoConstants.kPYController, 1, AutoConstants.kDYController), theta,
-
-//   swerveDrive::setModuleStates,
-
-//   swerveDrive
-
-// );
-
 WaitCommand wait = new WaitCommand(15);
 IntakeCommand intakeCommand = new IntakeCommand(intake);
 
 
   addSequential(swerveControllerCommand1);
-  addSequential(wait);
-  addSequential(intakeCommand);
+  // addSequential(wait);
+  // addSequential(intakeCommand);
 
 //   addSequential(swerveControllerCommand2);
   }
