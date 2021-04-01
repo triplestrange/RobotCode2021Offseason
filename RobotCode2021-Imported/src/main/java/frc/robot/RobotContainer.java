@@ -67,7 +67,7 @@ public class RobotContainer {
     private final PhotonCamera camera1 = new PhotonCamera("OtherCamera");
     private final Vision vision = new Vision(camera);
     private final Vision vision1 = new Vision(camera1);
-    private final Turret turret = new Turret(swerveDrive);
+    private final Turret turret = new Turret(swerveDrive, vision);
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
     public static Joystick m_operatorController = new Joystick(1);
@@ -96,7 +96,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0));
+        turret.setDefaultCommand(new SpinTurret(turret, vision, 2, 0));
        
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
 

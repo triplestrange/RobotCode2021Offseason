@@ -30,20 +30,20 @@ public class Turret extends Subsystem {
   // transfer to robot container
   private static final int motor = 10;
   private final CANSparkMax turretMotor;
-  private final CANPIDController m_turretPIDController;
+  private final PIDController m_turretPIDController;
   private CANEncoder turretEncoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, setPoint, rotations;
   private CANDigitalInput m_reverseLimit;
   private DigitalInput limitSwitch;
-  // public Vision vision;
+  public Vision vision;
   public SwerveDrive swerve;
   
   private PIDController visionController = new PIDController(Constants.Vision.turretKP, Constants.Vision.turretKI, Constants.Vision.turretKD);
   /**
    * Creates a new Turret.
    */
-  public Turret(SwerveDrive swerve) {
-    // this.vision = vision;
+  public Turret(SwerveDrive swerve, Vision vision) {
+    this.vision = vision;
     this.swerve = swerve;
 
     turretMotor = new CANSparkMax(motor, MotorType.kBrushless);
@@ -63,7 +63,7 @@ public class Turret extends Subsystem {
     turretEncoder = turretMotor.getEncoder();
     turretEncoder.setPosition(0);
 
-    m_turretPIDController = turretMotor.getPIDController();
+    m_turretPIDController = new PIDController(0, 0, 0);
 
     // PID coefficients
     kP = 0.1;
@@ -75,12 +75,9 @@ public class Turret extends Subsystem {
     kMinOutput = -1;
 
     // // set PID coefficients
-    m_turretPIDController.setP(kP);
-    m_turretPIDController.setI(kI);
-    m_turretPIDController.setD(kD);
-    m_turretPIDController.setIZone(kIz);
-    m_turretPIDController.setFF(kFF);
-    m_turretPIDController.setOutputRange(kMinOutput, kMaxOutput);
+    // m_turretPIDController.setP(kP);
+    // m_turretPIDController.setI(kI);
+    // m_turretPIDController.setD(kD);
 
     // m_reverseLimit = turretMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     // m_reverseLimit.enableLimitSwitch(true);
@@ -95,7 +92,7 @@ public class Turret extends Subsystem {
   }
 
   public void setPosition(double setpoint) {
-    m_turretPIDController.setReference(setpoint, ControlType.kPosition);
+    m_turretPIDController.calculate(turretEncoder.getPosition(), setpoint);
     SmartDashboard.putNumber("SetPoint", setpoint);
     SmartDashboard.putNumber("ProcessVariable", turretEncoder.getPosition());
   }
@@ -115,11 +112,15 @@ public class Turret extends Subsystem {
       targetPosition = 360 - robotHeading;
     } 
 
-    if (mode == 1)
+    if (mode == 1) {
       turretMotor.set(speed);
-     else
+    } else {
+      vision.updateTargets();
+      double pitch = vision.getPitch();
+      setPosition(pitch);
+    }
       // turretMotor.set(0);
-      setPosition(targetPosition);
+      // setPosition(targetPosition);
         // m_turretPIDController.setReference(targetPosition, ControlType.kPosition);
   }
 
