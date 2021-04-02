@@ -111,6 +111,11 @@ public class Vision extends Subsystem {
     }
     return new Transform2d();
   }
+
+  public boolean getHasTargets() {
+    return _hasTargets;
+  }
+
   /* ****************** */
 
   /* TO BE USED FOR COMMANDS */

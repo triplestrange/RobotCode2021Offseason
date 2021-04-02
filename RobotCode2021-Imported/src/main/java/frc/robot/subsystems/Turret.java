@@ -115,9 +115,12 @@ public class Turret extends Subsystem {
     if (mode == 1) {
       turretMotor.set(speed);
     } else {
-      vision.updateTargets();
-      double pitch = vision.getPitch();
-      setPosition(pitch);
+      if (vision.getHasTargets()) {
+        double pitch = vision.getPitch();
+        SmartDashboard.putNumber("PITCH", pitch);
+        turretMotor.set(vision.getRotationSpeed());
+      }
+      
     }
       // turretMotor.set(0);
       // setPosition(targetPosition);

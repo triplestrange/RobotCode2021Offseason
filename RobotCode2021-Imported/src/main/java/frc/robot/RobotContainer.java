@@ -96,17 +96,9 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0));
-       
-        // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
+        turret.setDefaultCommand(new SpinTurret(turret, vision, 2, 0));
+        vision.setDefaultCommand(new RunVision(vision));
 
-    //     swerveDrive.setDefaultCommand(
-
-    //                             new InstantCommand(() -> swerveDrive.drive(-m_driverController.getRawAxis(1)
-    //                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
-    //                                             -m_driverController.getRawAxis(0)
-    //                                                             * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond,
-    //                                             -m_driverController.getRawAxis(4) * (2 * Math.PI), true), swerveDrive));
     }
 
     /**
