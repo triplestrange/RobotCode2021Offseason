@@ -96,7 +96,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new SpinTurret(turret, vision, 2, 0));
+        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0));
        
         // vision.setDefaultCommand(new RunCommand(vision::runVision, vision));
 

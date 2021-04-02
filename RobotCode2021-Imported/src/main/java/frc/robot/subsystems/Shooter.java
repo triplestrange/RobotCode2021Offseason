@@ -110,7 +110,8 @@ public class Shooter extends Subsystem {
   }
 
   public boolean atSpeed() {
-    return Math.abs(setPoint - m_encoder.getVelocity()) < 300; // play with the number (go up to 1,000)
+    //was 300
+    return Math.abs(setPoint - m_encoder.getVelocity()) < 1000; // play with the number (go up to 1,000)
   }
 
   @Override

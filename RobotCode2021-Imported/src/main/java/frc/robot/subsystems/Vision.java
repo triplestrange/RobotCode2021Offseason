@@ -82,6 +82,7 @@ public class Vision extends Subsystem {
   public double getPitch() {
     if (_target != null) {
     double pitch = _target.getPitch();
+    SmartDashboard.putNumber("Pitch", pitch);
     return pitch;
     }
     return 0.0;
