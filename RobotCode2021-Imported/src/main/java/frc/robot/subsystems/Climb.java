@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -96,17 +97,19 @@ public class Climb extends Subsystem {
   }
 
   public void periodic() {
-    if (Math.abs(RobotContainer.m_operatorController.getRawAxis(1)) > 0.2) {
-      climbL.set(-RobotContainer.m_operatorController.getRawAxis(1));
+  }
+
+  public void runClimb(Joystick joystick) {
+    if (Math.abs(joystick.getRawAxis(1)) > 0.2) {
+      climbL.set(-joystick.getRawAxis(1));
     } else {
       climbL.set(0);
     }
-    if (Math.abs(RobotContainer.m_operatorController.getRawAxis(5)) > 0.2) {
-      climbR.set(RobotContainer.m_operatorController.getRawAxis(5));
+    if (Math.abs(joystick.getRawAxis(5)) > 0.2) {
+      climbR.set(joystick.getRawAxis(5));
     } else {
       climbR.set(0);
     }
-
   }
 
   @Override

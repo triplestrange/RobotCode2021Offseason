@@ -19,10 +19,18 @@ public class Conveyor extends Subsystem {
     motor.burnFlash();
 
   }
-  public void autoIndex() {
+  public void autoIndex(Joystick joystick) {
     if(!sensor.get())
       motor.set(-0.5);
-    else
+    else {
+      if (joystick.getRawAxis(2) > 0.05) {
+        motor.set(1);
+      } else if (joystick.getRawAxis(3) > 0.05) {
+        motor.set(-1);
+      } else {
+        motor.set(0);
+      }
+    }
       motor.set(0);
   }
 

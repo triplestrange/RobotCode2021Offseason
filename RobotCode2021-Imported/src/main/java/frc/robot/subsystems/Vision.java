@@ -27,13 +27,8 @@ public class Vision extends Subsystem {
      // photonvision.local:5800
 
      _camera = camera;
-     // Set driver mode to on.
-    _camera.setDriverMode(true);
 
-    // Change pipeline to 2
-    _camera.setPipelineIndex(2);
-
-    updateTargets();
+    // updateTargets();
 
     _controller = new PIDController(.1, 0, 0);
   }
@@ -42,16 +37,22 @@ public class Vision extends Subsystem {
   public void updateTargets() {
     // Get the latest pipeline result.
     _result = _camera.getLatestResult();
+    SmartDashboard.putNumber("Yaw", getYaw());
+    SmartDashboard.putNumber("Pitch", getPitch());
+    SmartDashboard.putNumber("Area", getArea());
+    SmartDashboard.putNumber("Skew", getSkew());
+    SmartDashboard.putBoolean("hasTargets", _result.hasTargets());
 
     // Check if the latest result has any targets.
     _hasTargets = _result.hasTargets();
 
     if (_hasTargets) {
-    // Get a list of currently tracked targets.
-    _targets = _result.getTargets();
+      // Get a list of currently tracked targets.
+      _targets = _result.getTargets();
 
-    // Get the current best target.
-    _target = _result.getBestTarget();
+      // Get the current best target.
+      _target = _result.getBestTarget();
+      System.out.println("we are dumb");
     } else {
       _targets = null;
       _target = null;
@@ -61,7 +62,7 @@ public class Vision extends Subsystem {
     // double latencySeconds = getLatencyMillis() / 1000.0; // around 3 ms
 
     // Blink the LEDs.
-    _camera.setLED(LEDMode.kOff);
+    // _camera.setLED(LEDMode.kOff);
   }
 
   public void periodic() {
@@ -69,6 +70,12 @@ public class Vision extends Subsystem {
     SmartDashboard.putNumber("Pitch", getPitch());
     SmartDashboard.putNumber("Area", getArea());
     SmartDashboard.putNumber("Skew", getSkew());
+    updateTargets();
+    var result = _camera.getLatestResult();
+    SmartDashboard.putNumber("latency", result.getLatencyMillis());
+    if(result.hasTargets()){
+      SmartDashboard.putNumber("NewYaw", result.getBestTarget().getYaw());
+    }
   }
 
   public double getYaw() {
@@ -76,7 +83,7 @@ public class Vision extends Subsystem {
     double yaw = _target.getYaw();
     return yaw;
     }
-    return 0.0;
+    return 10.0;
   }
 
   public double getPitch() {
@@ -85,7 +92,7 @@ public class Vision extends Subsystem {
     SmartDashboard.putNumber("Pitch", pitch);
     return pitch;
     }
-    return 0.0;
+    return 11.0;
   }
 
   public double getArea() { 
@@ -93,7 +100,7 @@ public class Vision extends Subsystem {
     double area = _target.getArea();
     return area;
     }
-    return 0.0;
+    return 11.0;
   }
 
   public double getSkew() {
@@ -101,7 +108,7 @@ public class Vision extends Subsystem {
     double skew = _target.getSkew();
     return skew;
     }
-    return 0.0;
+    return 11.0;
   }
 
   public Transform2d getPose() {
@@ -121,7 +128,8 @@ public class Vision extends Subsystem {
   /* TO BE USED FOR COMMANDS */
   public double getRotationSpeed() {
     updateTargets();
-    double rotationSpeed = _controller.calculate(_result.getBestTarget().getYaw(), 0);
+    double rotationSpeed = _result.getBestTarget().getYaw() / 50;
+
     return rotationSpeed;
   }
 

@@ -63,7 +63,7 @@ public class Turret extends Subsystem {
     turretEncoder = turretMotor.getEncoder();
     turretEncoder.setPosition(0);
 
-    m_turretPIDController = new PIDController(0, 0, 0);
+    m_turretPIDController = new PIDController(0.02, 0, 0);
 
     // PID coefficients
     kP = 0.1;
@@ -95,32 +95,44 @@ public class Turret extends Subsystem {
     m_turretPIDController.calculate(turretEncoder.getPosition(), setpoint);
     SmartDashboard.putNumber("SetPoint", setpoint);
     SmartDashboard.putNumber("ProcessVariable", turretEncoder.getPosition());
+    
   }
 
   public void stop() {
     turretMotor.set(0);
   }
 
-  public void spin(int mode, double speed) {
+  public void spin(int mode, double speed, SwerveDrive swerve) {
+    double gyro = swerve.navX.getAngle();
     double robotHeading = swerve.getHeading();
 
     double targetPosition = 0;
 
-    if (robotHeading < 0 && robotHeading > -180 ) {
-      targetPosition = -robotHeading;
-    } else if (robotHeading > 0 && robotHeading < 180) {
-      targetPosition = 360 - robotHeading;
-    } 
+    // if (robotHeading < 0 && robotHeading > -180 ) {
+    //   targetPosition = -robotHeading;
+    // } else if (robotHeading > 0 && robotHeading < 180) {
+    //   targetPosition = 360 - robotHeading;
+    // } 
 
     if (mode == 1) {
       turretMotor.set(speed);
-    } else {
+    } else if (mode == 2) {
       if (vision.getHasTargets()) {
-        double pitch = vision.getPitch();
-        SmartDashboard.putNumber("PITCH", pitch);
         turretMotor.set(vision.getRotationSpeed());
+        SmartDashboard.putNumber("turret rot", vision.getRotationSpeed());
+        System.out.println("boop");
+
       }
-      
+    } else if (mode == 3) {
+      gyro = gyro % 360;
+      if (gyro < 0) {
+        gyro = gyro + 360;
+      }
+      double turretLocation = gyro / (-322.0/130);
+      SmartDashboard.putNumber("turret pid", m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
+      turretMotor.set(m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
+    } else {
+      turretMotor.set(0);
     }
       // turretMotor.set(0);
       // setPosition(targetPosition);

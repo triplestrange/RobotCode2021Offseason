@@ -17,6 +17,11 @@ public class RunVision extends InstantCommand {
     this.vision = vision;
   }
 
+  @Override
+  public void execute() {
+    
+  }
+
   // Called once when the command executes
   @Override
   protected void initialize() {

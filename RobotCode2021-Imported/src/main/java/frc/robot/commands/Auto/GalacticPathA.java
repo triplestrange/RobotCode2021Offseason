@@ -45,12 +45,13 @@ public class GalacticPathA extends CommandGroup {
 
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
       
-    new Pose2d(0, 0, new  Rotation2d(0)), List.of(
-     
-
+    new Pose2d(0, 0, new  Rotation2d(Math.PI)), List.of(
+          new Translation2d(0, 1.3),
+          new Translation2d(-1.525, 2.9),
+          new Translation2d(0, 4.25)
   ), 
                        //direction robot moves
- new Pose2d(1.01, 0, new Rotation2d(-Math.PI / 2)), config);
+ new Pose2d(0, 8.382, new Rotation2d(Math.PI / 2)), config);
 
     SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject, (0), swerveDrive::getPose, 
     // Functional
@@ -67,9 +68,11 @@ public class GalacticPathA extends CommandGroup {
         swerveDrive
 
     );
-
-    addParallel(swerveControllerCommand1);
+    
     IntakeCommand intakeCommand = new IntakeCommand(intake);
+
     addSequential(intakeCommand);
+    addParallel(swerveControllerCommand1);
+    
   }
 }

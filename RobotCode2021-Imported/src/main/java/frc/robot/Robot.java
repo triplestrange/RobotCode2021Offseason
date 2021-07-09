@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.photonvision.PhotonCamera;
+
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
@@ -39,9 +41,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private Double[] coords;
-  // private CANCoder hoodEncoder = new CANCoder(0);
-  NetworkTableEntry xEntry;
-  NetworkTableEntry yEntry;
 
   private FileWriter fw;
   private File f;
@@ -52,11 +51,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
-    CameraServer.getInstance().startAutomaticCapture().setResolution(320, 160);
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    NetworkTable table = inst.getTable("datatable");
-    xEntry = table.getEntry("X");
-    yEntry = table.getEntry("Y");
     
     
     }
@@ -66,6 +60,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     // SmartDashboard.putNumber("hoodEncoder", hoodEncoder.getPosition());
     // SmartDashboard.putNumber("hoodVoltage", hoodEncoder.getBusVoltage());
+  
   }
 
   @Override
@@ -78,39 +73,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotContainer.swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(-Math.PI / 2))); //0.053, .8539
-    RobotContainer.theta.reset(-Math.PI / 2);
-    
-    
-    try {
-      f = new File("/home/lvuser/Output.txt");
-
-      if (!f.exists()) {
-        f.createNewFile();
-      }
-      fw = new FileWriter(f);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    
-    bw = new BufferedWriter(fw);
-
-    try {
-      bw.write("AUTOS");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-    // String  trajectoryJSON = "output/Straight123.wpilib.json";
-    //     Trajectory trajectory = new Trajectory();
-    //     try {
-    //         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //         trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    //     } catch (IOException ex) {
-    //         DriverStation.reportError("Unable to open trajectory" + trajectoryJSON, ex.getStackTrace());
-    //     }
-
+  
 
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand(null);
 
@@ -173,11 +136,11 @@ public class Robot extends TimedRobot {
   double y = 0;
   @Override
   public void teleopPeriodic() {
-    xEntry.setDouble(x);
-    yEntry.setDouble(y);
+    // xEntry.setDouble(x);
+    // yEntry.setDouble(y);
 
-    x += 0.05;
-    y += 1.0;
+    // x += 0.05;
+    // y += 1.0;
   }
 
   @Override

@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.Conveyor;
 
@@ -14,9 +15,9 @@ public class AutoIndexConveyor extends InstantCommand {
   /**
    * Creates a new ConveyorAutoIndex.
    */
-  public AutoIndexConveyor(Conveyor subsystem) {
+  public AutoIndexConveyor(Conveyor subsystem, Joystick joystick) {
     // Use addRequirements() here to declare subsystem dependencies.
-    super(subsystem, subsystem::autoIndex);
+    super(subsystem, () -> {subsystem.autoIndex(joystick);});
     requires(subsystem);
   }
 

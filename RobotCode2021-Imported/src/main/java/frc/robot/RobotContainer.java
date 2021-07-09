@@ -63,10 +63,10 @@ public class RobotContainer {
     private final Conveyor conveyor = new Conveyor();
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
-    private final PhotonCamera camera = new PhotonCamera("TurretCamera");
-    private final PhotonCamera camera1 = new PhotonCamera("OtherCamera");
+    private final PhotonCamera camera = new PhotonCamera("photonvision");
+    // private final PhotonCamera camera1 = new PhotonCamera("OtherCamera");
     private final Vision vision = new Vision(camera);
-    private final Vision vision1 = new Vision(camera1);
+    // private final Vision vision1 = new Vision(camera1);
     private final Turret turret = new Turret(swerveDrive, vision);
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
@@ -87,17 +87,18 @@ public class RobotContainer {
      */
     public RobotContainer() {
 
-
+        
         // Configure the button bindings
         configureButtonBindings();
 
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
-        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor));
-        intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
-        turret.setDefaultCommand(new SpinTurret(turret, vision, 2, 0));
+        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, m_operatorController));
+        intake.setDefaultCommand(new RunIntake(intake, 0));
+        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive));
         vision.setDefaultCommand(new RunVision(vision));
+        climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
 
     }
 
@@ -121,66 +122,35 @@ public class RobotContainer {
         JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
         JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
         
-        
+        JoystickButton lBumpd = new JoystickButton(m_operatorController, 5);
+        JoystickButton rBumpd = new JoystickButton(m_operatorController, 6);
         JoystickButton butXd = new JoystickButton(m_driverController, 3);  
         JoystickButton butAd = new JoystickButton(m_driverController, 1);  
         JoystickButton butBd = new JoystickButton(m_driverController, 2);
 
         JoystickButton gyro = new JoystickButton(m_driverController, 8);
+        // 2021 Offseason Button Bindings
+        // Driver Joystick
+        rBumpd.whileHeld(new SpinTurret(turret, vision, 1, 0.25, swerveDrive));
+        lBumpd.whileHeld(new SpinTurret(turret, vision, 1, -0.25, swerveDrive));
+        butBd.whileHeld(new SpinTurret(turret, vision, 2, 1, swerveDrive));
+        butAd.whileHeld(new SpinTurret(turret, vision, 3, 1, swerveDrive));
+        gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
+        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
 
-        butA.whenPressed(new ExtendIntake(intake, m_operatorController));
-        // butA.whenReleased(new RetractIntake(intake));
-        butB.whileHeld(new SpinTurret(turret, vision, 1, 0.25));
-        butX.whileHeld(new SpinTurret(turret, vision, 1, -0.25));
-
-        //shooter and conveyor move together
-        butY.whileHeld(new RunShooter(shooter));
-        butY.whenReleased(new StopShooter(shooter));
-        rBump.whileHeld(new ControlConveyor(conveyor, 1));
-        rBump.whenReleased(new ControlConveyor(conveyor, 0));
-        lBump.whileHeld(new ControlConveyor(conveyor, -1));
-        lBump.whenReleased(new ControlConveyor(conveyor, 0));
-        
-        // rWing for vision
+        // Operator Joystick
         lAnal.whileHeld(new MoveHood(shooter, 1));
         rAnal.whileHeld(new MoveHood(shooter, -1));
+        butY.whileHeld(new RunShooter(shooter));
+        butY.whenReleased(new StopShooter(shooter));
+        butA.whenPressed(new ExtendIntake(intake, m_operatorController));
+        butA.whenReleased(new RetractIntake(intake));
+        rBump.whileHeld(new RunIntake(intake, -0.75));
+        lBump.whileHeld(new RunIntake(intake, 0.75));
         
         
 
-        // B
-        JoystickButton turbo = new JoystickButton(m_driverController, 2);
-        // JoystickButton ok = new JoystickButton(m_driverController, 7);
-
-        BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Barrel Path", Barrel);
-
-        BouncePath Bounce = new BouncePath(swerveDrive, theta);
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Bounce Path", Bounce);
         
-        SlalomPath1 Slolam = new SlalomPath1(swerveDrive, theta);
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Slalom Path", Slolam);
-
-        AccuracyChallenge accuracyChallenge1 = new AccuracyChallenge(swerveDrive, intake, theta);
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Accuracy Challenge", accuracyChallenge1);
-
-        GalacticPathA galA = new GalacticPathA(swerveDrive, intake, theta);
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Galactic Path", galA);
-
-
-        // driver X button - slow
-        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
-        // butAd.whenPressed(new InstantCommand(swerveDrive::zeroWheels));
-
-        // butBd.whenPressed(new SideStep(swerveDrive, theta));
-
-        turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2));
-
-        gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
         
 }
 

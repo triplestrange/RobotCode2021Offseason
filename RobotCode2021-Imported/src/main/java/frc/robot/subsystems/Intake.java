@@ -46,17 +46,8 @@ public class Intake extends Subsystem {
         setExtended(false);
     }
 
-    public void runWheels(Joystick joystick) {
-        double speedOut = joystick.getRawAxis(2);
-        double speedIn = joystick.getRawAxis(3);
-        if (getExtended()) {
-            if (speedIn > 0.1)
-                intakeMotor.set(speedIn / 2);
-            else if (speedOut > 0.1)
-                intakeMotor.set(-speedOut);
-         else
-            intakeMotor.set(0);
-        }
+    public void runWheels(double speed) {
+        intakeMotor.set(speed);
     }
 
     //auto intakes
