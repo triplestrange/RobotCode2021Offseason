@@ -7,11 +7,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 
 public class Conveyor extends Subsystem {
   private CANSparkMax motor = new CANSparkMax(9, MotorType.kBrushed);
-  private DigitalInput sensor = new DigitalInput(9);
+  private DigitalInput sensor = new DigitalInput(0);
     
   public Conveyor() {
     motor.restoreFactoryDefaults();
@@ -19,19 +20,13 @@ public class Conveyor extends Subsystem {
     motor.burnFlash();
 
   }
-  public void autoIndex(Joystick joystick) {
+  public void autoIndex(double speed) {
+    SmartDashboard.putBoolean("SENSOR", sensor.get());
     if(!sensor.get())
       motor.set(-0.5);
     else {
-      if (joystick.getRawAxis(2) > 0.05) {
-        motor.set(1);
-      } else if (joystick.getRawAxis(3) > 0.05) {
-        motor.set(-1);
-      } else {
-        motor.set(0);
-      }
+      motor.set(speed);
     }
-      motor.set(0);
   }
 
   public void manualControl(double speed) {

@@ -79,7 +79,7 @@ public class SwerveModule {
     // m_turningPIDController.enableContinuousInput(0, 2*Math.PI);
 
     // PID coefficients
-    kP = 0.5;
+    kP = 0.4;
     kI = 0;
     kD = 0;
     kIz = 0;

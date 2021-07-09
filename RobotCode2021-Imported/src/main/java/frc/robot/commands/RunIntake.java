@@ -16,9 +16,17 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class RunIntake extends InstantCommand {
   
-  public RunIntake(Intake subsystem, double speed) {
+  public RunIntake(Intake subsystem, Joystick joystick) {
     super(subsystem, 
-      () -> {subsystem.runWheels(speed);});
+      () -> {
+        double speed = 0;
+        if (joystick.getRawAxis(2) > 0.05 ) {
+          speed = joystick.getRawAxis(2) * 0.75;
+        } else if (joystick.getRawAxis(3) > 0.05) {
+          speed = joystick.getRawAxis(3) * 0.75;
+        }
+        subsystem.runWheels(speed);
+      });
       requires(subsystem);
   }
 

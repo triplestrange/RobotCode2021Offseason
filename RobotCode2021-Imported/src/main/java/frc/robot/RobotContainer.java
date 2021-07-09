@@ -94,9 +94,9 @@ public class RobotContainer {
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
-        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, m_operatorController));
-        intake.setDefaultCommand(new RunIntake(intake, 0));
-        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive));
+        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, 0));
+        intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
+        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
         vision.setDefaultCommand(new RunVision(vision));
         climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
 
@@ -119,37 +119,33 @@ public class RobotContainer {
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lWing = new JoystickButton(m_operatorController, 7);
         JoystickButton rWing = new JoystickButton(m_operatorController, 8);
-        JoystickButton lAnal = new JoystickButton(m_operatorController, 9);
-        JoystickButton rAnal = new JoystickButton(m_operatorController, 10);
         
-        JoystickButton lBumpd = new JoystickButton(m_operatorController, 5);
-        JoystickButton rBumpd = new JoystickButton(m_operatorController, 6);
+        JoystickButton lBumpd = new JoystickButton(m_driverController, 5);
+        JoystickButton rBumpd = new JoystickButton(m_driverController, 6);
         JoystickButton butXd = new JoystickButton(m_driverController, 3);  
         JoystickButton butAd = new JoystickButton(m_driverController, 1);  
         JoystickButton butBd = new JoystickButton(m_driverController, 2);
+        JoystickButton lAnald = new JoystickButton(m_driverController, 9);
+        JoystickButton rAnald = new JoystickButton(m_driverController, 10);
 
         JoystickButton gyro = new JoystickButton(m_driverController, 8);
         // 2021 Offseason Button Bindings
         // Driver Joystick
-        rBumpd.whileHeld(new SpinTurret(turret, vision, 1, 0.25, swerveDrive));
-        lBumpd.whileHeld(new SpinTurret(turret, vision, 1, -0.25, swerveDrive));
-        butBd.whileHeld(new SpinTurret(turret, vision, 2, 1, swerveDrive));
-        butAd.whileHeld(new SpinTurret(turret, vision, 3, 1, swerveDrive));
+        rBumpd.whileHeld(new SpinTurret(turret, vision, 2, 1, swerveDrive, m_driverController));
+        lBumpd.whileHeld(new SpinTurret(turret, vision, 3, 1, swerveDrive, m_driverController));
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
         butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
-
+        lAnald.whileHeld(new MoveHood(shooter, 1));
+        rAnald.whileHeld(new MoveHood(shooter, -1));
         // Operator Joystick
-        lAnal.whileHeld(new MoveHood(shooter, 1));
-        rAnal.whileHeld(new MoveHood(shooter, -1));
+        
+        
         butY.whileHeld(new RunShooter(shooter));
         butY.whenReleased(new StopShooter(shooter));
         butA.whenPressed(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
-        rBump.whileHeld(new RunIntake(intake, -0.75));
-        lBump.whileHeld(new RunIntake(intake, 0.75));
-        
-        
-
+        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.5));
+        rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.5));
         
         
 }

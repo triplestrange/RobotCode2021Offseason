@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -102,19 +103,21 @@ public class Turret extends Subsystem {
     turretMotor.set(0);
   }
 
-  public void spin(int mode, double speed, SwerveDrive swerve) {
+  public void spin(int mode, double speed, SwerveDrive swerve, Joystick joystick) {
     double gyro = swerve.navX.getAngle();
     double robotHeading = swerve.getHeading();
 
     double targetPosition = 0;
 
-    // if (robotHeading < 0 && robotHeading > -180 ) {
-    //   targetPosition = -robotHeading;
-    // } else if (robotHeading > 0 && robotHeading < 180) {
-    //   targetPosition = 360 - robotHeading;
-    // } 
 
     if (mode == 1) {
+      if (joystick.getRawAxis(2) > 0.05) {
+        turretMotor.set(-0.5);
+      } else if (joystick.getRawAxis(3) > 0.05) {
+        turretMotor.set(0.5);
+      } else {
+        turretMotor.set(0);
+      }
       turretMotor.set(speed);
     } else if (mode == 2) {
       if (vision.getHasTargets()) {

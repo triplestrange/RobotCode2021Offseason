@@ -15,9 +15,9 @@ public class AutoIndexConveyor extends InstantCommand {
   /**
    * Creates a new ConveyorAutoIndex.
    */
-  public AutoIndexConveyor(Conveyor subsystem, Joystick joystick) {
+  public AutoIndexConveyor(Conveyor subsystem, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    super(subsystem, () -> {subsystem.autoIndex(joystick);});
+    super(subsystem, () -> {subsystem.autoIndex(speed);});
     requires(subsystem);
   }
 
