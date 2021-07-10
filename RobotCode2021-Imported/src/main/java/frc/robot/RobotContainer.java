@@ -64,9 +64,9 @@ public class RobotContainer {
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
     private final PhotonCamera camera = new PhotonCamera("photonvision");
-    // private final PhotonCamera camera1 = new PhotonCamera("OtherCamera");
+    private final PhotonCamera camera1 = new PhotonCamera("other");
     private final Vision vision = new Vision(camera);
-    // private final Vision vision1 = new Vision(camera1);
+    private final Vision vision1 = new Vision(camera1);
     private final Turret turret = new Turret(swerveDrive, vision);
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
@@ -144,8 +144,11 @@ public class RobotContainer {
         butY.whenReleased(new StopShooter(shooter));
         butA.whenPressed(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
-        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.5));
-        rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.5));
+        butB.whileHeld(new FeedShooter(conveyor, shooter));
+        butB.whileHeld(new RunShooter(shooter));
+        butB.whenReleased(new StopShooter(shooter));
+        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.8));
+        rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8));
         
         
 }

@@ -38,7 +38,7 @@ public class FeedShooter extends CommandGroup {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyor.feedShooter(m_speed, m_atSpeed);
+    m_conveyor.feedShooter(-0.8, m_shooter.atSpeed());
   }
 
   // Returns true when the command should end.

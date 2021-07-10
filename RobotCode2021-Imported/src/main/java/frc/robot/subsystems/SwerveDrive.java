@@ -182,6 +182,10 @@ public class SwerveDrive extends Subsystem {
     gyroReset = true;
   }
 
+  public void lockWheels() {
+    
+  }
+
   /**
    * Returns the heading of the robot.
    *
