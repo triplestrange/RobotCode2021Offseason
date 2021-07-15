@@ -73,7 +73,7 @@ public class Shooter extends Subsystem {
   }
 
   public void runShooter() {
-    setPoint = SmartDashboard.getNumber("Shooter Velocity", 1000);
+    setPoint = SmartDashboard.getNumber("Shooter Velocity", 4550);
 
     m_pidController.setP(30);
     m_pidController.setReference(setPoint, ControlType.kVelocity);
@@ -107,6 +107,7 @@ public class Shooter extends Subsystem {
     SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
     SmartDashboard.putNumber("SHOOTER HOOD POS", hoodServo.get());
     SmartDashboard.putNumber("SHOOTER HOOD ANGLE", hoodServo.getAngle());
+    SmartDashboard.putBoolean("at_speed", atSpeed());
   }
 
   public boolean atSpeed() {

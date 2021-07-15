@@ -95,7 +95,7 @@ public class RobotContainer {
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, 0));
-        intake.setDefaultCommand(new RunIntake(intake, m_operatorController));
+        intake.setDefaultCommand(new RunIntake(intake, m_operatorController, false));
         turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
         vision.setDefaultCommand(new RunVision(vision));
         climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
@@ -132,7 +132,7 @@ public class RobotContainer {
         // 2021 Offseason Button Bindings
         // Driver Joystick
         rBumpd.whileHeld(new SpinTurret(turret, vision, 2, 1, swerveDrive, m_driverController));
-        lBumpd.whileHeld(new SpinTurret(turret, vision, 3, 1, swerveDrive, m_driverController));
+        lBumpd.whenPressed(new SpinTurret(turret, vision, 3, 1, swerveDrive, m_driverController));
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
         butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
         lAnald.whileHeld(new MoveHood(shooter, 1));
@@ -145,7 +145,6 @@ public class RobotContainer {
         butA.whenPressed(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
         butB.whileHeld(new FeedShooter(conveyor, shooter));
-        butB.whileHeld(new RunShooter(shooter));
         butB.whenReleased(new StopShooter(shooter));
         lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.8));
         rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8));
@@ -164,9 +163,9 @@ public static String getCoords() {
      */
     
      public Command getAutonomousCommand(Trajectory trajectory) {
-        GalacticPathA galA = new GalacticPathA(swerveDrive, intake, theta);
+        THOR thor = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
 
-        return galA;
+        return thor;
         
     }
 

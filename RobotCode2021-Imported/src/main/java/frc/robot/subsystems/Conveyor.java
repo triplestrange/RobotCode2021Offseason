@@ -34,8 +34,9 @@ public class Conveyor extends Subsystem {
   }
   
   public void feedShooter(double speed, boolean atSpeed) {
-    if (atSpeed)
+    if (atSpeed){
       motor.set(-speed);
+      System.out.println("hi");}
     else
       motor.set(0);
   }

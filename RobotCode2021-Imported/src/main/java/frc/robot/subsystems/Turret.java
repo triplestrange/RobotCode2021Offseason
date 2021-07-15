@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.SpinTurret;
 
-
 public class Turret extends Subsystem {
 
   // transfer to robot container
@@ -38,14 +37,19 @@ public class Turret extends Subsystem {
   private DigitalInput limitSwitch;
   public Vision vision;
   public SwerveDrive swerve;
-  
-  private PIDController visionController = new PIDController(Constants.Vision.turretKP, Constants.Vision.turretKI, Constants.Vision.turretKD);
+  private boolean gyroMode;
+  private double gyro;
+
+  private PIDController visionController = new PIDController(Constants.Vision.turretKP, Constants.Vision.turretKI,
+      Constants.Vision.turretKD);
+
   /**
    * Creates a new Turret.
    */
   public Turret(SwerveDrive swerve, Vision vision) {
     this.vision = vision;
     this.swerve = swerve;
+    gyroMode = false;
 
     turretMotor = new CANSparkMax(motor, MotorType.kBrushless);
     turretMotor.restoreFactoryDefaults();
@@ -55,7 +59,7 @@ public class Turret extends Subsystem {
     turretMotor.setSoftLimit(SoftLimitDirection.kForward, 0);
 
     turretMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    turretMotor.setSoftLimit(SoftLimitDirection.kReverse, -130);
+    turretMotor.setSoftLimit(SoftLimitDirection.kReverse, -142);
 
     turretMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
 
@@ -64,14 +68,14 @@ public class Turret extends Subsystem {
     turretEncoder = turretMotor.getEncoder();
     turretEncoder.setPosition(0);
 
-    m_turretPIDController = new PIDController(0.02, 0, 0);
+    m_turretPIDController = new PIDController(0.014, 0, 0);
 
     // PID coefficients
     kP = 0.1;
-    kFF = 1./11000.;
+    kFF = 1. / 11000.;
     kI = 0;
-    kD = 0; 
-    kIz = 0; 
+    kD = 0;
+    kIz = 0;
     kMaxOutput = 1;
     kMinOutput = -1;
 
@@ -80,7 +84,8 @@ public class Turret extends Subsystem {
     // m_turretPIDController.setI(kI);
     // m_turretPIDController.setD(kD);
 
-    // m_reverseLimit = turretMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    // m_reverseLimit =
+    // turretMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     // m_reverseLimit.enableLimitSwitch(true);
   }
 
@@ -90,13 +95,25 @@ public class Turret extends Subsystem {
     // SmartDashboard.putNumber("Feed Forward", kFF);
     // SmartDashboard.putNumber("Set Rotations", 0);
     SmartDashboard.putNumber("turretEncoder", turretEncoder.getPosition());
+    SmartDashboard.putBoolean("Are we aiming", gyroMode);
+    if (gyroMode) {
+      gyro = swerve.navX.getAngle();
+      gyro = gyro % 360;
+      if (gyro < 0) {
+        gyro = gyro + 360;
+      }
+      double turretLocation = gyro / (-360.0 / 142);
+      SmartDashboard.putNumber("turret pid",
+          m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
+      turretMotor.set(m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
+    }
   }
 
   public void setPosition(double setpoint) {
     m_turretPIDController.calculate(turretEncoder.getPosition(), setpoint);
     SmartDashboard.putNumber("SetPoint", setpoint);
     SmartDashboard.putNumber("ProcessVariable", turretEncoder.getPosition());
-    
+
   }
 
   public void stop() {
@@ -104,13 +121,13 @@ public class Turret extends Subsystem {
   }
 
   public void spin(int mode, double speed, SwerveDrive swerve, Joystick joystick) {
-    double gyro = swerve.navX.getAngle();
+
     double robotHeading = swerve.getHeading();
 
     double targetPosition = 0;
 
-
     if (mode == 1) {
+      gyroMode = false;
       if (joystick.getRawAxis(2) > 0.05) {
         turretMotor.set(-0.5);
       } else if (joystick.getRawAxis(3) > 0.05) {
@@ -123,23 +140,23 @@ public class Turret extends Subsystem {
       if (vision.getHasTargets()) {
         turretMotor.set(vision.getRotationSpeed());
         SmartDashboard.putNumber("turret rot", vision.getRotationSpeed());
-        System.out.println("boop");
 
       }
     } else if (mode == 3) {
-      gyro = gyro % 360;
-      if (gyro < 0) {
-        gyro = gyro + 360;
-      }
-      double turretLocation = gyro / (-322.0/130);
-      SmartDashboard.putNumber("turret pid", m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
-      turretMotor.set(m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
     } else {
       turretMotor.set(0);
     }
-      // turretMotor.set(0);
-      // setPosition(targetPosition);
-        // m_turretPIDController.setReference(targetPosition, ControlType.kPosition);
+    // turretMotor.set(0);
+    // setPosition(targetPosition);
+    // m_turretPIDController.setReference(targetPosition, ControlType.kPosition);
+  }
+
+  public void toggleGyroMode() {
+    if (gyroMode) {
+      gyroMode = false;
+    } else {
+      gyroMode = true;
+    }
   }
 
   @Override
@@ -149,12 +166,11 @@ public class Turret extends Subsystem {
   }
 
   // public void visionTurret() {
-  //   double targetYaw = vision.getTargetYaw();
-    
-  //   visionController.setSetpoint(0);
-  //   double speed = visionController.calculate(targetYaw);
-  //   turretMotor.set(speed);
-  // }
+  // double targetYaw = vision.getTargetYaw();
 
+  // visionController.setSetpoint(0);
+  // double speed = visionController.calculate(targetYaw);
+  // turretMotor.set(speed);
+  // }
 
 }

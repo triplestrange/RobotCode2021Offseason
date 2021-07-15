@@ -52,7 +52,6 @@ public class Vision extends Subsystem {
 
       // Get the current best target.
       _target = _result.getBestTarget();
-      System.out.println("we are dumb");
     } else {
       _targets = null;
       _target = null;

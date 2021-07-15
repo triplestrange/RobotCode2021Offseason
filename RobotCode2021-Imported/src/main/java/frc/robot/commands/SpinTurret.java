@@ -18,7 +18,12 @@ import frc.robot.subsystems.Vision;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class SpinTurret extends InstantCommand {
   public SpinTurret(Turret subsystem, Vision subsystem2, int mode, double speed, SwerveDrive subsystem3, Joystick joystick) {
-    super(subsystem, () -> {subsystem.spin(mode, speed, subsystem3, joystick);});
+    super(subsystem, () -> {
+      if (mode == 3) {
+        subsystem.toggleGyroMode();
+        System.out.println("toggle?s");
+      }
+      subsystem.spin(mode, speed, subsystem3, joystick);});
     requires(subsystem); 
     requires(subsystem2);
     // Use addRequirements() here to declare subsystem dependencies.
