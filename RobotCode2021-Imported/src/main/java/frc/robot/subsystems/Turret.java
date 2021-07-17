@@ -37,8 +37,9 @@ public class Turret extends Subsystem {
   private DigitalInput limitSwitch;
   public Vision vision;
   public SwerveDrive swerve;
-  private boolean gyroMode;
+  public boolean gyroMode;
   private double gyro;
+  private double trim;
 
   private PIDController visionController = new PIDController(Constants.Vision.turretKP, Constants.Vision.turretKI,
       Constants.Vision.turretKD);
@@ -61,14 +62,12 @@ public class Turret extends Subsystem {
     turretMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     turretMotor.setSoftLimit(SoftLimitDirection.kReverse, -142);
 
-    turretMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 5);
-
     turretMotor.burnFlash();
 
     turretEncoder = turretMotor.getEncoder();
     turretEncoder.setPosition(0);
 
-    m_turretPIDController = new PIDController(0.014, 0, 0);
+    m_turretPIDController = new PIDController(0.04, 0, 0.002);
 
     // PID coefficients
     kP = 0.1;
@@ -78,31 +77,17 @@ public class Turret extends Subsystem {
     kIz = 0;
     kMaxOutput = 1;
     kMinOutput = -1;
-
-    // // set PID coefficients
-    // m_turretPIDController.setP(kP);
-    // m_turretPIDController.setI(kI);
-    // m_turretPIDController.setD(kD);
-
-    // m_reverseLimit =
-    // turretMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    // m_reverseLimit.enableLimitSwitch(true);
   }
 
   public void periodic() {
-    // display PID coefficients on SmartDashboard
-    // SmartDashboard.putNumber("P Gain", kP);
-    // SmartDashboard.putNumber("Feed Forward", kFF);
-    // SmartDashboard.putNumber("Set Rotations", 0);
-    SmartDashboard.putNumber("turretEncoder", turretEncoder.getPosition());
-    SmartDashboard.putBoolean("Are we aiming", gyroMode);
     if (gyroMode) {
-      gyro = swerve.navX.getAngle();
+      gyro = swerve.navX.getAngle()+90;
       gyro = gyro % 360;
       if (gyro < 0) {
         gyro = gyro + 360;
       }
-      double turretLocation = gyro / (-360.0 / 142);
+      double turretLocation = (gyro / (-360.0 / 142)) - 8;
+      SmartDashboard.putNumber("turret Encoder", turretEncoder.getPosition());
       SmartDashboard.putNumber("turret pid",
           m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
       turretMotor.set(m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
@@ -154,6 +139,7 @@ public class Turret extends Subsystem {
   public void toggleGyroMode() {
     if (gyroMode) {
       gyroMode = false;
+      stop();
     } else {
       gyroMode = true;
     }

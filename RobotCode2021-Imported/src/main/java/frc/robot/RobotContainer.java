@@ -63,17 +63,16 @@ public class RobotContainer {
     private final Conveyor conveyor = new Conveyor();
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
-    private final PhotonCamera camera = new PhotonCamera("photonvision");
+    private static final PhotonCamera camera = new PhotonCamera("photonvision");
     private final PhotonCamera camera1 = new PhotonCamera("other");
-    private final Vision vision = new Vision(camera);
+    public static final Vision vision = new Vision(camera);
     private final Vision vision1 = new Vision(camera1);
-    private final Turret turret = new Turret(swerveDrive, vision);
+    public static final Turret turret = new Turret(swerveDrive, vision);
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
     public static Joystick m_operatorController = new Joystick(1);
 
-//     public static final GenericHID.RumbleType kLeftRumble = 1;
-
+    // public static final GenericHID.RumbleType kLeftRumble = 1;
 
     public static ProfiledPIDController theta = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
             AutoConstants.kThetaControllerConstraints);
@@ -87,7 +86,6 @@ public class RobotContainer {
      */
     public RobotContainer() {
 
-        
         // Configure the button bindings
         configureButtonBindings();
 
@@ -96,7 +94,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, 0));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController, false));
-        turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
+        // turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
         vision.setDefaultCommand(new RunVision(vision));
         climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
 
@@ -111,19 +109,19 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // new buttons 3/27/21
-        JoystickButton butA  = new JoystickButton(m_operatorController, 1);
-        JoystickButton butB  = new JoystickButton(m_operatorController, 2); 
-        JoystickButton butX  = new JoystickButton(m_operatorController, 3);
-        JoystickButton butY  = new JoystickButton(m_operatorController, 4);
+        JoystickButton butA = new JoystickButton(m_operatorController, 1);
+        JoystickButton butB = new JoystickButton(m_operatorController, 2);
+        JoystickButton butX = new JoystickButton(m_operatorController, 3);
+        JoystickButton butY = new JoystickButton(m_operatorController, 4);
         JoystickButton lBump = new JoystickButton(m_operatorController, 5);
         JoystickButton rBump = new JoystickButton(m_operatorController, 6);
         JoystickButton lWing = new JoystickButton(m_operatorController, 7);
         JoystickButton rWing = new JoystickButton(m_operatorController, 8);
-        
+
         JoystickButton lBumpd = new JoystickButton(m_driverController, 5);
         JoystickButton rBumpd = new JoystickButton(m_driverController, 6);
-        JoystickButton butXd = new JoystickButton(m_driverController, 3);  
-        JoystickButton butAd = new JoystickButton(m_driverController, 1);  
+        JoystickButton butXd = new JoystickButton(m_driverController, 3);
+        JoystickButton butAd = new JoystickButton(m_driverController, 1);
         JoystickButton butBd = new JoystickButton(m_driverController, 2);
         JoystickButton lAnald = new JoystickButton(m_driverController, 9);
         JoystickButton rAnald = new JoystickButton(m_driverController, 10);
@@ -132,14 +130,14 @@ public class RobotContainer {
         // 2021 Offseason Button Bindings
         // Driver Joystick
         rBumpd.whileHeld(new SpinTurret(turret, vision, 2, 1, swerveDrive, m_driverController));
+        rBumpd.whenReleased(new InstantCommand(turret::stop));
         lBumpd.whenPressed(new SpinTurret(turret, vision, 3, 1, swerveDrive, m_driverController));
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
         butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
         lAnald.whileHeld(new MoveHood(shooter, 1));
         rAnald.whileHeld(new MoveHood(shooter, -1));
         // Operator Joystick
-        
-        
+
         butY.whileHeld(new RunShooter(shooter));
         butY.whenReleased(new StopShooter(shooter));
         butA.whenPressed(new ExtendIntake(intake, m_operatorController));
@@ -148,25 +146,24 @@ public class RobotContainer {
         butB.whenReleased(new StopShooter(shooter));
         lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.8));
         rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8));
-        
-        
-}
 
-public static String getCoords() {
-    return (swerveDrive.getPose().getX() + " " + swerveDrive.getPose().getY());
-}
+    }
+
+    public static String getCoords() {
+        return (swerveDrive.getPose().getX() + " " + swerveDrive.getPose().getY());
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
      * @return the command to run in autonomous
      */
-    
-     public Command getAutonomousCommand(Trajectory trajectory) {
+
+    public Command getAutonomousCommand(Trajectory trajectory) {
         THOR thor = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
 
         return thor;
-        
+
     }
 
 }

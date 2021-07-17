@@ -79,16 +79,15 @@ public class Climb extends Subsystem {
     climbRController.setFF(kFF);
     climbRController.setOutputRange(kMinOutput, kMaxOutput);
 
-
     SmartDashboard.putNumber("Climb Position", rotations);
   }
 
   public void setPosition() {
-  climbLController.setReference(-SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
-  SmartDashboard.putNumber("LClimbEncoder", climbLEncoder.getPosition());
+    climbLController.setReference(-SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
+    SmartDashboard.putNumber("LClimbEncoder", climbLEncoder.getPosition());
 
-  climbRController.setReference(SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
-  SmartDashboard.putNumber("RClimbEncoder", climbREncoder.getPosition());
+    climbRController.setReference(SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
+    SmartDashboard.putNumber("RClimbEncoder", climbREncoder.getPosition());
   }
 
   public void stop() {
@@ -97,16 +96,18 @@ public class Climb extends Subsystem {
   }
 
   public void periodic() {
+    SmartDashboard.putNumber("Climb L", climbLEncoder.getPosition());
+    SmartDashboard.putNumber("Climb R", 206.298 - climbREncoder.getPosition());
   }
 
   public void runClimb(Joystick joystick) {
-    if (Math.abs(joystick.getRawAxis(1)) > 0.2) {
-      climbL.set(-joystick.getRawAxis(1));
+    if (Math.abs(joystick.getRawAxis(5)) > 0.2) {
+      climbL.set(-joystick.getRawAxis(5));
     } else {
       climbL.set(0);
     }
-    if (Math.abs(joystick.getRawAxis(5)) > 0.2) {
-      climbR.set(joystick.getRawAxis(5));
+    if (Math.abs(joystick.getRawAxis(1)) > 0.2) {
+      climbR.set(joystick.getRawAxis(1));
     } else {
       climbR.set(0);
     }

@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Vision;
@@ -17,20 +18,35 @@ import frc.robot.subsystems.Vision;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class SpinTurret extends InstantCommand {
-  public SpinTurret(Turret subsystem, Vision subsystem2, int mode, double speed, SwerveDrive subsystem3, Joystick joystick) {
+  public int mode;
+
+  public SpinTurret(Turret subsystem, Vision subsystem2, int mode, double speed, SwerveDrive subsystem3,
+      Joystick joystick) {
     super(subsystem, () -> {
-      if (mode == 3) {
+      if (mode == 2 && RobotContainer.turret.gyroMode) {
+        subsystem.toggleGyroMode();
+      }if (mode == 3) {
         subsystem.toggleGyroMode();
         System.out.println("toggle?s");
       }
-      subsystem.spin(mode, speed, subsystem3, joystick);});
-    requires(subsystem); 
+      subsystem.spin(mode, speed, subsystem3, joystick);
+    });
+    requires(subsystem);
     requires(subsystem2);
+    this.mode = mode;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  }
+
+  @Override 
+  public boolean isFinished() {
+    if (mode == 2 && Math.abs(RobotContainer.vision.getYaw()) < 0.2) {
+      return true;
+    }
+    return false;
   }
 }

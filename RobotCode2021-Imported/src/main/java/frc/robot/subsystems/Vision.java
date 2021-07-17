@@ -21,12 +21,14 @@ public class Vision extends Subsystem {
   private boolean _hasTargets;
   private PIDController _controller;
   private PhotonPipelineResult _result;
+  private double trim;
+
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public Vision(PhotonCamera camera) {
-     // photonvision.local:5800
+    // photonvision.local:5800
 
-     _camera = camera;
+    _camera = camera;
 
     // updateTargets();
 
@@ -65,55 +67,51 @@ public class Vision extends Subsystem {
   }
 
   public void periodic() {
+    SmartDashboard.putNumber("Vision Trim", trim);
+    trim = SmartDashboard.getNumber("Vision Trim", 0);
     SmartDashboard.putNumber("Yaw", getYaw());
-    SmartDashboard.putNumber("Pitch", getPitch());
-    SmartDashboard.putNumber("Area", getArea());
-    SmartDashboard.putNumber("Skew", getSkew());
     updateTargets();
     var result = _camera.getLatestResult();
     SmartDashboard.putNumber("latency", result.getLatencyMillis());
-    if(result.hasTargets()){
-      SmartDashboard.putNumber("NewYaw", result.getBestTarget().getYaw());
-    }
   }
 
   public double getYaw() {
     if (_target != null) {
-    double yaw = _target.getYaw();
-    return yaw;
+      double yaw = _target.getYaw() + trim;
+      return yaw;
     }
     return 10.0;
   }
 
   public double getPitch() {
     if (_target != null) {
-    double pitch = _target.getPitch();
-    SmartDashboard.putNumber("Pitch", pitch);
-    return pitch;
+      double pitch = _target.getPitch();
+      SmartDashboard.putNumber("Pitch", pitch);
+      return pitch;
     }
     return 11.0;
   }
 
-  public double getArea() { 
+  public double getArea() {
     if (_target != null) {
-    double area = _target.getArea();
-    return area;
+      double area = _target.getArea();
+      return area;
     }
     return 11.0;
   }
 
   public double getSkew() {
     if (_target != null) {
-    double skew = _target.getSkew();
-    return skew;
+      double skew = _target.getSkew();
+      return skew;
     }
     return 11.0;
   }
 
   public Transform2d getPose() {
     if (_target != null) {
-    Transform2d pose = _target.getCameraToTarget();
-    return pose;
+      Transform2d pose = _target.getCameraToTarget();
+      return pose;
     }
     return new Transform2d();
   }
@@ -127,7 +125,7 @@ public class Vision extends Subsystem {
   /* TO BE USED FOR COMMANDS */
   public double getRotationSpeed() {
     updateTargets();
-    double rotationSpeed = _result.getBestTarget().getYaw() / 50;
+    double rotationSpeed = getYaw() / 50;
 
     return rotationSpeed;
   }
