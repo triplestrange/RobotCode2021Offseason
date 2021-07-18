@@ -86,7 +86,7 @@ public class Turret extends Subsystem {
       if (gyro < 0) {
         gyro = gyro + 360;
       }
-      double turretLocation = (gyro / (-360.0 / 142)) - 8;
+      double turretLocation = (gyro / (-360.0 / 142)) - 6 ;
       SmartDashboard.putNumber("turret Encoder", turretEncoder.getPosition());
       SmartDashboard.putNumber("turret pid",
           m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
@@ -128,6 +128,15 @@ public class Turret extends Subsystem {
 
       }
     } else if (mode == 3) {
+
+      // mode for auto vision
+    } else if (mode == 4) {
+      if (vision.getHasTargets()) {
+        while (Math.abs(vision.getYaw()) > 0.2) {
+          turretMotor.set(vision.getRotationSpeed());
+        }
+        turretMotor.set(0);
+      }
     } else {
       turretMotor.set(0);
     }

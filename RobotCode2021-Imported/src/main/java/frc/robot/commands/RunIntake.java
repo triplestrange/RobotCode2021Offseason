@@ -21,9 +21,9 @@ public class RunIntake extends InstantCommand {
       () -> {
         double speed = 0;
         if (joystick.getRawAxis(2) > 0.05 ) {
-          speed = joystick.getRawAxis(2) * 0.5;
+          speed = joystick.getRawAxis(2) * 0.55;
         } else if (joystick.getRawAxis(3) > 0.05) {
-          speed = -joystick.getRawAxis(3) * 0.5;
+          speed = -joystick.getRawAxis(3) * 0.55;
         } else if (auto) {
           speed = 0.5;
         }

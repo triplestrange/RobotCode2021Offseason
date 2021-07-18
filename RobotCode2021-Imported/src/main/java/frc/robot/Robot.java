@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     
+    CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(1);
     
     }
 
@@ -76,7 +78,7 @@ public class Robot extends TimedRobot {
   
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand(null);
-
+    RobotContainer.swerveDrive.zeroHeading();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       Scheduler.getInstance().add(m_autonomousCommand);
@@ -127,7 +129,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    RobotContainer.swerveDrive.zeroHeading();
     // RobotContainer.swerveDrive.resetEncoders();
 
   }

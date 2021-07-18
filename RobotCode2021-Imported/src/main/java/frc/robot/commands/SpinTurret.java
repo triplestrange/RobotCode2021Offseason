@@ -23,11 +23,12 @@ public class SpinTurret extends InstantCommand {
   public SpinTurret(Turret subsystem, Vision subsystem2, int mode, double speed, SwerveDrive subsystem3,
       Joystick joystick) {
     super(subsystem, () -> {
-      if (mode == 2 && RobotContainer.turret.gyroMode) {
+      if ((mode == 2 || mode == 4) && RobotContainer.turret.gyroMode) {
         subsystem.toggleGyroMode();
+        System.out.println("toggle cuz vision");
       }if (mode == 3) {
         subsystem.toggleGyroMode();
-        System.out.println("toggle?s");
+        System.out.println("toggles");
       }
       subsystem.spin(mode, speed, subsystem3, joystick);
     });
@@ -42,11 +43,4 @@ public class SpinTurret extends InstantCommand {
   public void initialize() {
   }
 
-  @Override 
-  public boolean isFinished() {
-    if (mode == 2 && Math.abs(RobotContainer.vision.getYaw()) < 0.2) {
-      return true;
-    }
-    return false;
-  }
-}
+}  
