@@ -92,7 +92,7 @@ public class RobotContainer {
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
-        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, 0));
+        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, 0, false));
         intake.setDefaultCommand(new RunIntake(intake, m_operatorController, false));
         // turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
         vision.setDefaultCommand(new RunVision(vision));
@@ -144,8 +144,10 @@ public class RobotContainer {
         butA.whenReleased(new RetractIntake(intake));
         butB.whileHeld(new FeedShooter(conveyor, shooter));
         butB.whenReleased(new StopShooter(shooter));
-        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.8));
-        rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8));
+        lBump.whileHeld(new AutoIndexConveyor(conveyor, -1, true));
+        lBump.whenReleased(new InstantCommand(shooter::stopShooter));
+        rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8, true));
+        rBump.whenReleased(new InstantCommand(shooter::stopShooter));
 
     }
 
