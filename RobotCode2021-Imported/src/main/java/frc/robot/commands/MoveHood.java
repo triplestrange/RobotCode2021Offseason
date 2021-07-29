@@ -21,6 +21,7 @@ public class MoveHood extends CommandGroup {
     requires(subsystem);
     m_shooter = subsystem;
     m_pos = pos;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

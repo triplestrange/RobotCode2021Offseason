@@ -7,6 +7,7 @@ package frc.robot.commands.Auto;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+
 import java.util.List;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -53,6 +54,7 @@ public class GalacticPathA extends CommandGroup {
                        //direction robot moves
  new Pose2d(0, 8.382, new Rotation2d(Math.PI / 2)), config);
 
+
     SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject, (0), swerveDrive::getPose, 
     // Functional
     // feed
@@ -74,5 +76,6 @@ public class GalacticPathA extends CommandGroup {
     addSequential(intakeCommand);
     addParallel(swerveControllerCommand1);
     
+
   }
 }

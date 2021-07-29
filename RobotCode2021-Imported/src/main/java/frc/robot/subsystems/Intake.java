@@ -16,6 +16,8 @@ public class Intake extends Subsystem {
     private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Intake.motor, MotorType.kBrushless);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, 1);
     private boolean extended = false;
+    private double speedIn;
+    private double speedOut;
 
     public Intake() {
         super();
@@ -52,6 +54,18 @@ public class Intake extends Subsystem {
 
     //auto intakes
     public void runWheelsAuto() {
+        intakeMotor.set(.5);
+    }
+
+    public void extendAuto() {
+        intakeSolenoid.set(Value.kForward);
+        setExtended(true);
+        intakeMotor.set(.5);
+    }
+
+    //auto intakes
+    public void 
+    runWheelsAuto() {
         intakeMotor.set(.5);
     }
 

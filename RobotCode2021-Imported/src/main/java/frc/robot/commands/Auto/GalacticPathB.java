@@ -54,6 +54,7 @@ public class GalacticPathB extends CommandGroup {
                        //direction robot moves
  new Pose2d(0, 8.382, new Rotation2d(-Math.PI / 2)), config);
 
+
     SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject, (0), swerveDrive::getPose, 
     // Functional
     // feed

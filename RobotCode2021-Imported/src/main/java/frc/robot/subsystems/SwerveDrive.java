@@ -51,6 +51,9 @@ public class SwerveDrive extends Subsystem {
                        ModuleConstants.kAbsoluteBR,
                        SwerveDriveConstants.backRightSteerEncoderReversed);
 
+  private SwerveModuleState[] swerveModuleStates;
+  private SwerveModuleState[] initStates;
+
   // The gyro sensor
   public final Gyro navX = new AHRS(SPI.Port.kMXP);
   boolean gyroReset;
@@ -136,7 +139,7 @@ public class SwerveDrive extends Subsystem {
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
-    var swerveModuleStates = SwerveDriveConstants.kDriveKinematics.toSwerveModuleStates(
+    swerveModuleStates = SwerveDriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
             xSpeed, ySpeed, rot, getAngle())
             : new ChassisSpeeds(xSpeed, ySpeed, rot)
@@ -179,6 +182,7 @@ public class SwerveDrive extends Subsystem {
   public void zeroHeading() {
     navX.reset();
     // resetEncoders();
+
     gyroReset = true;
   }
 
@@ -202,6 +206,16 @@ public class SwerveDrive extends Subsystem {
    */
   public double getTurnRate() {
     return navX.getRate() * (SwerveDriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public void zeroWheels() {
+    
+
+    m_frontLeft.resetWheel();
+    m_rearLeft.resetWheel();
+    m_frontRight.resetWheel();
+    m_rearRight.resetWheel();
+
   }
 
   @Override

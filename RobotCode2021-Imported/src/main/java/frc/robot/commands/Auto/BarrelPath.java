@@ -32,15 +32,7 @@ public class BarrelPath extends CommandGroup {
                       // Add kinematics to ensure max speed is actually obeyed
                       // .setKinematics(SwerveDriveConstants.kDriveKinematics)
                       .setEndVelocity(1.5);
-
-//       TrajectoryConfig config1 = new TrajectoryConfig(1,
-//               AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-//                       // Add kinematics to ensure max speed is actually obeyed
-//                       // .setKinematics(SwerveDriveConstants.kDriveKinematics)
-//                       .setStartVelocity(1.5);
-
-                    
-    
+                     
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0, new  Rotation2d(-Math.PI / 2)), List.of(
           new Translation2d(0, -3),

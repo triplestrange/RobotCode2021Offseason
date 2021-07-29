@@ -16,9 +16,11 @@ import com.revrobotics.CANAnalog.AnalogMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.Constants.SwerveDriveConstants;
 
 public class SwerveModule {
   // motors
@@ -149,8 +151,15 @@ public class SwerveModule {
   /**
    * Physically zeroes wheel. (i hope)
    */
-  public void resetWheel() {
+<<<<<<< Updated upstream
+  public void resetWheel() {    
+    m_driveMotor.set(0);
     m_pidController.setReference(0, ControlType.kPosition);
     
+=======
+  public void resetWheel() {
+    // m_pidController.setReference(0, ControlType.kPosition);
+
+>>>>>>> Stashed changes
   }
 }

@@ -7,14 +7,23 @@
 
 package frc.robot.commands;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.*;
 
 public class DefaultDrive extends Command {
@@ -87,6 +96,7 @@ public class DefaultDrive extends Command {
     }
     if (Math.abs(m_joystick.getRawAxis(0)) > 0.1) {
       m_xSpeed = m_joystick.getRawAxis(0)  * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond * multiplier;
+
     }
     if (Math.abs(m_joystick.getRawAxis(4)) > 0.2) {
       m_rot = -m_joystick.getRawAxis(4)  * (Math.PI) * 1.5 * multiplier;
@@ -108,6 +118,11 @@ public class DefaultDrive extends Command {
     if (m_joystick.getRawButtonPressed(6)) {
       // to zero all wheels
       SmartDashboard.putNumber("BUTTON PRESSED", 5);
+    }
+
+    // sidestep
+    if (m_joystick.getRawButtonPressed(1)) {
+        
     }
 
   }
