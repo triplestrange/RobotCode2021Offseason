@@ -21,19 +21,16 @@ public class Vision extends Subsystem {
   private boolean _hasTargets;
   private PIDController _controller;
   private PhotonPipelineResult _result;
+  private double trim;
+
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public Vision(PhotonCamera camera) {
-     // photonvision.local:5800
+    // photonvision.local:5800
 
-     _camera = camera;
-     // Set driver mode to on.
-    _camera.setDriverMode(true);
+    _camera = camera;
 
-    // Change pipeline to 2
-    _camera.setPipelineIndex(2);
-
-    updateTargets();
+    // updateTargets();
 
     _controller = new PIDController(.1, 0, 0);
   }
@@ -42,16 +39,21 @@ public class Vision extends Subsystem {
   public void updateTargets() {
     // Get the latest pipeline result.
     _result = _camera.getLatestResult();
+    SmartDashboard.putNumber("Yaw", getYaw());
+    SmartDashboard.putNumber("Pitch", getPitch());
+    SmartDashboard.putNumber("Area", getArea());
+    SmartDashboard.putNumber("Skew", getSkew());
+    SmartDashboard.putBoolean("hasTargets", _result.hasTargets());
 
     // Check if the latest result has any targets.
     _hasTargets = _result.hasTargets();
 
     if (_hasTargets) {
-    // Get a list of currently tracked targets.
-    _targets = _result.getTargets();
+      // Get a list of currently tracked targets.
+      _targets = _result.getTargets();
 
-    // Get the current best target.
-    _target = _result.getBestTarget();
+      // Get the current best target.
+      _target = _result.getBestTarget();
     } else {
       _targets = null;
       _target = null;
@@ -61,61 +63,70 @@ public class Vision extends Subsystem {
     // double latencySeconds = getLatencyMillis() / 1000.0; // around 3 ms
 
     // Blink the LEDs.
-    _camera.setLED(LEDMode.kOff);
+    // _camera.setLED(LEDMode.kOff);
   }
 
   public void periodic() {
+    SmartDashboard.putNumber("Vision Trim", trim);
+    trim = SmartDashboard.getNumber("Vision Trim", 0);
     SmartDashboard.putNumber("Yaw", getYaw());
-    SmartDashboard.putNumber("Pitch", getPitch());
-    SmartDashboard.putNumber("Area", getArea());
-    SmartDashboard.putNumber("Skew", getSkew());
+    updateTargets();
+    var result = _camera.getLatestResult();
+    SmartDashboard.putNumber("latency", result.getLatencyMillis());
   }
 
   public double getYaw() {
     if (_target != null) {
-    double yaw = _target.getYaw();
-    return yaw;
+      double yaw = _target.getYaw() + trim;
+      return yaw;
     }
-    return 0.0;
+    return 10.0;
   }
 
   public double getPitch() {
     if (_target != null) {
-    double pitch = _target.getPitch();
-    return pitch;
+      double pitch = _target.getPitch();
+      SmartDashboard.putNumber("Pitch", pitch);
+      return pitch;
     }
-    return 0.0;
+    return 11.0;
   }
 
-  public double getArea() { 
+  public double getArea() {
     if (_target != null) {
-    double area = _target.getArea();
-    return area;
+      double area = _target.getArea();
+      return area;
     }
-    return 0.0;
+    return 11.0;
   }
 
   public double getSkew() {
     if (_target != null) {
-    double skew = _target.getSkew();
-    return skew;
+      double skew = _target.getSkew();
+      return skew;
     }
-    return 0.0;
+    return 11.0;
   }
 
   public Transform2d getPose() {
     if (_target != null) {
-    Transform2d pose = _target.getCameraToTarget();
-    return pose;
+      Transform2d pose = _target.getCameraToTarget();
+      return pose;
     }
     return new Transform2d();
   }
+
+  public boolean getHasTargets() {
+    return _hasTargets;
+  }
+
   /* ****************** */
 
   /* TO BE USED FOR COMMANDS */
   public double getRotationSpeed() {
     updateTargets();
-    double rotationSpeed = _controller.calculate(_result.getBestTarget().getYaw(), 0);
+    double rotationSpeed = getYaw() / 50;
+
     return rotationSpeed;
   }
 

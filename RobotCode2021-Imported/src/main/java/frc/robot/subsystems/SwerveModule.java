@@ -81,7 +81,7 @@ public class SwerveModule {
     // m_turningPIDController.enableContinuousInput(0, 2*Math.PI);
 
     // PID coefficients
-    kP = 0.5;
+    kP = 0.4;
     kI = 0;
     kD = 0;
     kIz = 0;
@@ -145,7 +145,7 @@ public class SwerveModule {
   public void resetEncoders() {
     m_driveEncoder.setPosition(0);
     // m_turningEncoder.setPosition(Math.PI-m_absoluteEncoder.getPosition());
-    m_turningEncoder.setPosition(0);
+    // m_turningEncoder.setPosition(0);
   }
 
   /**

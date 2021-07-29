@@ -7,20 +7,21 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
 
-public class ControlConveyor extends CommandGroup {
-  private final Conveyor m_conveyor;
-  private final double m_speed;
+public class DoClimb extends CommandGroup {
+  private final Climb m_climb;
+  private final Joystick m_joystick;
   /**
    * Creates a new ControlConveyor.
    */
-  public ControlConveyor(Conveyor subsystem, int speed) {
-
+  public DoClimb(Climb subsystem, Joystick joystick) {
     requires(subsystem);
-    m_conveyor = subsystem;
-    m_speed = speed;
+    m_climb = subsystem;
+    m_joystick = joystick;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,7 +33,7 @@ public class ControlConveyor extends CommandGroup {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyor.manualControl(m_speed / 1.5);
+    m_climb.runClimb(m_joystick);
   }
 
 

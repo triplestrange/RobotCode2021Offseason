@@ -55,7 +55,7 @@ public class SwerveDrive extends Subsystem {
   private SwerveModuleState[] initStates;
 
   // The gyro sensor
-  private final Gyro navX = new AHRS(SPI.Port.kMXP);
+  public final Gyro navX = new AHRS(SPI.Port.kMXP);
   boolean gyroReset;
 
   // Odometry class for tracking robot pose
@@ -75,7 +75,7 @@ public class SwerveDrive extends Subsystem {
    */
   public Rotation2d getAngle() {
     // Negating the angle because WPILib gyros are CW positive.
-    return Rotation2d.fromDegrees((navX.getAngle()+180) * (SwerveDriveConstants.kGyroReversed ? 1.0 : -1.0));
+    return Rotation2d.fromDegrees(-90+((navX.getAngle()) * (SwerveDriveConstants.kGyroReversed ? 1.0 : -1.0)));
   } 
   
   public boolean getGyroReset() {
@@ -181,11 +181,13 @@ public class SwerveDrive extends Subsystem {
    */
   public void zeroHeading() {
     navX.reset();
-<<<<<<< Updated upstream
-=======
     // resetEncoders();
->>>>>>> Stashed changes
+
     gyroReset = true;
+  }
+
+  public void lockWheels() {
+    
   }
 
   /**
@@ -206,7 +208,6 @@ public class SwerveDrive extends Subsystem {
     return navX.getRate() * (SwerveDriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-<<<<<<< Updated upstream
   public void zeroWheels() {
     
 
@@ -214,21 +215,7 @@ public class SwerveDrive extends Subsystem {
     m_rearLeft.resetWheel();
     m_frontRight.resetWheel();
     m_rearRight.resetWheel();
-=======
-  public SwerveModuleState[] getModuleState() {
-    return swerveModuleStates;
-  }
 
-  public void setInitState(SwerveModuleState[] cur) {
-    cur = initStates;
-  }
-
-  public void displayEncoders() {
-    SmartDashboard.putNumber("Front Left Steering Encoder", m_frontLeft.m_turningEncoder.getCPR());
-    SmartDashboard.putNumber("Front Right Steering Encoder", m_frontRight.m_turningEncoder.getCPR());
-    SmartDashboard.putNumber("Rear Left Steering Encoder", m_rearLeft.m_turningEncoder.getCPR());
-    SmartDashboard.putNumber("Rear Right Steering Encoder", m_rearRight.m_turningEncoder.getCPR());
->>>>>>> Stashed changes
   }
 
   @Override

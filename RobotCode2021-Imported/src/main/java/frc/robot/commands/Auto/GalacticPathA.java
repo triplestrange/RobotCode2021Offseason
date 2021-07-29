@@ -6,7 +6,7 @@ package frc.robot.commands.Auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
+
 
 import java.util.List;
 
@@ -38,20 +38,22 @@ public class GalacticPathA extends CommandGroup {
     this.intake =  intake;
     // Create config for trajectory
     // top speed: 2.1
-    TrajectoryConfig config = new TrajectoryConfig(1, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+    TrajectoryConfig config = new TrajectoryConfig(.5, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         // .setKinematics(SwerveDriveConstants.kDriveKinematics)
         // set end: 1.5
-        .setEndVelocity(1);
+        .setEndVelocity(.5);
 
     Trajectory traject = TrajectoryGenerator.generateTrajectory(
       
-    new Pose2d(0, 0, new  Rotation2d(-Math.PI/2)), List.of(
-     
-
+    new Pose2d(0, 0, new  Rotation2d(Math.PI)), List.of(
+          new Translation2d(0, 1.3),
+          new Translation2d(-1.525, 2.9),
+          new Translation2d(0, 4.25)
   ), 
                        //direction robot moves
- new Pose2d(5, 0, new Rotation2d(-Math.PI / 2)), config);
+ new Pose2d(0, 8.382, new Rotation2d(Math.PI / 2)), config);
+
 
     SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject, (0), swerveDrive::getPose, 
     // Functional
@@ -68,17 +70,12 @@ public class GalacticPathA extends CommandGroup {
         swerveDrive
 
     );
+    
+    IntakeCommand intakeCommand = new IntakeCommand(intake);
 
-    // WaitCommand waitCommand = new WaitCommand(15);
-    // IntakeCommand intakeCommand = new IntakeCommand(intake);
-
-
+    addSequential(intakeCommand);
     addParallel(swerveControllerCommand1);
-    // addSequential(intakeCommand);
+    
 
-    // addSequential(waitCommand);
-
-    addParallel(swerveControllerCommand1);
-    // addSequential(intakeCommand);
   }
 }

@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
@@ -32,13 +34,19 @@ public class FeedShooter extends CommandGroup {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_atSpeed = m_shooter.atSpeed();
+    RobotContainer.shooter.runShooter();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_atSpeed = RobotContainer.shooter.atSpeed();
     m_conveyor.feedShooter(m_speed, m_atSpeed);
+    if(m_atSpeed)
+      System.out.println("yeet");
+    else
+      System.out.println("skeet");
+
   }
 
   // Returns true when the command should end.

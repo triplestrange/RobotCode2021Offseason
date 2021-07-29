@@ -52,7 +52,7 @@ public class Shooter extends Subsystem {
     kD = 0; 
     // kDf = 0.5;
     kIz = 0; 
-    kFF = 1.0/5676.0; 
+    kFF = 0; 
     kMaxOutput = 1; 
     kMinOutput = 0.8;
     maxRPM = 5676.0;
@@ -83,6 +83,10 @@ public class Shooter extends Subsystem {
     
   }
 
+  public void runShooter(double speed) {
+    shooter1.set(speed);
+  }
+
   public void stopShooter() {
     shooter1.set(0);
   }
@@ -108,10 +112,12 @@ public class Shooter extends Subsystem {
     SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
     SmartDashboard.putNumber("SHOOTER HOOD POS", hoodServo.get());
     SmartDashboard.putNumber("SHOOTER HOOD ANGLE", hoodServo.getAngle());
+    SmartDashboard.putBoolean("at_speed", atSpeed());
   }
 
   public boolean atSpeed() {
-    return Math.abs(setPoint - m_encoder.getVelocity()) < 300; // play with the number (go up to 1,000)
+    //was 300
+    return (Math.abs(setPoint - m_encoder.getVelocity())) / (setPoint) < 0.05;
   }
 
   @Override
