@@ -15,7 +15,7 @@ import frc.robot.subsystems.Shooter;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class RunShooter extends InstantCommand {
   public RunShooter(Shooter subsystem) {
-    super(subsystem, () -> {subsystem.runShooter();});
+    super(subsystem, () -> {subsystem.runShooter(1);});
     requires(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }

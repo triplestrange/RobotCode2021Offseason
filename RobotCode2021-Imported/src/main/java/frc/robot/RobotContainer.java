@@ -66,9 +66,9 @@ public class RobotContainer {
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
     private static final PhotonCamera camera = new PhotonCamera("photonvision");
-    private final PhotonCamera camera1 = new PhotonCamera("other");
+    // private final PhotonCamera camera1 = new PhotonCamera("other");
     public static final Vision vision = new Vision(camera);
-    private final Vision vision1 = new Vision(camera1);
+    // private final Vision vision1 = new Vision(camera1);
     public static final Turret turret = new Turret(swerveDrive, vision);
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
@@ -153,61 +153,6 @@ public class RobotContainer {
 
     }
 
-        // B
-        JoystickButton turbo = new JoystickButton(m_driverController, 2);
-        // JoystickButton ok = new JoystickButton(m_driverController, 7);
-
-        BarrelPath Barrel = new BarrelPath(swerveDrive, theta);
-    
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Barrel Path", Barrel);
-
-        
-        BouncePath Bounce = new BouncePath(swerveDrive, theta);
-    
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Bounce Path", Bounce);
-
-
-        
-        SlalomPath1 Slolam = new SlalomPath1(swerveDrive, theta);
-    
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putData("Slalom Path", Slolam);
-
-
-        butA.whenPressed(new ExtendIntake(intake, m_operatorController));
-        //butB.whileHeld(new SpinTurret(turret, true, 1));
-        //butX.whileHeld(new SpinTurret(turret, true, -1));
-        butY.whileHeld(new RunShooter(shooter));
-        butY.whenReleased(new StopShooter(shooter));
-        butY.whenPressed(new AutoIndexConveyor(conveyor));
-        lBump.whenPressed(new ControlConveyor(conveyor, 1));
-        lBump.whenReleased(new ControlConveyor(conveyor, 0));
-        rBump.whenPressed(new ControlConveyor(conveyor, -1));
-        rBump.whenReleased(new ControlConveyor(conveyor, 0));
-        
-        lJoy.whileHeld(new MoveHood(shooter, 1));
-        rJoy.whileHeld(new MoveHood(shooter, -1));
-
-        // .whileHeld(new MoveHood(shooter, 1));
-
-        // driver X button - slow
-        butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
-        butAd.whenPressed(new InstantCommand(swerveDrive::zeroWheels));
-
-        butBd.whenPressed(new SideStep(swerveDrive, theta));
-
-        turbo.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 2));
-
-        gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
-
-        //new JoystickButton(m_operatorController, 4).whenPressed(new RunCommand(() -> conveyor.manualControl(-), conveyor))
-        //        .whenReleased(new RunCommand(conveyor::autoIndex, conveyor));
-        // should be start button for camera to find target idk what number is so fix it
-        // new JoystickButton(m_operatorController, 7).whenHeld(new InstantCommand(turret::visionTurret, turret));
-        
-}
 
     public static String getCoords() {
         return (swerveDrive.getPose().getX() + " " + swerveDrive.getPose().getY());

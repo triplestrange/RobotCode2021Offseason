@@ -151,15 +151,9 @@ public class SwerveModule {
   /**
    * Physically zeroes wheel. (i hope)
    */
-<<<<<<< Updated upstream
   public void resetWheel() {    
     m_driveMotor.set(0);
     m_pidController.setReference(0, ControlType.kPosition);
     
-=======
-  public void resetWheel() {
-    // m_pidController.setReference(0, ControlType.kPosition);
-
->>>>>>> Stashed changes
   }
 }

@@ -5,37 +5,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-
-import org.photonvision.PhotonCamera;
-
-// import com.ctre.phoenix.sensors.CANCoder;
-// import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import frc.robot.subsystems.SwerveDrive;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
-// import frc.robot.vision.GripPipeline;
-
-// import org.opencv.core.Rect;
-// import org.opencv.imgproc.Imgproc;
-
-// import edu.wpi.cscore.UsbCamera;
-// import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.first.wpilibj.vision.VisionRunner;
-// import edu.wpi.first.wpilibj.vision.VisionThread;
 
 public class Robot extends TimedRobot {
 
@@ -53,17 +28,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     
-    CameraServer.getInstance().startAutomaticCapture(0);
-    CameraServer.getInstance().startAutomaticCapture(1);
+    // CameraServer.getInstance().startAutomaticCapture(0);
     
     }
 
   @Override
   public void robotPeriodic() {
     Scheduler.getInstance().run();
-    RobotContainer.swerveDrive.displayEncoders();
-    // SmartDashboard.putNumber("hoodEncoder", hoodEncoder.getPosition());
-    // SmartDashboard.putNumber("hoodVoltage", hoodEncoder.getBusVoltage());
   
   }
 

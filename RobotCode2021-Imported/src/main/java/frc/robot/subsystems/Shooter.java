@@ -47,14 +47,14 @@ public class Shooter extends Subsystem {
 
     m_encoder = shooter1.getEncoder();
     m_pidController = shooter1.getPIDController();
-    kP = 30;
+    kP = 3000;
     kI = 0;
     kD = 0; 
     // kDf = 0.5;
     kIz = 0; 
-    kFF = 0; 
+    kFF = 1.0/5676.0; 
     kMaxOutput = 1; 
-    kMinOutput = 0.8;
+    kMinOutput = 0; // 0.8
     maxRPM = 5676.0;
     speed = 4550.0;
     // hoodPos = .25;
@@ -73,9 +73,8 @@ public class Shooter extends Subsystem {
   }
 
   public void runShooter() {
-    setPoint = SmartDashboard.getNumber("Shooter Velocity", 4550);
+    setPoint = SmartDashboard.getNumber("Shooter Velocity", 1000);
 
-    m_pidController.setP(30);
     m_pidController.setReference(setPoint, ControlType.kVelocity);
     
     SmartDashboard.putNumber("SetPoint", setPoint);

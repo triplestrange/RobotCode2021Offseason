@@ -17,6 +17,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -40,6 +43,12 @@ public class Turret extends Subsystem {
   public boolean gyroMode;
   private double gyro;
   private double trim;
+  public NetworkTableEntry tx;
+  public NetworkTableEntry ty;
+  public NetworkTableEntry ta;
+  public NetworkTableEntry tv;
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
 
   private PIDController visionController = new PIDController(Constants.Vision.turretKP, Constants.Vision.turretKI,
       Constants.Vision.turretKD);
@@ -71,7 +80,8 @@ public class Turret extends Subsystem {
 
     // PID coefficients
     kP = 0.1;
-    kFF = 1. / 11000.;
+    // kFF = 1. / 11000.;
+    kFF = 0.000005;
     kI = 0;
     kD = 0;
     kIz = 0;
@@ -92,6 +102,10 @@ public class Turret extends Subsystem {
           m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
       turretMotor.set(m_turretPIDController.calculate(turretEncoder.getPosition(), turretLocation));
     }
+    tv = table.getEntry("tv");
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    ta = table.getEntry("ta");
   }
 
   public void setPosition(double setpoint) {
@@ -122,11 +136,18 @@ public class Turret extends Subsystem {
       }
       turretMotor.set(speed);
     } else if (mode == 2) {
-      if (vision.getHasTargets()) {
-        turretMotor.set(vision.getRotationSpeed());
-        SmartDashboard.putNumber("turret rot", vision.getRotationSpeed());
-
+      double v = tv.getDouble(0.0);
+      double x = tx.getDouble(0.0);
+      double y = ty.getDouble(0.0);
+      double area = ta.getDouble(0.0);
+      if (v != 0) {
+        turretMotor.set(x/30.0);
       }
+      // if (vision.getHasTargets()) {
+      //   turretMotor.set(vision.getRotationSpeed());
+      //   SmartDashboard.putNumber("turret rot", vision.getRotationSpeed());
+      // }
+
     } else if (mode == 3) {
 
       // mode for auto vision
