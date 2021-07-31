@@ -56,7 +56,7 @@ public class Shooter extends Subsystem {
     kMaxOutput = 1; 
     kMinOutput = 0; // 0.8
     maxRPM = 5676.0;
-    speed = 4550.0;
+    speed = 3650.0;
     // hoodPos = .25;
 
     // TODO: set limits
@@ -73,7 +73,7 @@ public class Shooter extends Subsystem {
   }
 
   public void runShooter() {
-    setPoint = SmartDashboard.getNumber("Shooter Velocity", 1000);
+    setPoint = SmartDashboard.getNumber("Shooter Velocity", 3650);
 
     m_pidController.setReference(setPoint, ControlType.kVelocity);
     
@@ -116,7 +116,7 @@ public class Shooter extends Subsystem {
 
   public boolean atSpeed() {
     //was 300
-    return (Math.abs(setPoint - m_encoder.getVelocity())) / (setPoint) < 0.05;
+    return (Math.abs(setPoint - m_encoder.getVelocity())) / (setPoint) < 0.035;
   }
 
   @Override

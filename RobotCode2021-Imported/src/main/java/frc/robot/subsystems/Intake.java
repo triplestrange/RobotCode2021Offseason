@@ -35,9 +35,9 @@ public class Intake extends Subsystem {
         double speedOut = joystick.getRawAxis(2);
 
         if (speedIn > 0.1)
-            intakeMotor.set(0.5);
+            intakeMotor.set(0.45);
         else if (speedOut > 0.1)
-            intakeMotor.set(-0.5);
+            intakeMotor.set(-1);
         else
             intakeMotor.set(0);
     }

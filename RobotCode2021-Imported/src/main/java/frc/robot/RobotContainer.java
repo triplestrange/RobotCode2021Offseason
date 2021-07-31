@@ -146,7 +146,7 @@ public class RobotContainer {
         butA.whenReleased(new RetractIntake(intake));
         butB.whileHeld(new FeedShooter(conveyor, shooter));
         butB.whenReleased(new StopShooter(shooter));
-        lBump.whileHeld(new AutoIndexConveyor(conveyor, -1, true));
+        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.65, true));
         lBump.whenReleased(new InstantCommand(shooter::stopShooter));
         rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8, true));
         rBump.whenReleased(new InstantCommand(shooter::stopShooter));

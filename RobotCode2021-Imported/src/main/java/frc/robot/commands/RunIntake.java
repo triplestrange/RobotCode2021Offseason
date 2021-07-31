@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -19,9 +20,11 @@ public class RunIntake extends InstantCommand {
   public RunIntake(Intake subsystem, Joystick joystick, boolean auto) {
     super(subsystem, 
       () -> {
+        SmartDashboard.putNumber("Intake Speed", 0.55);
         double speed = 0;
         if (joystick.getRawAxis(2) > 0.05 ) {
-          speed = joystick.getRawAxis(2) * 1;
+          double mult = SmartDashboard.getNumber("Intake Speed", 0.5);
+          speed = joystick.getRawAxis(2) * mult;
         } else if (joystick.getRawAxis(3) > 0.05) {
           speed = -joystick.getRawAxis(3) * 1;
         } else if (auto) {
