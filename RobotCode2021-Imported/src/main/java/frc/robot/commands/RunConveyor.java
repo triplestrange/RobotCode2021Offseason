@@ -7,23 +7,31 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class StopShooter extends InstantCommand {
-  public StopShooter(Shooter subsystem) {
-    super(subsystem, subsystem::stopShooter);
-    requires(subsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
+public class RunConveyor extends InstantCommand {
+  
+  public RunConveyor(Conveyor subsystem) {
+      requires(subsystem);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void execute() {
     RobotContainer.conveyor.autoIndex(0, false);
+  }
+  @Override
+  protected boolean isFinished() {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

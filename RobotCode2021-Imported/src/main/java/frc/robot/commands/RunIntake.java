@@ -20,15 +20,17 @@ public class RunIntake extends InstantCommand {
   public RunIntake(Intake subsystem, Joystick joystick, boolean auto) {
     super(subsystem, 
       () -> {
-        SmartDashboard.putNumber("Intake Speed", 0.55);
         double speed = 0;
         if (joystick.getRawAxis(2) > 0.05 ) {
-          double mult = SmartDashboard.getNumber("Intake Speed", 0.5);
+          double mult = SmartDashboard.getNumber("Intake Speed", 0.8);
           speed = joystick.getRawAxis(2) * mult;
         } else if (joystick.getRawAxis(3) > 0.05) {
           speed = -joystick.getRawAxis(3) * 1;
         } else if (auto) {
-          speed = 0.5;
+          speed = 0.8;
+        }
+        else {
+          speed = 0;
         }
         subsystem.runWheels(speed);
       });

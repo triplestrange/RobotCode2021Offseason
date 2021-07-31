@@ -91,15 +91,22 @@ public class DefaultDrive extends Command {
       multiplier = 1;
     }
 
-    if (Math.abs(m_joystick.getRawAxis(1)) > 0.1) {
+    if (Math.abs(m_joystick.getRawAxis(1)) > 0.05) {
       m_ySpeed = -m_joystick.getRawAxis(1) * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond * multiplier;
     }
-    if (Math.abs(m_joystick.getRawAxis(0)) > 0.1) {
+    else {
+      m_ySpeed = 0;
+    }
+    if (Math.abs(m_joystick.getRawAxis(0)) > 0.05) {
       m_xSpeed = m_joystick.getRawAxis(0)  * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond * multiplier;
 
+    }else {
+      m_xSpeed=0;
     }
     if (Math.abs(m_joystick.getRawAxis(4)) > 0.2) {
       m_rot = -m_joystick.getRawAxis(4)  * (Math.PI) * 1.5 * multiplier;
+    }else {
+      m_rot=0;
     }
 
 

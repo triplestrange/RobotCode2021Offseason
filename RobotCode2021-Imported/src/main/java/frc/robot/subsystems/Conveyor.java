@@ -22,6 +22,7 @@ public class Conveyor extends Subsystem {
   }
 
   public void autoIndex(double speed, boolean yes) {
+    System.out.println("in the method");
     SmartDashboard.putBoolean("SENSOR", sensor.get());
     if (yes) {
       motor.set(speed);
@@ -29,8 +30,9 @@ public class Conveyor extends Subsystem {
         RobotContainer.shooter.runShooter(-0.3);
       }
     } else {
-      if (!sensor.get())
-        motor.set(-0.5);
+      if (!sensor.get()) {
+        motor.set(-1);
+        System.out.println("made it");}
       else {
         motor.set(speed);
       }
@@ -52,7 +54,9 @@ public class Conveyor extends Subsystem {
   @Override
   public void periodic() {
   }
-
+  public void stop() {
+    motor.set(0);
+  }
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub

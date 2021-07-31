@@ -49,6 +49,13 @@ public class FeedShooter extends CommandGroup {
 
   }
 
+  @Override
+  public synchronized void cancel() {
+    // TODO Auto-generated method stub
+    m_conveyor.autoIndex(0, false);
+    super.cancel();
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

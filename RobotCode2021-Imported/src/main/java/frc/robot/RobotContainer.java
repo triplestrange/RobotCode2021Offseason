@@ -38,9 +38,6 @@ import frc.robot.commands.*;
 
 import frc.robot.commands.Auto.*;
 
-import frc.robot.commands.Auto.BarrelPath;
-import frc.robot.commands.Auto.BouncePath;
-import frc.robot.commands.Auto.SlalomPath1;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -62,7 +59,7 @@ public class RobotContainer {
     // The robot's subsystems
     public static SwerveDrive swerveDrive = new SwerveDrive();
     private final Intake intake = new Intake();
-    private final Conveyor conveyor = new Conveyor();
+    public static final Conveyor conveyor = new Conveyor();
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
     private static final PhotonCamera camera = new PhotonCamera("photonvision");
@@ -168,9 +165,10 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand(Trajectory trajectory) {
-        THOR thor = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-
-        return thor;
+        // ShootTrench auto = new ShootTrench(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+        // Steal auto = new Steal(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+        THOR auto = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+        return auto;
 
     }
 

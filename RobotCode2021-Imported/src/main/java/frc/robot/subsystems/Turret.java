@@ -152,9 +152,9 @@ public class Turret extends Subsystem {
 
       // mode for auto vision
     } else if (mode == 4) {
-      if (vision.getHasTargets()) {
-        while (Math.abs(vision.getYaw()) > 0.2) {
-          turretMotor.set(vision.getRotationSpeed());
+      if (tx.getDouble(0.0)!= 0) {
+        while (Math.abs(tx.getDouble(0.0)) > 0.2) {
+          turretMotor.set(tx.getDouble(0.0)/30);
         }
         turretMotor.set(0);
       }

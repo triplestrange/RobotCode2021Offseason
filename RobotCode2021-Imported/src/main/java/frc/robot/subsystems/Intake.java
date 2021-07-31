@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem {
 
@@ -25,6 +26,7 @@ public class Intake extends Subsystem {
         intakeMotor.setIdleMode(IdleMode.kBrake);
         intakeMotor.enableVoltageCompensation(11);
         intakeMotor.setSmartCurrentLimit(20);
+        SmartDashboard.putNumber("Intake Speed", 0.8);
         intakeMotor.burnFlash();
     }
 
@@ -42,7 +44,6 @@ public class Intake extends Subsystem {
             intakeMotor.set(0);
     }
 
-
     public void retract() {
         intakeSolenoid.set(Value.kReverse);
         setExtended(false);
@@ -52,7 +53,7 @@ public class Intake extends Subsystem {
         intakeMotor.set(speed);
     }
 
-    //auto intakes
+    // auto intakes
     public void runWheelsAuto() {
         intakeMotor.set(.5);
     }
@@ -62,7 +63,6 @@ public class Intake extends Subsystem {
         setExtended(true);
         intakeMotor.set(.5);
     }
-
 
     public boolean getExtended() {
         return extended;
