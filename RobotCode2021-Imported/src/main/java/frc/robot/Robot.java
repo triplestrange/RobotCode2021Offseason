@@ -1,26 +1,29 @@
 
 package frc.robot;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+
 
 
 public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  private Double[] coords;
+  private AddressableLED m_led;
+  private AddressableLEDBuffer m_ledbuffer;
 
-  private FileWriter fw;
-  private File f;
-  private BufferedWriter bw;
 
   // CANCoderConfiguration _canCoderConfiguration = new CANCoderConfiguration();
 
@@ -28,7 +31,20 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     
-    // CameraServer.getInstance().startAutomaticCapture(0);
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+    camera.setFPS(30);
+
+    m_led = new AddressableLED(9);
+    m_ledbuffer = new AddressableLEDBuffer(27);
+    m_led.setLength(m_ledbuffer.getLength());
+
+    for (var i = 0; i< m_ledbuffer.getLength(); i++) {
+      m_ledbuffer.setRGB(i, 255,0,0);
+      
+    }
+    m_led.setData(m_ledbuffer);
+    m_led.start();
+
     
     }
 
@@ -65,37 +81,10 @@ public class Robot extends TimedRobot {
       RobotContainer.swerveDrive.getPose().getY()};
     SmartDashboard.putNumberArray("AUTO COORDS", coords);
     
-    try {
-      f = new File("/home/lvuser/Output.txt");
-
-      if (!f.exists()) {
-        f.createNewFile();
-      }
-      fw = new FileWriter(f);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    
-    bw = new BufferedWriter(fw);
-
-    try {
-      bw.write("AUTOS");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+   
   }
 
-  // @Override
-  // public void autonomousPeriodic() {
-  //   try {
-  //     bw.write(RobotContainer.getCoords());
-  //     bw.close();
-  //   } catch (IOException e) {
-  //     e.printStackTrace();
-  //   }
-  // }
-
+ 
   @Override
   public void teleopInit() {
 

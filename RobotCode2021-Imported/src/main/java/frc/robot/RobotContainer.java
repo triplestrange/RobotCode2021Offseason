@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.cscore.*;
+import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.commands.*;
 
 import frc.robot.commands.Auto.*;
@@ -62,7 +64,7 @@ public class RobotContainer {
     public static final Conveyor conveyor = new Conveyor();
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
-    private static final PhotonCamera camera = new PhotonCamera("photonvision");
+    private static final PhotonCamera camera = new PhotonCamera("other");
     // private final PhotonCamera camera1 = new PhotonCamera("other");
     public static final Vision vision = new Vision(camera);
     // private final Vision vision1 = new Vision(camera1);
@@ -87,7 +89,6 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
