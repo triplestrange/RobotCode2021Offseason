@@ -167,8 +167,8 @@ public class RobotContainer {
 
     public Command getAutonomousCommand(Trajectory trajectory) {
         // ShootTrench auto = new ShootTrench(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-        // Steal auto = new Steal(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-        THOR auto = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+        Steal auto = new Steal(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+        // THOR auto = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
         return auto;
 
     }

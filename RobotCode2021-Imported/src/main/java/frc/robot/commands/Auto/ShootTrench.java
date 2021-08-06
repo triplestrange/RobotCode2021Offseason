@@ -79,16 +79,13 @@ public class ShootTrench extends CommandGroup {
     addSequential(new WaitCommand(1.5));
     addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);
     addSequential(new WaitCommand(1));
-    System.out.println("1");
     addSequential(new FeedShooter(conveyor, shooter), 3);
-    System.out.println("1");
     addSequential(new StopShooter(shooter));
     addParallel(new RunConveyor(conveyor));
     addSequential(new ExtendIntake(intake, new Joystick(3)));
     // addSequential(new WaitCommand(1));
     addParallel(new RunIntake(intake, new Joystick(3), true), 8);
-    addParallel(swerveControllerCommand, 7);
-    addSequential(new WaitCommand(7));
+    addSequential(swerveControllerCommand);
     addParallel(new RetractIntake(intake));
     addParallel(new RunIntake(intake, new Joystick(3), false));
     addSequential(swerveControllerCommand1);

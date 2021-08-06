@@ -117,8 +117,8 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
     // changing here -- try raising gains further
-    public static final double kPXController = 3;
-    public static final double kPYController = 3;
+    public static final double kPXController = 5;
+    public static final double kPYController = 5;
     public static final double kDXController = 0;
     public static final double kDYController = 0;
     public static final double kPThetaController = 5;

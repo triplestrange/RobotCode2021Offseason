@@ -153,6 +153,11 @@ public class SwerveControllerCommand extends CommandGroup {
   @Override
   public void end() {
     m_timer.stop();
+    var targetChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_pose.get().getRotation());
+
+    var targetModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+
+    m_outputModuleStates.accept(targetModuleStates);
   }
 
   @Override

@@ -76,7 +76,7 @@ public class Turret extends Subsystem {
     turretEncoder = turretMotor.getEncoder();
     turretEncoder.setPosition(0);
 
-    m_turretPIDController = new PIDController(0.04, 0, 0.002);
+    m_turretPIDController = new PIDController(0.15, 0,0);
 
     // PID coefficients
     kP = 0.1;

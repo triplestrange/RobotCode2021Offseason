@@ -57,6 +57,9 @@ public class Conveyor extends Subsystem {
   public void stop() {
     motor.set(0);
   }
+  public void auto() {
+    motor.set(-0.65);
+  }
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub

@@ -35,11 +35,12 @@ public class Robot extends TimedRobot {
     camera.setFPS(30);
 
     m_led = new AddressableLED(9);
-    m_ledbuffer = new AddressableLEDBuffer(27);
+    // for whatever reason, looks like every 'code pixel' controls a group of 3 actual pixels
+    m_ledbuffer = new AddressableLEDBuffer(28);
     m_led.setLength(m_ledbuffer.getLength());
 
     for (var i = 0; i< m_ledbuffer.getLength(); i++) {
-      m_ledbuffer.setRGB(i, 255,0,0);
+      m_ledbuffer.setRGB(i, 0,255,0);
       
     }
     m_led.setData(m_ledbuffer);
