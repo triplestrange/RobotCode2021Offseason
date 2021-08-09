@@ -18,23 +18,25 @@ public class FeedShooter extends CommandGroup {
   private final Conveyor m_conveyor;
   private final Shooter m_shooter;
   private boolean m_atSpeed;
-  private final double m_speed;
+  private final double m_speed, shooterSetpoint;
   /**
    * Creates a new FeedShooter.
    */
-  public FeedShooter(Conveyor subsystem1, Shooter subsystem2) {
+  public FeedShooter(Conveyor subsystem1, Shooter subsystem2, double setpoint) {
     requires(subsystem1); 
     requires(subsystem2);
     m_conveyor = subsystem1;
     m_shooter = subsystem2;
     m_speed = 0.8;
+    shooterSetpoint = setpoint;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.shooter.runShooter();
+    RobotContainer.shooter.startShooter(shooterSetpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

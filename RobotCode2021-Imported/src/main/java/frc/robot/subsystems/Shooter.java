@@ -72,8 +72,8 @@ public class Shooter extends Subsystem {
     // SmartDashboard.putNumber("Hood Position", hoodPos);
   }
 
-  public void runShooter() {
-    setPoint = SmartDashboard.getNumber("Shooter Velocity", 3650);
+  public void startShooter(double var) {
+    setPoint = var;
 
     m_pidController.setReference(setPoint, ControlType.kVelocity);
     
@@ -116,7 +116,7 @@ public class Shooter extends Subsystem {
 
   public boolean atSpeed() {
     //was 300
-    return (Math.abs(setPoint - m_encoder.getVelocity())) / (setPoint) < 0.035;
+    return (Math.abs(setPoint - m_encoder.getVelocity())) / (setPoint) < 0.07;
   }
 
   @Override

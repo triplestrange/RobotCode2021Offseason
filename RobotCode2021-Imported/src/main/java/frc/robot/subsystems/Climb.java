@@ -101,13 +101,13 @@ public class Climb extends Subsystem {
   }
 
   public void runClimb(Joystick joystick) {
-    if (Math.abs(joystick.getRawAxis(5)) > 0.2) {
-      climbL.set(-joystick.getRawAxis(5));
+    if (Math.abs(joystick.getRawAxis(1)) > 0.2) {
+      climbL.set(-joystick.getRawAxis(1));
     } else {
       climbL.set(0);
     }
-    if (Math.abs(joystick.getRawAxis(1)) > 0.2) {
-      climbR.set(joystick.getRawAxis(1));
+    if (Math.abs(joystick.getRawAxis(5)) > 0.2) {
+      climbR.set(joystick.getRawAxis(5));
     } else {
       climbR.set(0);
     }

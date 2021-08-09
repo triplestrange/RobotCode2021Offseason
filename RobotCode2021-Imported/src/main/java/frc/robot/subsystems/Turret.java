@@ -156,6 +156,12 @@ public class Turret extends Subsystem {
         while (Math.abs(tx.getDouble(0.0)) > 0.2) {
           turretMotor.set(tx.getDouble(0.0)/30);
         }
+        while (Math.abs(tx.getDouble(0.0)) > 0.2) {
+          turretMotor.set(tx.getDouble(0.0)/30);
+        }
+        while (Math.abs(tx.getDouble(0.0)) > 0.2) {
+          turretMotor.set(tx.getDouble(0.0)/30);
+        }
         turretMotor.set(0);
       }
     } else {

@@ -76,10 +76,10 @@ public class ShootTrench extends CommandGroup {
         swerveDrive::setModuleStates, swerveDrive);
 
     addSequential(new SpinTurret(turret, vision, 3, 1, swerveDrive, new Joystick(3)), 2);
-    addSequential(new WaitCommand(1.5));
+    addSequential(new WaitCommand(0.75));
     addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);
-    addSequential(new WaitCommand(1));
-    addSequential(new FeedShooter(conveyor, shooter), 3);
+    addSequential(new WaitCommand(1.5));
+    addSequential(new FeedShooter(conveyor, shooter, 3650), 3);
     addSequential(new StopShooter(shooter));
     addParallel(new RunConveyor(conveyor));
     addSequential(new ExtendIntake(intake, new Joystick(3)));

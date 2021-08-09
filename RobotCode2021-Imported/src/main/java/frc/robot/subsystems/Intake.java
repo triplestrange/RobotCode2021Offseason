@@ -26,20 +26,21 @@ public class Intake extends Subsystem {
         intakeMotor.setIdleMode(IdleMode.kBrake);
         intakeMotor.enableVoltageCompensation(11);
         intakeMotor.setSmartCurrentLimit(20);
-        SmartDashboard.putNumber("Intake Speed", 0.8);
+        SmartDashboard.putNumber("Intake Speed", 0.45);
         intakeMotor.burnFlash();
     }
 
     public void extend(Joystick joystick) {
+        double modifier = SmartDashboard.getNumber("Intake Speed", 0.45);
         intakeSolenoid.set(Value.kForward);
         setExtended(true);
         double speedIn = joystick.getRawAxis(3);
         double speedOut = joystick.getRawAxis(2);
 
         if (speedIn > 0.1)
-            intakeMotor.set(0.45);
+            intakeMotor.set(speedIn*modifier);
         else if (speedOut > 0.1)
-            intakeMotor.set(-1);
+            intakeMotor.set(-speedOut);
         else
             intakeMotor.set(0);
     }

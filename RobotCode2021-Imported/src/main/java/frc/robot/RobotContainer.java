@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
@@ -81,6 +82,10 @@ public class RobotContainer {
     // Network Tables for Vision
     public NetworkTableEntry yaw;
     public NetworkTableEntry isDriverMode;
+    SendableChooser<Command> m_chooser = new SendableChooser<>();
+    ShootTrench trench = new ShootTrench(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+    Steal auto = new Steal(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+    THOR thor = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -98,6 +103,11 @@ public class RobotContainer {
         vision.setDefaultCommand(new RunVision(vision));
         climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
 
+        m_chooser.addOption("Trench Auto", trench);
+        m_chooser.addOption("Steal Auto", auto);
+        m_chooser.setDefaultOption("Simple Auto", thor);
+
+        SmartDashboard.putData(m_chooser);
     }
 
     /**
@@ -142,9 +152,11 @@ public class RobotContainer {
         butY.whenReleased(new StopShooter(shooter));
         butA.whenPressed(new ExtendIntake(intake, m_operatorController));
         butA.whenReleased(new RetractIntake(intake));
-        butB.whileHeld(new FeedShooter(conveyor, shooter));
+        butB.whileHeld(new FeedShooter(conveyor, shooter, 3650));
         butB.whenReleased(new StopShooter(shooter));
-        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.65, true));
+        butX.whileHeld(new FeedShooter(conveyor, shooter, 4025));
+        butX.whenReleased(new StopShooter(shooter));
+        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.8, true));
         lBump.whenReleased(new InstantCommand(shooter::stopShooter));
         rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8, true));
         rBump.whenReleased(new InstantCommand(shooter::stopShooter));
@@ -165,11 +177,8 @@ public class RobotContainer {
      */
 
 
-    public Command getAutonomousCommand(Trajectory trajectory) {
-        // ShootTrench auto = new ShootTrench(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-        Steal auto = new Steal(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-        // THOR auto = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-        return auto;
+    public Command getAutonomousCommand() {
+        return m_chooser.getSelected();
 
     }
 
