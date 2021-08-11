@@ -38,7 +38,6 @@ public class Turret extends Subsystem {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, setPoint, rotations;
   private CANDigitalInput m_reverseLimit;
   private DigitalInput limitSwitch;
-  public Vision vision;
   public SwerveDrive swerve;
   public boolean gyroMode;
   private double gyro;
@@ -56,8 +55,7 @@ public class Turret extends Subsystem {
   /**
    * Creates a new Turret.
    */
-  public Turret(SwerveDrive swerve, Vision vision) {
-    this.vision = vision;
+  public Turret(SwerveDrive swerve) {
     this.swerve = swerve;
     gyroMode = false;
 
@@ -119,13 +117,13 @@ public class Turret extends Subsystem {
     turretMotor.set(0);
   }
 
-  public void spin(int mode, double speed, SwerveDrive swerve, Joystick joystick) {
+  public void spin(String mode, SwerveDrive swerve, Joystick joystick) {
 
     double robotHeading = swerve.getHeading();
 
     double targetPosition = 0;
 
-    if (mode == 1) {
+    if (mode.equals("joystick")) {
       gyroMode = false;
       if (joystick.getRawAxis(2) > 0.05) {
         turretMotor.set(-0.5);
@@ -134,8 +132,8 @@ public class Turret extends Subsystem {
       } else {
         turretMotor.set(0);
       }
-      turretMotor.set(speed);
-    } else if (mode == 2) {
+      turretMotor.set(1);
+    } else if (mode.equals("vision")) {
       double v = tv.getDouble(0.0);
       double x = tx.getDouble(0.0);
       double y = ty.getDouble(0.0);
@@ -143,15 +141,7 @@ public class Turret extends Subsystem {
       if (v != 0) {
         turretMotor.set(x/30.0);
       }
-      // if (vision.getHasTargets()) {
-      //   turretMotor.set(vision.getRotationSpeed());
-      //   SmartDashboard.putNumber("turret rot", vision.getRotationSpeed());
-      // }
-
-    } else if (mode == 3) {
-
-      // mode for auto vision
-    } else if (mode == 4) {
+    } else if (mode.equals("autoVision")) {
       if (tx.getDouble(0.0)!= 0) {
         while (Math.abs(tx.getDouble(0.0)) > 0.2) {
           turretMotor.set(tx.getDouble(0.0)/30);
@@ -167,9 +157,6 @@ public class Turret extends Subsystem {
     } else {
       turretMotor.set(0);
     }
-    // turretMotor.set(0);
-    // setPosition(targetPosition);
-    // m_turretPIDController.setReference(targetPosition, ControlType.kPosition);
   }
 
   public void toggleGyroMode() {

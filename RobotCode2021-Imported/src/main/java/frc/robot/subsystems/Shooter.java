@@ -89,14 +89,9 @@ public class Shooter extends Subsystem {
   public void stopShooter() {
     shooter1.set(0);
   }
-
   
-
-
   public void runHood(double pos) {
-    
     double currentPos = hoodServo.get();
-    double hoodDir = 0;
     if (pos == -1) {
       hoodServo.set(currentPos - 0.01);
     } else if (pos == 1) {
@@ -107,7 +102,6 @@ public class Shooter extends Subsystem {
   }
 
   public void periodic() {
-    
     SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
     SmartDashboard.putNumber("SHOOTER HOOD POS", hoodServo.get());
     SmartDashboard.putNumber("SHOOTER HOOD ANGLE", hoodServo.getAngle());
@@ -115,7 +109,7 @@ public class Shooter extends Subsystem {
   }
 
   public boolean atSpeed() {
-    //was 300
+    // was 300
     return (Math.abs(setPoint - m_encoder.getVelocity())) / (setPoint) < 0.07;
   }
 

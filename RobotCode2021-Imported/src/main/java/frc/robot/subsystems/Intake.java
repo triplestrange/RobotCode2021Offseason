@@ -30,19 +30,26 @@ public class Intake extends Subsystem {
         intakeMotor.burnFlash();
     }
 
-    public void extend(Joystick joystick) {
-        double modifier = SmartDashboard.getNumber("Intake Speed", 0.45);
-        intakeSolenoid.set(Value.kForward);
-        setExtended(true);
-        double speedIn = joystick.getRawAxis(3);
-        double speedOut = joystick.getRawAxis(2);
+    public void extend(Joystick joystick, boolean auto) {
+        if (auto) {
+            intakeSolenoid.set(Value.kForward);
+            setExtended(true);
+            intakeMotor.set(.5);
+        } else {
+            double modifier = SmartDashboard.getNumber("Intake Speed", 0.45);
+            intakeSolenoid.set(Value.kForward);
+            setExtended(true);
+            double speedIn = joystick.getRawAxis(3);
+            double speedOut = joystick.getRawAxis(2);
 
-        if (speedIn > 0.1)
-            intakeMotor.set(speedIn*modifier);
-        else if (speedOut > 0.1)
-            intakeMotor.set(-speedOut);
-        else
-            intakeMotor.set(0);
+            if (speedIn > 0.1)
+                intakeMotor.set(speedIn * modifier);
+            else if (speedOut > 0.1)
+                intakeMotor.set(-speedOut);
+            else
+                intakeMotor.set(0);
+
+        }
     }
 
     public void retract() {

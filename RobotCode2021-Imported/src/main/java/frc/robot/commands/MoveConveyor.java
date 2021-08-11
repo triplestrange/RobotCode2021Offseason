@@ -8,52 +8,34 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
-public class Shoot extends Command {
-  public Shooter shooter;
+public class MoveConveyor extends Command {
   public Conveyor conveyor;
-  public int shoot_speed;
-  public String mode;
+  public Shooter shooter;
+  public String dir;
 
-  public Shoot(Shooter shooter, Conveyor conveyor, String mode) {
-    requires(shooter);
+  public MoveConveyor(Conveyor conveyor, Shooter shooter, String dir) {
     requires(conveyor);
-    this.shooter = shooter;
+    requires(shooter);
+
     this.conveyor = conveyor;
-    this.mode = mode;
-    
-    if (mode.equals("slow")) {
-      shoot_speed = 3650;
-    } else if (mode.equals("normal")) {
-      shoot_speed = 4025;
-    } else if (mode.equals("fast")) {
-      shoot_speed = 5676;
-    } else if (mode.equals("none")) {
-      shoot_speed = 0;
-    }
+    this.shooter = shooter;
+    this.dir = dir;
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
-    shooter.startShooter(shoot_speed);
-  }
+  protected void initialize() {}
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    conveyor.controlConveyor(shooter, "feedShooter");
+    conveyor.controlConveyor(shooter, dir);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
-  }
-
- @Override
-  public synchronized void cancel() {
-    conveyor.controlConveyor(shooter, "feedShooter");
-    super.cancel();
   }
 
   // Called once after isFinished returns true

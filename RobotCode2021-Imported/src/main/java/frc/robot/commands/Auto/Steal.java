@@ -18,28 +18,20 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.AutoIndexConveyor;
-import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.FeedShooter;
-import frc.robot.commands.RetractIntake;
-import frc.robot.commands.RunConveyor;
+import frc.robot.commands.MoveConveyor;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.SpinTurret;
-import frc.robot.commands.StopShooter;
 import frc.robot.commands.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.*;
 
 public class Steal extends CommandGroup {
   /** Add your docs here. */
-  public Steal(SwerveDrive swerveDrive, Conveyor conveyor, Turret turret, Vision vision, Shooter shooter, Intake intake,
+  public Steal(SwerveDrive swerveDrive, Conveyor conveyor, Turret turret, Shooter shooter, Intake intake,
       ProfiledPIDController theta) {
 
     TrajectoryConfig config = new TrajectoryConfig(0.75, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -121,18 +113,16 @@ public class Steal extends CommandGroup {
 
     );
 
-    addSequential(new ExtendIntake(intake, new Joystick(3)));
-    addParallel(new RunIntake(intake, new Joystick(3), true), 7);
-    addParallel(new RunConveyor(conveyor));
+    addParallel(new RunIntake(intake, new Joystick(3), "auto"), 7);
+    addParallel(new MoveConveyor(conveyor, shooter, "none"));
     addSequential(swerveControllerCommand);
     addSequential(extensionCommand);
     addSequential(extensionCommand1);
-    addSequential(new RunIntake(intake, new Joystick(3), false));
-    addSequential(new RetractIntake(intake));
+    addSequential(new RunIntake(intake, new Joystick(3), "stop"));
     addSequential(swerveControllerCommand1);
     // vision
     // addParallel(new InstantCommand(conveyor::auto));
-    addSequential(new SpinTurret(turret, vision, 3, 1, swerveDrive, new Joystick(3)), 2);
+    addSequential(new SpinTurret(turret, "gyro", swerveDrive, new Joystick(3)), 2);
     addSequential(new WaitCommand(0.75));
     // addParallel(new InstantCommand(conveyor::stop));
     // addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);

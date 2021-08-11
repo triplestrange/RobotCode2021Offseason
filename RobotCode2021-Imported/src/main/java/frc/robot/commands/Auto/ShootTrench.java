@@ -17,13 +17,10 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.FeedShooter;
-import frc.robot.commands.RetractIntake;
-import frc.robot.commands.RunConveyor;
+import frc.robot.commands.MoveConveyor;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.SpinTurret;
-import frc.robot.commands.StopShooter;
 import frc.robot.commands.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -34,7 +31,7 @@ import frc.robot.subsystems.*;
 
 public class ShootTrench extends CommandGroup {
   /** Add your docs here. */
-  public ShootTrench(SwerveDrive swerveDrive, Conveyor conveyor, Turret turret, Vision vision, Shooter shooter,
+  public ShootTrench(SwerveDrive swerveDrive, Conveyor conveyor, Turret turret, Shooter shooter,
       Intake intake, ProfiledPIDController theta) {
 
     TrajectoryConfig config = new TrajectoryConfig(0.75, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -75,19 +72,17 @@ public class ShootTrench extends CommandGroup {
 
         swerveDrive::setModuleStates, swerveDrive);
 
-    addSequential(new SpinTurret(turret, vision, 3, 1, swerveDrive, new Joystick(3)), 2);
+    addSequential(new SpinTurret(turret, "gyro", swerveDrive, new Joystick(3)), 2);
     addSequential(new WaitCommand(0.75));
-    addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);
+    addSequential(new SpinTurret(turret, "autoVision", swerveDrive, new Joystick(3)), 3);
     addSequential(new WaitCommand(1.5));
-    addSequential(new FeedShooter(conveyor, shooter, 3650), 3);
-    addSequential(new StopShooter(shooter));
-    addParallel(new RunConveyor(conveyor));
-    addSequential(new ExtendIntake(intake, new Joystick(3)));
+    addSequential(new Shoot(shooter, conveyor, "slow"), 3);
+    addSequential(new Shoot(shooter, conveyor, "none"));
+    addParallel(new MoveConveyor(conveyor, shooter, "none"));
     // addSequential(new WaitCommand(1));
-    addParallel(new RunIntake(intake, new Joystick(3), true), 8);
+    addParallel(new RunIntake(intake, new Joystick(3), "auto"), 8);
     addSequential(swerveControllerCommand);
-    addParallel(new RetractIntake(intake));
-    addParallel(new RunIntake(intake, new Joystick(3), false));
+    addParallel(new RunIntake(intake, new Joystick(3), "stop"));
     addSequential(swerveControllerCommand1);
   }
 }

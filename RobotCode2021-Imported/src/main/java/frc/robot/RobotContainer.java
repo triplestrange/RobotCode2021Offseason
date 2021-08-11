@@ -65,11 +65,7 @@ public class RobotContainer {
     public static final Conveyor conveyor = new Conveyor();
     public final static Shooter shooter = new Shooter();
     private final Climb climb = new Climb();
-    private static final PhotonCamera camera = new PhotonCamera("other");
-    // private final PhotonCamera camera1 = new PhotonCamera("other");
-    public static final Vision vision = new Vision(camera);
-    // private final Vision vision1 = new Vision(camera1);
-    public static final Turret turret = new Turret(swerveDrive, vision);
+    public static final Turret turret = new Turret(swerveDrive);
     // The driver's controller
     public static Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
     public static Joystick m_operatorController = new Joystick(1);
@@ -83,9 +79,9 @@ public class RobotContainer {
     public NetworkTableEntry yaw;
     public NetworkTableEntry isDriverMode;
     SendableChooser<Command> m_chooser = new SendableChooser<>();
-    ShootTrench trench = new ShootTrench(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-    Steal auto = new Steal(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
-    THOR thor = new THOR(swerveDrive, conveyor, turret, vision, shooter, intake, theta);
+    ShootTrench trench = new ShootTrench(swerveDrive, conveyor, turret, shooter, intake, theta);
+    Steal auto = new Steal(swerveDrive, conveyor, turret, shooter, intake, theta);
+    THOR thor = new THOR(swerveDrive, conveyor, turret, shooter, intake, theta);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -97,10 +93,9 @@ public class RobotContainer {
         // Configure default commands
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
-        conveyor.setDefaultCommand(new AutoIndexConveyor(conveyor, 0, false));
-        intake.setDefaultCommand(new RunIntake(intake, m_operatorController, false));
+        conveyor.setDefaultCommand(new MoveConveyor(conveyor, shooter, "none"));
+        intake.setDefaultCommand(new RunIntake(intake, m_operatorController, "stop"));
         // turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
-        vision.setDefaultCommand(new RunVision(vision));
         climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
 
         m_chooser.addOption("Trench Auto", trench);
@@ -137,29 +132,41 @@ public class RobotContainer {
         JoystickButton rAnald = new JoystickButton(m_driverController, 10);
 
         JoystickButton gyro = new JoystickButton(m_driverController, 8);
+
+
         // 2021 Offseason Button Bindings
         // Driver Joystick
-        rBumpd.whileHeld(new SpinTurret(turret, vision, 2, 1, swerveDrive, m_driverController));
+        rBumpd.whileHeld(new SpinTurret(turret, "vision", swerveDrive, m_driverController));
         rBumpd.whenReleased(new InstantCommand(turret::stop));
-        lBumpd.whenPressed(new SpinTurret(turret, vision, 3, 1, swerveDrive, m_driverController));
+
+        lBumpd.whenPressed(new SpinTurret(turret, "gyro", swerveDrive, m_driverController));
+        
         gyro.whenPressed(new InstantCommand(swerveDrive::zeroHeading));
+        
         butXd.whileHeld(new DefaultDrive(swerveDrive, m_driverController, 0.35));
+
         lAnald.whileHeld(new MoveHood(shooter, 1));
         rAnald.whileHeld(new MoveHood(shooter, -1));
+
         // Operator Joystick
 
-        butY.whileHeld(new RunShooter(shooter));
-        butY.whenReleased(new StopShooter(shooter));
-        butA.whenPressed(new ExtendIntake(intake, m_operatorController));
-        butA.whenReleased(new RetractIntake(intake));
-        butB.whileHeld(new FeedShooter(conveyor, shooter, 3650));
-        butB.whenReleased(new StopShooter(shooter));
-        butX.whileHeld(new FeedShooter(conveyor, shooter, 4025));
-        butX.whenReleased(new StopShooter(shooter));
-        lBump.whileHeld(new AutoIndexConveyor(conveyor, -0.8, true));
-        lBump.whenReleased(new InstantCommand(shooter::stopShooter));
-        rBump.whileHeld(new AutoIndexConveyor(conveyor, 0.8, true));
-        rBump.whenReleased(new InstantCommand(shooter::stopShooter));
+        butY.whileHeld(new Shoot(shooter, conveyor, "fast"));
+        butY.whenReleased(new Shoot(shooter, conveyor, "none"));
+
+        butA.whenPressed(new RunIntake(intake, m_operatorController, "extend"));
+        butA.whenReleased(new RunIntake(intake, m_operatorController, "retract"));
+
+        butB.whileHeld(new Shoot(shooter, conveyor, "slow"));
+        butB.whenReleased(new Shoot(shooter, conveyor, "none"));
+
+        butX.whileHeld(new Shoot(shooter, conveyor, "normal"));
+        butX.whenReleased(new Shoot(shooter, conveyor, "none"));
+
+        lBump.whileHeld(new MoveConveyor(conveyor, shooter, "out"));
+        lBump.whenReleased(new Shoot(shooter, conveyor, "none"));
+
+        rBump.whileHeld(new MoveConveyor(conveyor, shooter, "in"));
+        rBump.whenReleased(new Shoot(shooter, conveyor, "none"));
 
     }
 

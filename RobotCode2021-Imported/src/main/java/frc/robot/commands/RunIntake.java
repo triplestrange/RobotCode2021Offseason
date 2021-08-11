@@ -16,30 +16,35 @@ import frc.robot.subsystems.Intake;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class RunIntake extends InstantCommand {
+  public Intake intake;
+  public Joystick joystick;
+  public String mode;
+  public double intake_speed;
   
-  public RunIntake(Intake subsystem, Joystick joystick, boolean auto) {
-    super(subsystem, 
-      () -> {
-        double speed = 0;
-        if (joystick.getRawAxis(2) > 0.05 ) {
-          double mult = SmartDashboard.getNumber("Intake Speed", 0.8);
-          speed = joystick.getRawAxis(2) * mult;
-        } else if (joystick.getRawAxis(3) > 0.05) {
-          speed = -joystick.getRawAxis(3) * 1;
-        } else if (auto) {
-          speed = 0.8;
-        }
-        else {
-          speed = 0;
-        }
-        subsystem.runWheels(speed);
-      });
+  public RunIntake(Intake subsystem, Joystick joystick, String mode) {
       requires(subsystem);
+      this.intake = subsystem;
+      this.joystick = joystick;
   }
 
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+  }
+
+  @Override
+  public void execute() {
+    if (mode.equals("auto")) {
+      intake.extend(joystick, true);
+    } else if (mode.equals("extend")) {
+      intake.extend(joystick, false);
+    } else if (mode.equals("retract")) {
+      intake.retract();
+    } else if (mode.equals("stop")) {
+      intake.runWheels(0);
+      intake.retract();
+    }
   }
 }

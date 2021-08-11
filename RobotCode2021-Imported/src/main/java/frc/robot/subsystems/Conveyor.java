@@ -21,45 +21,40 @@ public class Conveyor extends Subsystem {
 
   }
 
-  public void autoIndex(double speed, boolean yes) {
-    System.out.println("in the method");
-    SmartDashboard.putBoolean("SENSOR", sensor.get());
-    if (yes) {
-      motor.set(speed);
-      if (speed > 0) {
-        RobotContainer.shooter.runShooter(-0.3);
+  public void controlConveyor(Shooter shooter, String instruction) {
+    boolean conveyorSensor = sensor.get();
+    SmartDashboard.putBoolean("SENSOR", conveyorSensor);
+    double speed = 0.8;
+    
+    // run shooter + conveyor out
+    if (instruction.equals("out")) {
+      speed *= -1;
+      shooter.runShooter(-0.3);
+    // for the default command
+    } else if (instruction.equals("none")) {
+      // if the conveyor sensor is triggered
+      // run the motor. if not, stop the motor
+      if (!conveyorSensor) {
+        speed = -1;
+      } else {
+        speed = 0;
       }
-    } else {
-      if (!sensor.get()) {
-        motor.set(-1);
-        System.out.println("made it");}
-      else {
-        motor.set(speed);
+    // for precision shooting
+    } else if (instruction.equals("feedShooter")) {
+      // default speed is 0.8
+      // if shooter is NOT at speed,
+      // do not run the conveyor
+      if (!shooter.atSpeed()) {
+        speed = 0;
       }
     }
-  }
-
-  public void manualControl(double speed) {
-    motor.set(-speed);
-  }
-
-  public void feedShooter(double speed, boolean atSpeed) {
-    if (atSpeed) {
-      motor.set(-speed);
-      System.out.println("hi");
-    } else
-      motor.set(0);
+    motor.set(speed);
   }
 
   @Override
   public void periodic() {
   }
-  public void stop() {
-    motor.set(0);
-  }
-  public void auto() {
-    motor.set(-0.65);
-  }
+
   @Override
   protected void initDefaultCommand() {
     // TODO Auto-generated method stub
