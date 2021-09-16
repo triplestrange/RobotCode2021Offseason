@@ -84,6 +84,7 @@ public class Shooter extends Subsystem {
 
   public void runShooter(double speed) {
     shooter1.set(speed);
+    System.out.println("shooter command running");
   }
 
   public void stopShooter() {

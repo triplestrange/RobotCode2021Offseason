@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.cscore.*;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.commands.*;
+import frc.robot.commands.MoveConveyor;
 
 import frc.robot.commands.Auto.*;
 
@@ -185,8 +186,9 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand() {
-        return m_chooser.getSelected();
-
+        // return m_chooser.getSelected();
+        Demo demo = new Demo(swerveDrive, conveyor, turret, shooter, intake, theta);
+        return demo;
     }
 
 }

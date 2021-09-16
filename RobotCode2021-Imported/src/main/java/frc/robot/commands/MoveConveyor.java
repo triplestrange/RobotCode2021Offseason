@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
-public class MoveConveyor extends Command {
+public class MoveConveyor extends CommandGroup {
   public Conveyor conveyor;
   public Shooter shooter;
   public String dir;

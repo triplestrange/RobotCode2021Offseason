@@ -38,18 +38,19 @@ public class Steal extends CommandGroup {
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(SwerveDriveConstants.kDriveKinematics).setEndVelocity(0.75);
 
-        TrajectoryConfig config1 = new TrajectoryConfig(1.5, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+    TrajectoryConfig config1 = new TrajectoryConfig(1.5, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
         .setKinematics(SwerveDriveConstants.kDriveKinematics).setEndVelocity(1.5);
 
-    Trajectory traject = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(Math.PI/2.0)), List.of(
-      new Translation2d(1.5,0.75)
+    Trajectory traject = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(Math.PI / 2.0)),
+        List.of(new Translation2d(1.5, 0.75)
 
-    ),
+        ),
         // direction robot moves
         new Pose2d(2.3, 0.75, new Rotation2d(0)), config);
 
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(traject, (-Math.PI/6.0), swerveDrive::getPose, // Functional
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(traject, (-Math.PI / 6.0),
+        swerveDrive::getPose, // Functional
         SwerveDriveConstants.kDriveKinematics,
 
         // Position controllers
@@ -59,14 +60,16 @@ public class Steal extends CommandGroup {
         swerveDrive::setModuleStates, swerveDrive
 
     );
-    Trajectory extension = TrajectoryGenerator.generateTrajectory(new Pose2d(2.3, 0.75, new Rotation2d(-Math.PI/2.0)), List.of(
-      //new Translation2d(2.3,0.25)
+    Trajectory extension = TrajectoryGenerator.generateTrajectory(new Pose2d(2.3, 0.75, new Rotation2d(-Math.PI / 2.0)),
+        List.of(
+        // new Translation2d(2.3,0.25)
 
-    ),
+        ),
         // direction robot moves
-        new Pose2d(2.3, 0.25, new Rotation2d(-Math.PI/2.0)), config);
+        new Pose2d(2.3, 0.25, new Rotation2d(-Math.PI / 2.0)), config);
 
-    SwerveControllerCommand extensionCommand = new SwerveControllerCommand(extension, (-Math.PI/6.0), swerveDrive::getPose, // Functional
+    SwerveControllerCommand extensionCommand = new SwerveControllerCommand(extension, (-Math.PI / 6.0),
+        swerveDrive::getPose, // Functional
         SwerveDriveConstants.kDriveKinematics,
 
         // Position controllers
@@ -78,13 +81,14 @@ public class Steal extends CommandGroup {
     );
 
     Trajectory extension1 = TrajectoryGenerator.generateTrajectory(new Pose2d(2.3, 0.25, new Rotation2d(0)), List.of(
-      //new Translation2d(2.3,0.25)
+    // new Translation2d(2.3,0.25)
 
     ),
         // direction robot moves
         new Pose2d(2.75, 0.25, new Rotation2d(0)), config);
 
-    SwerveControllerCommand extensionCommand1 = new SwerveControllerCommand(extension1, (-Math.PI/6.0), swerveDrive::getPose, // Functional
+    SwerveControllerCommand extensionCommand1 = new SwerveControllerCommand(extension1, (-Math.PI / 6.0),
+        swerveDrive::getPose, // Functional
         SwerveDriveConstants.kDriveKinematics,
 
         // Position controllers
@@ -95,12 +99,13 @@ public class Steal extends CommandGroup {
 
     );
 
-    Trajectory traject1 = TrajectoryGenerator.generateTrajectory(new Pose2d(2.75, 0.25, new Rotation2d(Math.PI)), List.of(// new
-                                                                                                             // Translation2d(1,
-                                                                                                             // 0)
-    ),
+    Trajectory traject1 = TrajectoryGenerator.generateTrajectory(new Pose2d(2.75, 0.25, new Rotation2d(Math.PI)),
+        List.of(// new
+        // Translation2d(1,
+        // 0)
+        ),
         // direction robot moves
-        new Pose2d(0.5, 2, new Rotation2d(Math.PI/2.0)), config1);
+        new Pose2d(0.5, 2, new Rotation2d(Math.PI / 2.0)), config1);
 
     SwerveControllerCommand swerveControllerCommand1 = new SwerveControllerCommand(traject1, (0), swerveDrive::getPose, // Functional
         SwerveDriveConstants.kDriveKinematics,
@@ -125,43 +130,28 @@ public class Steal extends CommandGroup {
     addSequential(new SpinTurret(turret, "gyro", swerveDrive, new Joystick(3)), 2);
     addSequential(new WaitCommand(0.75));
     // addParallel(new InstantCommand(conveyor::stop));
-    // addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);
+    // addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new
+    // Joystick(3)), 3);
     // addSequential(new WaitCommand(1));
     // addSequential(new FeedShooter(conveyor, shooter, 3650), 3);
     // addSequential(new StopShooter(shooter));
-    
-    //proposed new code
+
+    // proposed new code
     /*
-    addSequential(new ExtendIntake(intake, new Joystick(3)));
-    addParallel(new RunIntake(intake, new Joystick(3), true), 7);
-    addParallel(new RunConveyor(conveyor));
-    addSequential(swerveControllerCommand);
-    addSequential(extensionCommand);
-    // Change path to move like this
-    //      /
-    //     /
-    //    /
-    //   /
-    //  /
-    //instead of this
-    //           |
-    //           |
-    //           |
-    //           |
-    // __________|
-    addSequential(extensionCommand1);
-    addSequential(new RunIntake(intake, new Joystick(3), false));
-    addSequential(new RetractIntake(intake));
-    addSequential(swerveControllerCommand1);
-    // vision
-    addParallel(new InstantCommand(conveyor::auto));
-    addSequential(new SpinTurret(turret, vision, 3, 1, swerveDrive, new Joystick(3)), 2);
-    addSequential(new WaitCommand(0.75));
-    addParallel(new InstantCommand(conveyor::stop));
-    addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);
-    addSequential(new WaitCommand(1));
-    addSequential(new FeedShooter(conveyor, shooter), 3);
-    addSequential(new StopShooter(shooter));
-    */
+     * addSequential(new ExtendIntake(intake, new Joystick(3))); addParallel(new
+     * RunIntake(intake, new Joystick(3), true), 7); addParallel(new
+     * RunConveyor(conveyor)); addSequential(swerveControllerCommand);
+     * addSequential(extensionCommand); // Change path to move like this // / // /
+     * // / // / // / //instead of this // | // | // | // | // __________|
+     * addSequential(extensionCommand1); addSequential(new RunIntake(intake, new
+     * Joystick(3), false)); addSequential(new RetractIntake(intake));
+     * addSequential(swerveControllerCommand1); // vision addParallel(new
+     * InstantCommand(conveyor::auto)); addSequential(new SpinTurret(turret, vision,
+     * 3, 1, swerveDrive, new Joystick(3)), 2); addSequential(new
+     * WaitCommand(0.75)); addParallel(new InstantCommand(conveyor::stop));
+     * addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new
+     * Joystick(3)), 3); addSequential(new WaitCommand(1)); addSequential(new
+     * FeedShooter(conveyor, shooter), 3); addSequential(new StopShooter(shooter));
+     */
   }
 }
