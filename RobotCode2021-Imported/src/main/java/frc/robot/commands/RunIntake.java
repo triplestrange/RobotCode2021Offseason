@@ -25,6 +25,7 @@ public class RunIntake extends InstantCommand {
       requires(subsystem);
       this.intake = subsystem;
       this.joystick = joystick;
+      this.mode = mode;
   }
 
 

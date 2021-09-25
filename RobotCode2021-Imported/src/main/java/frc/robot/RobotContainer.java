@@ -12,13 +12,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import javax.sound.sampled.Control;
-
-import org.photonvision.PhotonCamera;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -95,7 +90,7 @@ public class RobotContainer {
         // Set the default drive command to split-stick arcade drive
         swerveDrive.setDefaultCommand(new DefaultDrive(swerveDrive, m_driverController, 1));
         conveyor.setDefaultCommand(new MoveConveyor(conveyor, shooter, "none"));
-        intake.setDefaultCommand(new RunIntake(intake, m_operatorController, "stop"));
+        // intake.setDefaultCommand(new RunIntake(intake, m_operatorController, "stop"));
         // turret.setDefaultCommand(new SpinTurret(turret, vision, 1, 0, swerveDrive, m_driverController));
         climb.setDefaultCommand(new DoClimb(climb, m_operatorController));
 
