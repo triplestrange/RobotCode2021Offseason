@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Turret;
-import frc.robot.subsystems.Vision;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -20,21 +19,20 @@ import frc.robot.subsystems.Vision;
 public class SpinTurret extends InstantCommand {
   public int mode;
 
-  public SpinTurret(Turret subsystem, Vision subsystem2, int mode, double speed, SwerveDrive subsystem3,
+  public SpinTurret(Turret subsystem, String mode, SwerveDrive subsystem3,
       Joystick joystick) {
     super(subsystem, () -> {
-      if ((mode == 2 || mode == 4) && RobotContainer.turret.gyroMode) {
+      if ((mode.equals("vision") || mode.equals("autoVision")) && RobotContainer.turret.gyroMode) {
         subsystem.toggleGyroMode();
         System.out.println("toggle cuz vision");
-      }if (mode == 3) {
+      }
+      if (mode.equals("gyro")) {
         subsystem.toggleGyroMode();
         System.out.println("toggles");
       }
-      subsystem.spin(mode, speed, subsystem3, joystick);
+      subsystem.spin(mode, subsystem3, joystick);
     });
     requires(subsystem);
-    requires(subsystem2);
-    this.mode = mode;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -43,4 +41,4 @@ public class SpinTurret extends InstantCommand {
   public void initialize() {
   }
 
-}  
+}

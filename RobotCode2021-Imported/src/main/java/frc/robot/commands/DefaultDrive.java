@@ -29,7 +29,7 @@ import frc.robot.subsystems.*;
 public class DefaultDrive extends Command {
   private final SwerveDrive m_drive;
   private final Joystick m_joystick;
-  private  double m_xSpeed, m_ySpeed, m_rot;
+  private double m_xSpeed, m_ySpeed, m_rot;
   private final boolean m_fieldRelative;
   private double heading;
   private PIDController pid = new PIDController(0.05, 0, 0.01);
@@ -41,13 +41,14 @@ public class DefaultDrive extends Command {
   /**
    * Creates a new DefaultDrive.
    * 
-   * @param subsystem The drive subsystem this command will run on
-   * @param driver The joystick to be used for calculations in speed and rotation
-   * @param multiplier The mode of the robot -- multiplied with  x, y, and rot speed
+   * @param subsystem  The drive subsystem this command will run on
+   * @param driver     The joystick to be used for calculations in speed and
+   *                   rotation
+   * @param multiplier The mode of the robot -- multiplied with x, y, and rot
+   *                   speed
    */
   public DefaultDrive(SwerveDrive subsystem, Joystick driver, double multiplier) {
     requires(subsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
     m_drive = subsystem;
     m_joystick = driver;
     m_xSpeed = 0;
@@ -55,8 +56,6 @@ public class DefaultDrive extends Command {
     m_rot = 0;
     m_fieldRelative = true;
     this.multiplier = multiplier;
-
-    
 
   }
 
@@ -72,8 +71,6 @@ public class DefaultDrive extends Command {
   @Override
   public void execute() {
     // deadzone
-
-
 
     SmartDashboard.putNumber("MODE", mode);
     if (m_drive.getGyroReset()) {
@@ -93,43 +90,29 @@ public class DefaultDrive extends Command {
 
     if (Math.abs(m_joystick.getRawAxis(1)) > 0.05) {
       m_ySpeed = -m_joystick.getRawAxis(1) * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond * multiplier;
-    }
-    else {
+    } else {
       m_ySpeed = 0;
     }
     if (Math.abs(m_joystick.getRawAxis(0)) > 0.05) {
-      m_xSpeed = m_joystick.getRawAxis(0)  * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond * multiplier;
+      m_xSpeed = m_joystick.getRawAxis(0) * Constants.SwerveDriveConstants.kMaxSpeedMetersPerSecond * multiplier;
 
-    }else {
-      m_xSpeed=0;
+    } else {
+      m_xSpeed = 0;
     }
     if (Math.abs(m_joystick.getRawAxis(4)) > 0.2) {
-      m_rot = -m_joystick.getRawAxis(4)  * (Math.PI) * 1.5 * multiplier;
-    }else {
-      m_rot=0;
+      m_rot = -m_joystick.getRawAxis(4) * (Math.PI) * 1.5 * multiplier;
+    } else {
+      m_rot = 0;
     }
-
 
     double curHead = m_drive.getAngle().getDegrees();
 
-
     if (m_rot == 0) {
       m_drive.drive(m_xSpeed, m_ySpeed, pid.calculate(curHead, heading), m_fieldRelative);
-      
+
     } else {
       m_drive.drive(m_xSpeed, m_ySpeed, m_rot, m_fieldRelative);
       heading = m_drive.getAngle().getDegrees();
-    }
-
-    // fill with correct button
-    if (m_joystick.getRawButtonPressed(6)) {
-      // to zero all wheels
-      SmartDashboard.putNumber("BUTTON PRESSED", 5);
-    }
-
-    // sidestep
-    if (m_joystick.getRawButtonPressed(1)) {
-        
     }
 
   }
@@ -139,6 +122,5 @@ public class DefaultDrive extends Command {
   public boolean isFinished() {
     return false;
   }
-
 
 }

@@ -82,22 +82,9 @@ public class Climb extends Subsystem {
     SmartDashboard.putNumber("Climb Position", rotations);
   }
 
-  public void setPosition() {
-    climbLController.setReference(-SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
-    SmartDashboard.putNumber("LClimbEncoder", climbLEncoder.getPosition());
-
-    climbRController.setReference(SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
-    SmartDashboard.putNumber("RClimbEncoder", climbREncoder.getPosition());
-  }
-
   public void stop() {
     climbL.set(0);
     climbR.set(0);
-  }
-
-  public void periodic() {
-    SmartDashboard.putNumber("Climb L", climbLEncoder.getPosition());
-    SmartDashboard.putNumber("Climb R", 206.298 - climbREncoder.getPosition());
   }
 
   public void runClimb(Joystick joystick) {
@@ -111,6 +98,19 @@ public class Climb extends Subsystem {
     } else {
       climbR.set(0);
     }
+  }
+
+  public void setPosition() {
+    climbLController.setReference(-SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
+    SmartDashboard.putNumber("LClimbEncoder", climbLEncoder.getPosition());
+
+    climbRController.setReference(SmartDashboard.getNumber("Climb Position", 0), ControlType.kPosition);
+    SmartDashboard.putNumber("RClimbEncoder", climbREncoder.getPosition());
+  }
+
+  public void periodic() {
+    SmartDashboard.putNumber("Climb L", climbLEncoder.getPosition());
+    SmartDashboard.putNumber("Climb R", 206.298 - climbREncoder.getPosition());
   }
 
   @Override

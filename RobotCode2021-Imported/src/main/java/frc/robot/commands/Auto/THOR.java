@@ -11,28 +11,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.FeedShooter;
-import frc.robot.commands.RunIntake;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.SpinTurret;
-import frc.robot.commands.StopShooter;
 import frc.robot.commands.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.*;
 
 public class THOR extends CommandGroup {
   /** Add your docs here. */
-  public THOR(SwerveDrive swerveDrive, Conveyor conveyor, Turret turret, Vision vision, Shooter shooter, Intake intake,
+  public THOR(SwerveDrive swerveDrive, Conveyor conveyor, Turret turret, Shooter shooter, Intake intake,
       ProfiledPIDController theta) {
 
     TrajectoryConfig config = new TrajectoryConfig(0.5, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -81,12 +75,12 @@ public class THOR extends CommandGroup {
     // swerveDrive::setModuleStates,
     // swerveDrive
     // );
-    addSequential(new SpinTurret(turret, vision, 3, 1, swerveDrive, new Joystick(3)), 2);
+    addSequential(new SpinTurret(turret, "gyrp", swerveDrive, new Joystick(3)), 2);
     addSequential(new WaitCommand(0.75));
-    addSequential(new SpinTurret(turret, vision, 4, 1, swerveDrive, new Joystick(3)), 3);
+    addSequential(new SpinTurret(turret, "autoVision", swerveDrive, new Joystick(3)), 3);
     addSequential(new WaitCommand(1.5));
-    addSequential(new FeedShooter(conveyor, shooter, 3650), 3);
-    addSequential(new StopShooter(shooter), 1);
+    addSequential(new Shoot(shooter, conveyor, "slow"), 3);
+    addSequential(new Shoot(shooter, conveyor, "none"), 1);
     addSequential(new WaitCommand(4));
     // addSequential(new ExtendIntake(intake, new Joystick(3)));
     // addSequential(new WaitCommand(1));
